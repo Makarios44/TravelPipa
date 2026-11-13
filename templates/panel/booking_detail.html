@@ -1,0 +1,41 @@
+{% extends "panel/base.html" %}
+{% block title %}{{ booking.reference }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><a class="small fw-semibold" href="{% url 'panel:bookings' %}">← Reservas</a>
+    <h1 class="mt-1">{{ booking.reference }} <span class="badge-status st-{{ booking.status }} align-middle fs-6">{{ booking.status_label }}</span></h1>
+    <p class="sub">Recebida em {{ booking.created_at|date:"d/m/Y \à\s H:i" }}</p></div>
+  <div class="d-flex flex-wrap gap-2">
+    {% if whatsapp_url %}<a class="btn btn-whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> WhatsApp</a>{% endif %}
+    <a class="btn btn-outline-secondary" href="mailto:{{ booking.email }}?subject=TravelPipa%20-%20{{ booking.reference }}"><i class="bi bi-envelope"></i> E-mail</a>
+  </div>
+</div>
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="card-p">
+      <h2><i class="bi bi-person"></i> Cliente e pedido</h2>
+      <dl class="dl">
+        <dt>Passeio</dt><dd>{% if booking.experience %}<a href="{% url 'panel:experience_edit' booking.experience.pk %}">{{ booking.experience.title_pt|default:booking.experience.title_en }}</a>{% else %}{{ booking.experience_title }} <small class="muted">(passeio excluído)</small>{% endif %}</dd>
+        <dt>Data pretendida</dt><dd>{{ booking.preferred_date|date:"l, d/m/Y" }}</dd>
+        <dt>Pessoas</dt><dd>{{ booking.people }}</dd>
+        <dt>Nome</dt><dd>{{ booking.full_name }}</dd>
+        <dt>E-mail</dt><dd><a href="mailto:{{ booking.email }}">{{ booking.email }}</a></dd>
+        <dt>WhatsApp / telefone</dt><dd>{{ booking.phone }}</dd>
+        <dt>Idioma de atendimento</dt><dd>{{ booking.get_service_language_display }}</dd>
+        <dt>Observações do cliente</dt><dd>{{ booking.notes|default:"—"|linebreaksbr }}</dd>
+        <dt>Consentimento LGPD</dt><dd>{{ booking.consent_at|date:"d/m/Y H:i"|default:"—" }}</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <form method="post" class="card-p" novalidate>
+      {% csrf_token %}
+      <h2><i class="bi bi-clipboard-check"></i> Atendimento</h2>
+      {% include "panel/_field.html" with field=form.status %}
+      {% include "panel/_field.html" with field=form.internal_notes %}
+      <p class="small muted">Mudar o status não avisa o cliente automaticamente. Use o WhatsApp ou o e-mail.</p>
+      <button class="btn btn-primary w-100" type="submit"><i class="bi bi-check-lg"></i> Salvar atendimento</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,5 @@
+{% load i18n %}{{ form.form_ts }}
+<div class="hp-field" aria-hidden="true">
+  <label for="{{ form.website.id_for_label }}">{% trans "Leave this field empty" %}</label>{{ form.website }}
+</div>
+{% if form.non_field_errors %}<div class="alert alert-danger d-flex gap-2" role="alert"><i class="bi bi-exclamation-triangle mt-1" aria-hidden="true"></i><div>{{ form.non_field_errors|join:" " }}</div></div>{% endif %}

@@ -1,0 +1,3 @@
+{% load i18n %}<a class="brand" href="{% url 'core:home' %}" aria-label="{{ site.site_name }} — {% trans 'Home' %}">
+  {% if site.logo %}<img class="brand-logo" src="{{ site.logo.url }}" alt="{{ site.site_name }}" height="40">{% else %}{% include "includes/logo_mark.html" %}<span>Travel<span class="brand-accent">Pipa</span></span>{% endif %}
+</a>

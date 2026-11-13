@@ -1,0 +1,27 @@
+{% extends "panel/base.html" %}
+{% block title %}Categorias{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Categorias</h1><p class="sub">Organizam o catálogo. Uma categoria desligada esconde todos os passeios dela.</p></div>
+  <a class="btn btn-accent" href="{% url 'panel:category_new' %}"><i class="bi bi-plus-lg"></i> Nova categoria</a>
+</div>
+<div class="row-list">
+  {% for c in categories %}
+    <div class="row-item{% if not c.active %} off{% endif %}" data-row>
+      <div class="thumb"><i class="bi bi-{{ c.icon|default:'tag' }}"></i></div>
+      <div>
+        <a class="title" href="{% url 'panel:category_edit' c.pk %}">{{ c.name_pt|default:c.name_en }}</a>
+        <div class="meta">{{ c.name_en }} · {{ c.name_es }} · {{ c.total }} passeio{{ c.total|pluralize }}{% if c.is_transfer %} · <span class="tag">Transfers</span>{% endif %}</div>
+      </div>
+      <div class="row-actions">
+        <form method="post" action="{% url 'panel:category_toggle' c.pk %}" data-toggle="active">
+          {% csrf_token %}
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="cat{{ c.pk }}" {% if c.active %}checked{% endif %}><label class="form-check-label" for="cat{{ c.pk }}">Ativa</label></div>
+          <button type="submit" class="btn btn-sm btn-outline-secondary">{% if c.active %}Desativar{% else %}Ativar{% endif %}</button>
+        </form>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'panel:category_edit' c.pk %}"><i class="bi bi-pencil"></i> Editar</a>
+      </div>
+    </div>
+  {% empty %}<div class="empty"><i class="bi bi-tags"></i>Nenhuma categoria.</div>{% endfor %}
+</div>
+{% endblock %}

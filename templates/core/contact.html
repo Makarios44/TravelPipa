@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Contact TravelPipa" %}{% endblock %}
+{% block meta_description %}{% trans "Contact TravelPipa in Praia da Pipa, Brazil, by WhatsApp, e-mail or Instagram. We answer in English, Portuguese and Spanish." %}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "Contact" %}</li>
+    </ol></nav>
+    <p class="eyebrow">{% trans "Contact" %}</p>
+    <h1>{% trans "Let's plan your days in Pipa" %}</h1>
+    <p class="lead">{% trans "Questions about an experience, a transfer or your itinerary? Write to us — we answer in English, Portuguese and Spanish." %}</p>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-5 order-lg-2">
+        <ul class="contact-list mb-4">
+          {% if whatsapp_general_url %}<li><span class="ic"><i class="bi bi-whatsapp" aria-hidden="true"></i></span><div><small>WhatsApp</small><a href="{{ whatsapp_general_url }}" target="_blank" rel="noopener">{{ site.whatsapp }}</a></div></li>{% endif %}
+          {% if site.email %}<li><span class="ic"><i class="bi bi-envelope" aria-hidden="true"></i></span><div><small>{% trans "E-mail" %}</small><a href="mailto:{{ site.email }}">{{ site.email }}</a></div></li>{% endif %}
+          {% if site.instagram %}<li><span class="ic"><i class="bi bi-instagram" aria-hidden="true"></i></span><div><small>Instagram</small><a href="{{ site.instagram }}" target="_blank" rel="noopener">{{ site.instagram|cut:"https://"|cut:"www."|cut:"instagram.com/"|cut:"/" }}</a></div></li>{% endif %}
+          {% if site.phone %}<li><span class="ic"><i class="bi bi-telephone" aria-hidden="true"></i></span><div><small>{% trans "Phone" %}</small><a href="tel:{{ site.phone }}">{{ site.phone }}</a></div></li>{% endif %}
+          {% if site.address %}<li><span class="ic"><i class="bi bi-geo-alt" aria-hidden="true"></i></span><div><small>{% trans "Address" %}</small>{% if site.google_maps_url %}<a href="{{ site.google_maps_url }}" target="_blank" rel="noopener">{{ site.address }}</a>{% else %}<span>{{ site.address }}</span>{% endif %}</div></li>{% endif %}
+          {% if site.opening_hours %}<li><span class="ic"><i class="bi bi-clock" aria-hidden="true"></i></span><div><small>{% trans "Opening hours" %}</small><span>{{ site.opening_hours }}</span></div></li>{% endif %}
+        </ul>
+        {% if whatsapp_general_url %}<a class="btn btn-whatsapp btn-lg w-100" href="{{ whatsapp_general_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> {% trans "Chat on WhatsApp" %}</a>{% endif %}
+      </div>
+
+      <div class="col-lg-7 order-lg-1">
+        <form class="form-card" method="post" novalidate data-once>
+          {% csrf_token %}
+          <h2 class="h4 mb-4">{% trans "Send us a message" %}</h2>
+          {% include "includes/antispam_fields.html" %}
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">{% include "includes/form_field.html" with field=form.name wrapper_class="mb-0" %}</div>
+            <div class="col-md-6">{% include "includes/form_field.html" with field=form.email wrapper_class="mb-0" %}</div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">{% include "includes/form_field.html" with field=form.phone wrapper_class="mb-0" %}</div>
+            <div class="col-md-6">{% include "includes/form_field.html" with field=form.subject wrapper_class="mb-0" %}</div>
+          </div>
+          {% include "includes/form_field.html" with field=form.message %}
+          {% include "includes/consent_field.html" %}
+          <button type="submit" class="btn btn-primary btn-lg">{% trans "Send message" %} <i class="bi bi-send" aria-hidden="true"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

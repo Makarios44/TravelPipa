@@ -1,0 +1,136 @@
+{% extends "panel/base.html" %}
+{% block title %}{% if experience %}{{ experience.title_pt|default:experience.title_en }}{% else %}Novo passeio{% endif %}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <a class="small fw-semibold" href="{% url 'panel:experiences' %}">← Passeios</a>
+    <h1 class="mt-1">{% if experience %}{{ experience.title_pt|default:experience.title_en }}{% else %}Novo passeio{% endif %}</h1>
+    {% if experience %}<p class="sub">{% if experience.active %}<span class="text-success fw-semibold"><i class="bi bi-circle-fill small"></i> Visível no site</span>{% else %}<span class="fw-semibold"><i class="bi bi-circle small"></i> Desativado (não aparece no site)</span>{% endif %}
+      {% if experience.active %} · <a href="{{ experience.get_absolute_url }}" target="_blank" rel="noopener">Ver no site <i class="bi bi-box-arrow-up-right"></i></a>{% endif %}</p>{% endif %}
+  </div>
+  {% if experience %}<a class="btn btn-outline-secondary" href="#fotos"><i class="bi bi-images"></i> Fotos ({{ photos|length }})</a>{% endif %}
+</div>
+
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="card-p">
+        <h2><i class="bi bi-translate"></i> Textos do passeio</h2>
+        <p class="small muted">O inglês é o idioma principal do site e o título em inglês é obrigatório. Se o português ou o espanhol ficarem vazios, o site mostra o texto em inglês. Nas listas (roteiro, incluído...), escreva <strong>um item por linha</strong>.</p>
+        <ul class="nav nav-tabs mb-3" role="tablist">
+          {% for tab in form.text_tabs %}
+            <li class="nav-item" role="presentation"><button class="nav-link{% if forloop.first %} active{% endif %}" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#tab-{{ tab.code }}">{{ tab.label }}</button></li>
+          {% endfor %}
+        </ul>
+        <div class="tab-content">
+          {% for tab in form.text_tabs %}
+            <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="tab-{{ tab.code }}" role="tabpanel">
+              {% for field in tab.fields %}{% include "panel/_field.html" %}{% endfor %}
+              <details class="mt-2"><summary class="fw-semibold text-secondary">Google (SEO) — opcional</summary>
+                <div class="pt-3">{% for field in tab.seo %}{% include "panel/_field.html" %}{% endfor %}</div></details>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card-p">
+        <h2><i class="bi bi-car-front"></i> Dados do transfer <small class="fw-normal muted">(só para a categoria Transfers)</small></h2>
+        <div class="row g-3">
+          {% for tab in form.text_tabs %}
+            {% for field in tab.transfer %}<div class="col-md-6">{% include "panel/_field.html" with wrapper="mb-0" %}</div>{% endfor %}
+          {% endfor %}
+          <div class="col-md-6">{% include "panel/_field.html" with field=form.transfer_type wrapper="mb-0" %}</div>
+          <div class="col-md-6">{% include "panel/_field.html" with field=form.max_passengers wrapper="mb-0" %}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card-p">
+        <h2><i class="bi bi-toggle-on"></i> Situação</h2>
+        {% include "panel/_field.html" with field=form.active %}
+        {% include "panel/_field.html" with field=form.featured %}
+        {% include "panel/_field.html" with field=form.tide_dependent %}
+        {% include "panel/_field.html" with field=form.cadastur_guide %}
+        {% include "panel/_field.html" with field=form.is_demo %}
+        {% include "panel/_field.html" with field=form.order wrapper="mb-0" %}
+      </div>
+      <div class="card-p">
+        <h2><i class="bi bi-tag"></i> Categoria e endereço</h2>
+        {% include "panel/_field.html" with field=form.category %}
+        {% include "panel/_field.html" with field=form.slug wrapper="mb-0" %}
+      </div>
+      <div class="card-p">
+        <h2><i class="bi bi-cash-coin"></i> Preço</h2>
+        {% include "panel/_field.html" with field=form.price %}
+        <div class="row g-2">
+          <div class="col-6">{% include "panel/_field.html" with field=form.currency %}</div>
+          <div class="col-6">{% include "panel/_field.html" with field=form.price_unit %}</div>
+        </div>
+        {% include "panel/_field.html" with field=form.price_is_starting wrapper="mb-0" %}
+      </div>
+      <div class="card-p">
+        <h2><i class="bi bi-camera-video"></i> Vídeo</h2>
+        {% include "panel/_field.html" with field=form.video %}
+        {% include "panel/_field.html" with field=form.video_poster wrapper="mb-0" %}
+      </div>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    {% if experience %}<a class="btn btn-outline-danger me-auto" href="{% url 'panel:experience_delete' experience.pk %}"><i class="bi bi-trash"></i> Excluir</a>{% endif %}
+    <a class="btn btn-outline-secondary" href="{% url 'panel:experiences' %}">Cancelar</a>
+    <button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> {% if experience %}Salvar alterações{% else %}Criar passeio{% endif %}</button>
+  </div>
+</form>
+
+{# ---------------- Photos ---------------- #}
+<section id="fotos" class="card-p mt-4">
+  <h2><i class="bi bi-images"></i> Fotos</h2>
+  {% if not experience %}
+    <p class="muted mb-0">Crie o passeio primeiro. Depois de salvar, esta área libera o envio das fotos.</p>
+  {% else %}
+    <p class="small muted">A foto marcada como <strong>Capa</strong> aparece nos cartões do site. Arraste as fotos para mudar a ordem (no celular, use as setas). Fotos de até 15 MB, em JPG, PNG ou WEBP; a qualidade original é mantida.</p>
+    <form class="upload-box mb-3" method="post" action="{% url 'panel:photo_upload' experience.pk %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label class="form-label" for="id_photos"><i class="bi bi-cloud-upload"></i> Adicionar fotos (pode escolher várias)</label>
+      <div class="d-flex flex-wrap gap-2">
+        {{ upload_form.photos }}
+        <button class="btn btn-primary" type="submit">Enviar fotos</button>
+      </div>
+      <small class="text-secondary" data-files-for="id_photos"></small>
+    </form>
+
+    {% if photo_forms %}
+      <div class="photo-grid" data-photo-grid data-reorder-url="{% url 'panel:photo_reorder' experience.pk %}">
+        {% for photo, alt_form in photo_forms %}
+          <div class="photo" data-id="{{ photo.pk }}">
+            <img src="{{ photo.image.url }}" alt="{{ photo.alt_pt|default:photo.alt_en }}" loading="lazy">
+            {% if photo.is_cover %}<span class="cover-badge"><i class="bi bi-star-fill"></i> Capa</span>{% endif %}
+            <span class="num">{{ forloop.counter }}</span>
+            <div class="tools">
+              <form method="post" action="{% url 'panel:photo_action' experience.pk photo.pk 'up' %}">{% csrf_token %}<button class="btn btn-light" type="submit" title="Mover para trás" aria-label="Mover para trás" {% if forloop.first %}disabled{% endif %}><i class="bi bi-arrow-left"></i></button></form>
+              <form method="post" action="{% url 'panel:photo_action' experience.pk photo.pk 'down' %}">{% csrf_token %}<button class="btn btn-light" type="submit" title="Mover para frente" aria-label="Mover para frente" {% if forloop.last %}disabled{% endif %}><i class="bi bi-arrow-right"></i></button></form>
+              <form method="post" action="{% url 'panel:photo_action' experience.pk photo.pk 'cover' %}">{% csrf_token %}<button class="btn btn-light" type="submit" title="Usar como capa" aria-label="Usar como capa" {% if photo.is_cover %}disabled{% endif %}><i class="bi bi-star{% if photo.is_cover %}-fill text-warning{% endif %}"></i></button></form>
+              <form method="post" action="{% url 'panel:photo_action' experience.pk photo.pk 'delete' %}">{% csrf_token %}<button class="btn btn-light text-danger" type="submit" title="Excluir foto" aria-label="Excluir foto" data-confirm="Excluir esta foto?"><i class="bi bi-trash"></i></button></form>
+            </div>
+            <details>
+              <summary>Descrição da foto</summary>
+              <form method="post" action="{% url 'panel:photo_action' experience.pk photo.pk 'alt' %}" class="pt-2">
+                {% csrf_token %}
+                {% for field in alt_form %}{% include "panel/_field.html" with wrapper="mb-2" %}{% endfor %}
+                <button class="btn btn-sm btn-primary w-100" type="submit">Salvar descrição</button>
+              </form>
+            </details>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty"><i class="bi bi-image"></i>Nenhuma foto ainda. Envie as primeiras acima.</div>
+    {% endif %}
+  {% endif %}
+</section>
+{% endblock %}

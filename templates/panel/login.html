@@ -1,0 +1,34 @@
+{% load static %}<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Entrar · Gestão TravelPipa</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+<body class="panel panel-login">
+  <main class="login-card">
+    <div class="panel-brand panel-brand-dark"><span class="sun" aria-hidden="true"></span>Travel<span>Pipa</span> <small>Gestão</small></div>
+    <h1 class="h4 mt-4 mb-1">Entrar no painel</h1>
+    <p class="text-secondary small mb-4">Área exclusiva da equipe TravelPipa.</p>
+    {% if messages %}{% for message in messages %}<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} py-2 small">{{ message }}</div>{% endfor %}{% endif %}
+    {% if locked %}
+      <div class="alert alert-warning small"><i class="bi bi-lock me-1"></i>Muitas tentativas. Por segurança, o acesso foi bloqueado por {{ lock_minutes }} minutos.</div>
+    {% elif form.non_field_errors %}
+      <div class="alert alert-danger py-2 small">{{ form.non_field_errors|join:" " }}</div>
+    {% endif %}
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}">
+      {% include "panel/_field.html" with field=form.username %}
+      {% include "panel/_field.html" with field=form.password %}
+      <button class="btn btn-primary w-100 btn-lg mt-2" type="submit">Entrar</button>
+    </form>
+    <p class="small text-secondary mt-4 mb-0"><a href="/">← Voltar ao site</a></p>
+  </main>
+</body>
+</html>

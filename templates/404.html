@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Page not found" %}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex">{% endblock %}
+{% block alternates %}{% endblock %}
+{% block content %}
+<section class="section"><div class="container text-center" style="max-width:640px">
+  <div class="success-mark" style="background:rgba(244,119,69,.12);color:var(--tp-coral)"><i class="bi bi-compass" aria-hidden="true"></i></div>
+  <h1 class="h2">{% trans "This page drifted away with the tide" %}</h1>
+  <p class="lead">{% trans "The page you are looking for does not exist or was moved." %}</p>
+  <div class="d-flex flex-wrap gap-2 justify-content-center mt-4">
+    <a class="btn btn-accent" href="{% url 'core:home' %}">{% trans "Go to the home page" %}</a>
+    <a class="btn btn-outline-ocean" href="{% url 'tours:experience_list' %}">{% trans "See experiences" %}</a>
+  </div>
+</div></section>
+{% endblock %}

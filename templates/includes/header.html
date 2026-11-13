@@ -1,0 +1,59 @@
+{% load i18n travelpipa %}{% with url_name=request.resolver_match.url_name ns=request.resolver_match.namespace %}
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg" aria-label="{% trans 'Main navigation' %}">
+    <div class="container">
+      {% include "includes/brand.html" %}
+
+      <ul class="navbar-nav nav-main mx-auto d-none d-lg-flex">
+        <li class="nav-item"><a class="nav-link{% if ns == 'core' and url_name == 'home' %} active{% endif %}" href="{% url 'core:home' %}"{% if ns == 'core' and url_name == 'home' %} aria-current="page"{% endif %}>{% trans "Home" %}</a></li>
+        <li class="nav-item"><a class="nav-link{% if url_name == 'experience_list' or url_name == 'experience_detail' %} active{% endif %}" href="{% url 'tours:experience_list' %}"{% if url_name == 'experience_list' %} aria-current="page"{% endif %}>{% trans "Experiences" %}</a></li>
+        <li class="nav-item"><a class="nav-link{% if url_name == 'transfers' %} active{% endif %}" href="{% url 'tours:transfers' %}"{% if url_name == 'transfers' %} aria-current="page"{% endif %}>{% trans "Transfers" %}</a></li>
+        <li class="nav-item"><a class="nav-link{% if url_name == 'about' %} active{% endif %}" href="{% url 'core:about' %}"{% if url_name == 'about' %} aria-current="page"{% endif %}>{% trans "About" %}</a></li>
+        <li class="nav-item"><a class="nav-link{% if url_name == 'contact' %} active{% endif %}" href="{% url 'core:contact' %}"{% if url_name == 'contact' %} aria-current="page"{% endif %}>{% trans "Contact" %}</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-1 gap-lg-2">
+        <div class="dropdown">
+          <button class="lang-toggle dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'Choose language' %}">
+            <i class="bi bi-globe2" aria-hidden="true"></i>
+            {% for lang in site_languages %}{% if lang.current %}{{ lang.short }}{% endif %}{% endfor %}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            {% for lang in site_languages %}
+              <li><a class="dropdown-item{% if lang.current %} active{% endif %}" href="{% lang_url lang.code request.get_full_path %}" hreflang="{{ lang.code }}" lang="{{ lang.code }}"{% if lang.current %} aria-current="true"{% endif %}>{{ lang.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <a class="btn btn-accent btn-sm d-none d-md-inline-flex" href="{% url 'bookings:request' %}">{% trans "Request a Booking" %}</a>
+        <button class="menu-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="{% trans 'Open menu' %}">
+          <i class="bi bi-list" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="offcanvas offcanvas-end mobile-menu" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+  <div class="offcanvas-header px-4 pt-4">
+    <span class="visually-hidden" id="mobileMenuLabel">{% trans "Menu" %}</span>
+    {% include "includes/brand.html" %}
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="{% trans 'Close menu' %}"></button>
+  </div>
+  <div class="offcanvas-body px-4 d-flex flex-column">
+    <nav class="nav flex-column" aria-label="{% trans 'Mobile navigation' %}">
+      <a class="nav-link{% if ns == 'core' and url_name == 'home' %} active{% endif %}" href="{% url 'core:home' %}">{% trans "Home" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      <a class="nav-link{% if url_name == 'experience_list' or url_name == 'experience_detail' %} active{% endif %}" href="{% url 'tours:experience_list' %}">{% trans "Experiences" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      <a class="nav-link{% if url_name == 'transfers' %} active{% endif %}" href="{% url 'tours:transfers' %}">{% trans "Transfers" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      <a class="nav-link{% if url_name == 'about' %} active{% endif %}" href="{% url 'core:about' %}">{% trans "About" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      <a class="nav-link{% if url_name == 'contact' %} active{% endif %}" href="{% url 'core:contact' %}">{% trans "Contact" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    </nav>
+    <div class="mt-4 d-grid gap-2">
+      <a class="btn btn-accent btn-lg" href="{% url 'bookings:request' %}">{% trans "Request a Booking" %}</a>
+      {% if whatsapp_general_url %}<a class="btn btn-whatsapp btn-lg" href="{{ whatsapp_general_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> WhatsApp</a>{% endif %}
+    </div>
+    <div class="mobile-lang d-flex gap-2 mt-auto pt-4">
+      {% for lang in site_languages %}<a class="{% if lang.current %}active{% endif %}" href="{% lang_url lang.code request.get_full_path %}" hreflang="{{ lang.code }}" lang="{{ lang.code }}">{{ lang.short }}</a>{% endfor %}
+    </div>
+  </div>
+</div>
+{% endwith %}

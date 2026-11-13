@@ -1,0 +1,1630 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-12 21:33-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: bookings/forms.py:21
+msgid "Experience or transfer"
+msgstr "Experiência ou transfer"
+
+#: bookings/forms.py:22
+msgid "Select an option"
+msgstr "Selecione uma opção"
+
+#: bookings/forms.py:23
+msgid "Please choose an available experience."
+msgstr "Escolha uma experiência disponível."
+
+#: bookings/forms.py:25
+msgid "Preferred date"
+msgstr "Data pretendida"
+
+#: bookings/forms.py:26
+msgid "Number of people"
+msgstr "Número de pessoas"
+
+#: bookings/forms.py:28 core/forms.py:48
+msgid "Full name"
+msgstr "Nome completo"
+
+#: bookings/forms.py:30 core/forms.py:50 templates/core/contact.html:25
+msgid "E-mail"
+msgstr "E-mail"
+
+#: bookings/forms.py:31
+msgid "WhatsApp or phone"
+msgstr "WhatsApp ou telefone"
+
+#: bookings/forms.py:32
+msgid "Include the country code, e.g. +1 555 123 4567."
+msgstr "Inclua o código do país, ex.: +55 84 99999-9999."
+
+#: bookings/forms.py:34
+msgid "Preferred language for our contact"
+msgstr "Idioma preferido para o atendimento"
+
+#: bookings/forms.py:36
+msgid "Additional notes (optional)"
+msgstr "Observações (opcional)"
+
+#: bookings/forms.py:38
+msgid ""
+"Hotel or pickup area, flight number for transfers, children's ages, special "
+"needs…"
+msgstr ""
+"Hotel ou local de embarque, número do voo para transfers, idade das "
+"crianças, necessidades especiais…"
+
+#: bookings/forms.py:57
+msgid "Please choose a date from today onwards."
+msgstr "Escolha uma data a partir de hoje."
+
+#: bookings/forms.py:59
+msgid "Please choose a date within the next two years."
+msgstr "Escolha uma data dentro dos próximos dois anos."
+
+#: bookings/forms.py:66
+msgid "Please enter a valid phone number with country code."
+msgstr "Informe um telefone válido com código do país."
+
+#: bookings/urls.py:9
+msgid "book/"
+msgstr "reservar/"
+
+#: bookings/urls.py:10
+msgid "book/thanks/"
+msgstr "reservar/obrigado/"
+
+#: bookings/views.py:27
+msgid ""
+"Too many requests from this connection. Please try again later or contact us"
+" on WhatsApp."
+msgstr ""
+"Muitas solicitações desta conexão. Tente novamente mais tarde ou fale "
+"conosco pelo WhatsApp."
+
+#: bookings/views.py:51
+#, python-format
+msgid "Hello! I just sent booking request %(ref)s for \"%(title)s\"."
+msgstr ""
+"Olá! Acabei de enviar a solicitação de reserva %(ref)s para \"%(title)s\"."
+
+#: core/antispam.py:25
+msgid ""
+"We could not process your submission. Please wait a few seconds and try "
+"again."
+msgstr ""
+"Não foi possível processar o envio. Aguarde alguns segundos e tente "
+"novamente."
+
+#: core/conditions.py:47
+msgid "Clear sky"
+msgstr "Céu limpo"
+
+#: core/conditions.py:48
+msgid "Fair"
+msgstr "Tempo bom"
+
+#: core/conditions.py:49
+msgid "Partly cloudy"
+msgstr "Parcialmente nublado"
+
+#: core/conditions.py:50
+msgid "Cloudy"
+msgstr "Nublado"
+
+#: core/conditions.py:51
+msgid "Fog"
+msgstr "Neblina"
+
+#: core/conditions.py:52
+msgid "Light showers"
+msgstr "Pancadas leves"
+
+#: core/conditions.py:53
+msgid "Showers"
+msgstr "Pancadas de chuva"
+
+#: core/conditions.py:54
+msgid "Heavy showers"
+msgstr "Pancadas fortes"
+
+#: core/conditions.py:55
+msgid "Light rain"
+msgstr "Chuva fraca"
+
+#: core/conditions.py:56
+msgid "Rain"
+msgstr "Chuva"
+
+#: core/conditions.py:57
+msgid "Heavy rain"
+msgstr "Chuva forte"
+
+#: core/conditions.py:58 core/conditions.py:59 core/conditions.py:60
+#: core/conditions.py:61 core/conditions.py:62 core/conditions.py:63
+msgid "Thunderstorms"
+msgstr "Trovoadas"
+
+#: core/conditions.py:65
+msgid "Variable"
+msgstr "Variável"
+
+#: core/conditions.py:341
+#, python-format
+msgid ""
+"Tide predictions for %(harbor)s (%(institution)s), via Tábua de Maré API. "
+"Times in Pipa may differ by a few minutes."
+msgstr ""
+"Previsão de marés para %(harbor)s (%(institution)s), via Tábua de Maré API. "
+"Em Pipa, os horários podem variar alguns minutos."
+
+#: core/context_processors.py:47
+msgid "Hello! I'd like some information about TravelPipa experiences."
+msgstr "Olá! Gostaria de informações sobre as experiências da TravelPipa."
+
+#: core/forms.py:41
+msgid ""
+"I agree that TravelPipa may use my data to answer this request, as described"
+" in the Privacy Policy."
+msgstr ""
+"Concordo que a TravelPipa use meus dados para responder a esta solicitação, "
+"conforme a Política de Privacidade."
+
+#: core/forms.py:42
+msgid "Please accept the privacy terms so we can answer you."
+msgstr "Aceite os termos de privacidade para que possamos responder."
+
+#: core/forms.py:51
+msgid "WhatsApp or phone (optional)"
+msgstr "WhatsApp ou telefone (opcional)"
+
+#: core/forms.py:53
+msgid "Subject"
+msgstr "Assunto"
+
+#: core/forms.py:54
+msgid "Message"
+msgstr "Mensagem"
+
+#: core/templatetags/travelpipa.py:31 tours/models.py:83
+msgid "per person"
+msgstr "por pessoa"
+
+#: core/templatetags/travelpipa.py:32 tours/models.py:84
+msgid "per group"
+msgstr "por grupo"
+
+#: core/templatetags/travelpipa.py:33 tours/models.py:85
+msgid "per vehicle"
+msgstr "por veículo"
+
+#: core/urls.py:10
+msgid "about/"
+msgstr "sobre/"
+
+#: core/urls.py:11
+msgid "contact/"
+msgstr "contato/"
+
+#: core/urls.py:12
+msgid "privacy-policy/"
+msgstr "politica-de-privacidade/"
+
+#: core/urls.py:13
+msgid "terms-and-conditions/"
+msgstr "termos-e-condicoes/"
+
+#: core/urls.py:14
+msgid "tides-and-weather/"
+msgstr "mare-e-tempo/"
+
+#: core/views.py:50
+msgid ""
+"Too many messages from this connection. Please try again later or use "
+"WhatsApp."
+msgstr ""
+"Muitas mensagens desta conexão. Tente novamente mais tarde ou use o "
+"WhatsApp."
+
+#: core/views.py:54
+msgid "Thank you! Your message was sent. We will reply as soon as possible."
+msgstr "Obrigado! Sua mensagem foi enviada. Responderemos o quanto antes."
+
+#: templates/404.html:3
+msgid "Page not found"
+msgstr "Página não encontrada"
+
+#: templates/404.html:9
+msgid "This page drifted away with the tide"
+msgstr "Esta página foi levada pela maré"
+
+#: templates/404.html:10
+msgid "The page you are looking for does not exist or was moved."
+msgstr "A página que você procura não existe ou foi movida."
+
+#: templates/404.html:12
+msgid "Go to the home page"
+msgstr "Ir para a página inicial"
+
+#: templates/404.html:13
+msgid "See experiences"
+msgstr "Ver experiências"
+
+#: templates/base.html:6
+msgid "Pipa Tours, Experiences & Transfers"
+msgstr "Passeios, experiências e transfers em Pipa"
+
+#: templates/base.html:7
+msgid ""
+"Curated tours, local experiences and seamless transfers in Pipa, Brazil. "
+"Boat tours, buggy rides, nature trips and Natal airport transfers with "
+"personal assistance."
+msgstr ""
+"Passeios selecionados, experiências locais e transfers sem complicação em "
+"Pipa, RN. Passeios de barco, buggy, natureza e transfer do aeroporto de "
+"Natal com atendimento personalizado."
+
+#: templates/base.html:20
+msgid "Discover Pipa. Experience More."
+msgstr "Descubra Pipa. Viva mais."
+
+#: templates/base.html:21 templates/core/home.html:24
+#: templates/includes/footer.html:6
+msgid ""
+"Curated tours, local experiences and seamless transfers in Pipa, Brazil."
+msgstr ""
+"Passeios selecionados, experiências locais e transfers sem complicação em "
+"Pipa, Brasil."
+
+#: templates/base.html:38
+msgid "Skip to content"
+msgstr "Pular para o conteúdo"
+
+#: templates/base.html:60
+msgid "Chat with us on WhatsApp"
+msgstr "Fale conosco pelo WhatsApp"
+
+#: templates/bookings/booking_form.html:4
+#: templates/bookings/booking_form.html:13
+#: templates/bookings/booking_form.html:16 templates/core/home.html:223
+#: templates/includes/footer.html:21 templates/includes/header.html:27
+#: templates/includes/header.html:51
+#: templates/tours/experience_detail.html:141
+#: templates/tours/experience_detail.html:177
+#: templates/tours/transfers.html:44
+msgid "Request a Booking"
+msgstr "Solicitar reserva"
+
+#: templates/bookings/booking_form.html:5
+msgid ""
+"Send a booking request for tours and transfers in Pipa, Brazil. No payment "
+"online — we reply personally to confirm availability."
+msgstr ""
+"Envie uma solicitação de reserva para passeios e transfers em Pipa. Sem "
+"pagamento online — respondemos pessoalmente para confirmar a "
+"disponibilidade."
+
+#: templates/bookings/booking_form.html:11 templates/core/about.html:9
+#: templates/core/contact.html:9 templates/core/legal.html:9
+#: templates/core/tides_weather.html:11
+#: templates/tours/experience_detail.html:18
+#: templates/tours/experience_list.html:11 templates/tours/transfers.html:10
+msgid "Breadcrumb"
+msgstr "Navegação estrutural"
+
+#: templates/bookings/booking_form.html:12 templates/core/about.html:10
+#: templates/core/contact.html:10 templates/core/legal.html:10
+#: templates/core/tides_weather.html:12 templates/includes/brand.html:1
+#: templates/includes/header.html:8 templates/includes/header.html:44
+#: templates/tours/experience_list.html:12 templates/tours/transfers.html:11
+#: tours/views.py:43
+msgid "Home"
+msgstr "Início"
+
+#: templates/bookings/booking_form.html:15
+msgid "Booking request"
+msgstr "Solicitação de reserva"
+
+#: templates/bookings/booking_form.html:17
+msgid ""
+"Tell us what you would like to do and when. We reply personally — usually by"
+" WhatsApp or e-mail — to confirm availability, details and price."
+msgstr ""
+"Conte o que você gostaria de fazer e quando. Respondemos pessoalmente — "
+"normalmente por WhatsApp ou e-mail — para confirmar disponibilidade, "
+"detalhes e preço."
+
+#: templates/bookings/booking_form.html:31
+msgid "This is a request, not a confirmed booking."
+msgstr "Isto é uma solicitação, não uma reserva confirmada."
+
+#: templates/bookings/booking_form.html:31
+msgid ""
+"Your booking is only confirmed after we contact you and agree on the "
+"details. No payment is taken on this website."
+msgstr ""
+"Sua reserva só é confirmada depois que entrarmos em contato e combinarmos os"
+" detalhes. Nenhum pagamento é feito neste site."
+
+#: templates/bookings/booking_form.html:42
+msgid "Your trip"
+msgstr "Sua viagem"
+
+#: templates/bookings/booking_form.html:51
+msgid "Your details"
+msgstr "Seus dados"
+
+#: templates/bookings/booking_form.html:64
+msgid "Send booking request"
+msgstr "Enviar solicitação de reserva"
+
+#: templates/bookings/booking_form.html:65
+msgid "Required fields"
+msgstr "Campos obrigatórios"
+
+#: templates/bookings/booking_form.html:73
+msgid "How it works"
+msgstr "Como funciona"
+
+#: templates/bookings/booking_form.html:75
+msgid "Send your request with the date and number of people."
+msgstr "Envie sua solicitação com a data e o número de pessoas."
+
+#: templates/bookings/booking_form.html:76
+msgid "We check availability with the operator and contact you."
+msgstr "Verificamos a disponibilidade com o operador e entramos em contato."
+
+#: templates/bookings/booking_form.html:77
+msgid "Your booking is confirmed only after we agree on all details."
+msgstr "A reserva só é confirmada depois de combinarmos todos os detalhes."
+
+#: templates/bookings/booking_form.html:82
+msgid "Prefer to chat?"
+msgstr "Prefere conversar?"
+
+#: templates/bookings/booking_form.html:83
+msgid "Send us a message on WhatsApp and we will help you choose."
+msgstr "Mande uma mensagem pelo WhatsApp e ajudamos você a escolher."
+
+#: templates/bookings/booking_thanks.html:3
+msgid "Request received"
+msgstr "Solicitação recebida"
+
+#: templates/bookings/booking_thanks.html:12
+msgid "Thank you! Your request was received."
+msgstr "Obrigado! Recebemos sua solicitação."
+
+#: templates/bookings/booking_thanks.html:13
+#, python-format
+msgid "We received your request for <strong>%(title)s</strong>."
+msgstr "Recebemos sua solicitação para <strong>%(title)s</strong>."
+
+#: templates/bookings/booking_thanks.html:14
+msgid "Your request code"
+msgstr "Código da sua solicitação"
+
+#: templates/bookings/booking_thanks.html:18
+msgid "Your booking is not confirmed yet."
+msgstr "Sua reserva ainda não está confirmada."
+
+#: templates/bookings/booking_thanks.html:18
+msgid ""
+"We will contact you personally to confirm availability, details and price. "
+"Please keep your request code for reference."
+msgstr ""
+"Entraremos em contato pessoalmente para confirmar disponibilidade, detalhes "
+"e preço. Guarde o código da solicitação para referência."
+
+#: templates/bookings/booking_thanks.html:21
+msgid "Send a WhatsApp message"
+msgstr "Enviar mensagem no WhatsApp"
+
+#: templates/bookings/booking_thanks.html:22
+msgid "Back to experiences"
+msgstr "Voltar para experiências"
+
+#: templates/core/about.html:3
+msgid "About TravelPipa — Local Boutique Travel Agency in Pipa"
+msgstr "Sobre a TravelPipa — agência boutique local em Pipa"
+
+#: templates/core/about.html:4
+msgid ""
+"TravelPipa is a boutique travel agency in Praia da Pipa, Brazil, offering "
+"selected tours, local experiences and transfers with personal assistance."
+msgstr ""
+"A TravelPipa é uma agência boutique de turismo na Praia da Pipa (RN), com "
+"passeios selecionados, experiências locais e transfers com atendimento "
+"personalizado."
+
+#: templates/core/about.html:11 templates/includes/footer.html:29
+#: templates/includes/header.html:11 templates/includes/header.html:47
+msgid "About"
+msgstr "Sobre"
+
+#: templates/core/about.html:13
+msgid "About us"
+msgstr "Quem somos"
+
+#: templates/core/about.html:14
+msgid "A boutique agency for travellers who want to experience Pipa well"
+msgstr "Uma agência boutique para quem quer viver Pipa de verdade"
+
+#: templates/core/about.html:27
+msgid ""
+"TravelPipa helps visitors discover Praia da Pipa and the surrounding region "
+"through a small selection of tours, local experiences and transfers."
+msgstr ""
+"A TravelPipa ajuda visitantes a descobrir a Praia da Pipa e a região por "
+"meio de uma pequena seleção de passeios, experiências locais e transfers."
+
+#: templates/core/about.html:28
+msgid ""
+"Instead of offering everything, we focus on a few experiences we know well "
+"and that we are comfortable recommending. Each one is presented with clear "
+"information about what is included, what to bring and how cancellations "
+"work."
+msgstr ""
+"Em vez de oferecer tudo, focamos em poucas experiências que conhecemos bem e"
+" recomendamos com tranquilidade. Cada uma é apresentada com informações "
+"claras sobre o que está incluído, o que levar e como funcionam os "
+"cancelamentos."
+
+#: templates/core/about.html:29
+msgid ""
+"Before and during your trip, you talk to a person — in English, Portuguese "
+"or Spanish — who helps you choose, adjusts plans to the weather and tides, "
+"and keeps you informed."
+msgstr ""
+"Antes e durante a viagem, você fala com uma pessoa — em português, inglês ou"
+" espanhol — que ajuda na escolha, adapta os planos ao clima e às marés e "
+"mantém você informado."
+
+#: templates/core/about.html:35
+msgid "Our commitment"
+msgstr "Nosso compromisso"
+
+#: templates/core/about.html:37
+msgid "Recommend only experiences we know and trust."
+msgstr "Recomendar apenas experiências que conhecemos e em que confiamos."
+
+#: templates/core/about.html:38
+msgid "Give clear information before you book."
+msgstr "Dar informações claras antes da reserva."
+
+#: templates/core/about.html:39
+msgid "Answer personally, in your language."
+msgstr "Atender pessoalmente, no seu idioma."
+
+#: templates/core/about.html:40
+msgid "Respect your personal data."
+msgstr "Respeitar seus dados pessoais."
+
+#: templates/core/about.html:44 templates/core/home.html:26
+msgid "Explore Experiences"
+msgstr "Conheça as experiências"
+
+#: templates/core/about.html:45
+msgid "Contact us"
+msgstr "Fale conosco"
+
+#: templates/core/contact.html:3
+msgid "Contact TravelPipa"
+msgstr "Contato — TravelPipa"
+
+#: templates/core/contact.html:4
+msgid ""
+"Contact TravelPipa in Praia da Pipa, Brazil, by WhatsApp, e-mail or "
+"Instagram. We answer in English, Portuguese and Spanish."
+msgstr ""
+"Fale com a TravelPipa, na Praia da Pipa (RN), por WhatsApp, e-mail ou "
+"Instagram. Atendemos em português, inglês e espanhol."
+
+#: templates/core/contact.html:11 templates/core/contact.html:13
+#: templates/core/legal_terms_default.html:10
+#: templates/includes/footer.html:30 templates/includes/footer.html:37
+#: templates/includes/header.html:12 templates/includes/header.html:48
+msgid "Contact"
+msgstr "Contato"
+
+#: templates/core/contact.html:14
+msgid "Let's plan your days in Pipa"
+msgstr "Vamos planejar seus dias em Pipa"
+
+#: templates/core/contact.html:15
+msgid ""
+"Questions about an experience, a transfer or your itinerary? Write to us — "
+"we answer in English, Portuguese and Spanish."
+msgstr ""
+"Dúvidas sobre uma experiência, um transfer ou seu roteiro? Escreva para nós "
+"— atendemos em português, inglês e espanhol."
+
+#: templates/core/contact.html:27
+msgid "Phone"
+msgstr "Telefone"
+
+#: templates/core/contact.html:28
+msgid "Address"
+msgstr "Endereço"
+
+#: templates/core/contact.html:29
+msgid "Opening hours"
+msgstr "Horário de atendimento"
+
+#: templates/core/contact.html:31
+msgid "Chat on WhatsApp"
+msgstr "Conversar no WhatsApp"
+
+#: templates/core/contact.html:37 templates/includes/footer.html:44
+msgid "Send us a message"
+msgstr "Envie uma mensagem"
+
+#: templates/core/contact.html:49
+msgid "Send message"
+msgstr "Enviar mensagem"
+
+#: templates/core/home.html:4
+msgid "Pipa Tours, Boat Trips & Natal Airport Transfers"
+msgstr "Passeios em Pipa, passeios de barco e transfer do aeroporto de Natal"
+
+#: templates/core/home.html:5
+msgid ""
+"Things to do in Pipa, Brazil: curated boat tours, buggy adventures, nature "
+"experiences and Natal airport transfers to Pipa, with personal assistance "
+"from a local boutique agency."
+msgstr ""
+"O que fazer em Pipa: passeios de barco selecionados, buggy, experiências na "
+"natureza e transfer do aeroporto de Natal para Pipa, com atendimento "
+"personalizado de uma agência boutique local."
+
+#: templates/core/home.html:15
+msgid "Panoramic view of Praia da Pipa, Brazil"
+msgstr "Vista panorâmica da Praia da Pipa, RN"
+
+#: templates/core/home.html:20
+msgid "Demo image — replace in the admin panel"
+msgstr "Imagem de demonstração — substitua no painel"
+
+#: templates/core/home.html:22 templates/includes/footer.html:54
+msgid "Brazil"
+msgstr "Brasil"
+
+#: templates/core/home.html:23
+msgid "Discover Pipa."
+msgstr "Descubra Pipa."
+
+#: templates/core/home.html:23
+msgid "Experience More."
+msgstr "Viva mais."
+
+#: templates/core/home.html:27
+msgid "Airport transfers"
+msgstr "Transfers do aeroporto"
+
+#: templates/core/home.html:30
+msgid "Local team in Pipa"
+msgstr "Equipe local em Pipa"
+
+#: templates/core/home.html:32
+msgid "Personal assistance before and during your trip"
+msgstr "Atendimento personalizado antes e durante a viagem"
+
+#: templates/core/home.html:38 templates/core/tides_weather.html:16
+msgid "Tides and weather in Pipa"
+msgstr "Maré e tempo em Pipa"
+
+#: templates/core/home.html:41 templates/core/tides_weather.html:13
+#: templates/includes/conditions_compact.html:11
+#: templates/includes/footer.html:22
+msgid "Tides & weather"
+msgstr "Maré e tempo"
+
+#: templates/core/home.html:51
+msgid "Selected experiences"
+msgstr "Experiências selecionadas"
+
+#: templates/core/home.html:52
+msgid "A few things worth doing in Pipa"
+msgstr "O que vale a pena fazer em Pipa"
+
+#: templates/core/home.html:53
+msgid ""
+"A short, carefully chosen list instead of an endless catalogue — each "
+"experience is one we know and recommend."
+msgstr ""
+"Uma lista curta e escolhida com cuidado, em vez de um catálogo sem fim — "
+"cada experiência é uma que conhecemos e recomendamos."
+
+#: templates/core/home.html:55
+msgid "See all experiences"
+msgstr "Ver todas as experiências"
+
+#: templates/core/home.html:67
+msgid "Our experiences will be published here soon."
+msgstr "Nossas experiências serão publicadas aqui em breve."
+
+#: templates/core/home.html:83 templates/includes/footer.html:20
+#: templates/includes/header.html:10 templates/includes/header.html:46
+#: templates/tours/transfers.html:12 templates/tours/transfers.html:14
+#: tours/views.py:42
+msgid "Transfers"
+msgstr "Transfers"
+
+#: templates/core/home.html:84
+msgid "Natal Airport to Pipa, without the guesswork"
+msgstr "Do aeroporto de Natal a Pipa, sem complicação"
+
+#: templates/core/home.html:85
+msgid ""
+"Go from Natal airport straight to your accommodation in Pipa. Tell us your "
+"flight details and we organise the transfer with you."
+msgstr ""
+"Vá do aeroporto de Natal direto para sua hospedagem em Pipa. Informe os "
+"dados do voo e organizamos o transfer com você."
+
+#: templates/core/home.html:87 templates/tours/experience_detail.html:61
+#: templates/tours/transfers.html:33 templates/tours/transfers.html:61
+msgctxt "route"
+msgid "From"
+msgstr "De"
+
+#: templates/core/home.html:87
+msgid "Natal Airport (NAT)"
+msgstr "Aeroporto de Natal (NAT)"
+
+#: templates/core/home.html:89 templates/tours/experience_detail.html:63
+#: templates/tours/transfers.html:35 templates/tours/transfers.html:63
+msgctxt "route"
+msgid "To"
+msgstr "Para"
+
+#: templates/core/home.html:93
+#, python-format
+msgid "up to %(n)s passenger"
+msgid_plural "up to %(n)s passengers"
+msgstr[0] "até %(n)s passageiro"
+msgstr[1] "até %(n)s passageiros"
+
+#: templates/core/home.html:95 templates/tours/transfers.html:41
+msgid "Registered with DER/RN"
+msgstr "Cadastrados no DER/RN"
+
+#: templates/core/home.html:96
+msgid "7-seat cars and large groups"
+msgstr "Carros de 7 lugares e grupos grandes"
+
+#: templates/core/home.html:99 templates/tours/transfers.html:44
+#: templates/tours/transfers.html:71 templates/tours/transfers.html:82
+msgid "Request a quote"
+msgstr "Solicitar orçamento"
+
+#: templates/core/home.html:100
+msgid "All transfers"
+msgstr "Todos os transfers"
+
+#: templates/core/home.html:111
+msgid "Why TravelPipa?"
+msgstr "Por que a TravelPipa?"
+
+#: templates/core/home.html:112
+msgid "A small agency that knows Pipa closely"
+msgstr "Uma agência pequena que conhece Pipa de perto"
+
+#: templates/core/home.html:119
+msgid "Local knowledge"
+msgstr "Conhecimento local"
+
+#: templates/core/home.html:120
+msgid ""
+"We are based in Pipa and suggest what fits your dates, the tides and the "
+"kind of trip you want."
+msgstr ""
+"Estamos em Pipa e sugerimos o que combina com suas datas, as marés e o tipo "
+"de viagem que você quer."
+
+#: templates/core/home.html:127
+msgid "Personal assistance"
+msgstr "Atendimento personalizado"
+
+#: templates/core/home.html:128
+msgid ""
+"A real person answers you in English, Portuguese or Spanish — before you "
+"book and during your stay."
+msgstr ""
+"Uma pessoa de verdade responde em português, inglês ou espanhol — antes da "
+"reserva e durante a estadia."
+
+#: templates/core/home.html:135
+msgid "Carefully selected experiences"
+msgstr "Experiências escolhidas com cuidado"
+
+#: templates/core/home.html:136
+msgid ""
+"Fewer options, chosen with care. We work with operators we know and only "
+"list experiences we would recommend to friends."
+msgstr ""
+"Menos opções, escolhidas com cuidado. Trabalhamos com operadores que "
+"conhecemos e só divulgamos experiências que recomendaríamos a amigos."
+
+#: templates/core/home.html:143
+msgid "Clear booking information"
+msgstr "Informações claras de reserva"
+
+#: templates/core/home.html:144
+msgid ""
+"What is included, what is not, meeting points and cancellation rules — "
+"written clearly before you decide."
+msgstr ""
+"O que está incluído, o que não está, pontos de encontro e regras de "
+"cancelamento — tudo claro antes de você decidir."
+
+#: templates/core/home.html:158
+#| msgid "Cliffs and beach in Praia da Pipa"
+msgid "Low tide at sunset in Praia da Pipa"
+msgstr "Maré baixa ao pôr do sol na Praia da Pipa"
+
+#: templates/core/home.html:161
+msgid "Demo image"
+msgstr "Imagem de demonstração"
+
+#: templates/core/home.html:167
+msgid "The region"
+msgstr "A região"
+
+#: templates/core/home.html:168
+msgid "Cliffs, warm sea and a relaxed village"
+msgstr "Falésias, mar morno e uma vila tranquila"
+
+#: templates/core/home.html:173
+msgid ""
+"Praia da Pipa is a coastal village in Tibau do Sul, on the southern coast of"
+" Rio Grande do Norte, around 80 km from Natal. It is known for its coloured "
+"cliffs, natural pools at low tide and beaches backed by protected Atlantic "
+"Forest."
+msgstr ""
+"A Praia da Pipa é uma vila litorânea de Tibau do Sul, no litoral sul do Rio "
+"Grande do Norte, a cerca de 80 km de Natal. É conhecida pelas falésias "
+"coloridas, pelas piscinas naturais na maré baixa e pelas praias cercadas de "
+"Mata Atlântica preservada."
+
+#: templates/core/home.html:174
+msgid ""
+"Days here follow the rhythm of the sea: beaches and bays in the morning, "
+"sunset over the lagoon, and dinner in the village centre. We help you plan "
+"around the tides so you see each place at its best."
+msgstr ""
+"Aqui os dias seguem o ritmo do mar: praias e baías pela manhã, pôr do sol na"
+" lagoa e jantar no centrinho da vila. Ajudamos você a planejar de acordo com"
+" as marés para ver cada lugar no seu melhor momento."
+
+#: templates/core/home.html:177
+msgid "About TravelPipa"
+msgstr "Sobre a TravelPipa"
+
+#: templates/core/home.html:188 templates/tours/experience_detail.html:124
+msgid "Guest reviews"
+msgstr "Avaliações de clientes"
+
+#: templates/core/home.html:189
+msgid "What our guests say"
+msgstr "O que nossos clientes dizem"
+
+#: templates/core/home.html:197
+#, python-format
+msgid "%(r)s out of 5"
+msgstr "%(r)s de 5"
+
+#: templates/core/home.html:219
+msgid "Tell us your dates. We'll plan the rest with you."
+msgstr "Conte suas datas. Planejamos o resto com você."
+
+#: templates/core/home.html:220
+msgid ""
+"Send a booking request with no commitment. We reply personally to confirm "
+"availability, details and price."
+msgstr ""
+"Envie uma solicitação de reserva sem compromisso. Respondemos pessoalmente "
+"para confirmar disponibilidade, detalhes e preço."
+
+#: templates/core/legal.html:3 templates/core/legal.html:11
+#: templates/core/legal.html:13 templates/includes/footer.html:31
+msgid "Privacy Policy"
+msgstr "Política de Privacidade"
+
+#: templates/core/legal.html:3 templates/core/legal.html:11
+#: templates/core/legal.html:13 templates/includes/footer.html:32
+msgid "Terms & Conditions"
+msgstr "Termos e Condições"
+
+#: templates/core/legal.html:4
+msgid ""
+"How TravelPipa collects, uses and protects your personal data, in line with "
+"Brazil's LGPD."
+msgstr ""
+"Como a TravelPipa coleta, usa e protege seus dados pessoais, de acordo com a"
+" LGPD."
+
+#: templates/core/legal.html:4
+msgid ""
+"Terms and conditions for booking requests, tours and transfers with "
+"TravelPipa."
+msgstr ""
+"Termos e condições para solicitações de reserva, passeios e transfers com a "
+"TravelPipa."
+
+#: templates/core/legal_privacy_default.html:2
+#, python-format
+msgid ""
+"This policy explains how %(name)s handles the personal data you send through"
+" this website, in accordance with Brazil's General Data Protection Law (LGPD"
+" — Law 13.709/2018)."
+msgstr ""
+"Esta política explica como a %(name)s trata os dados pessoais enviados por "
+"este site, de acordo com a Lei Geral de Proteção de Dados (LGPD — Lei "
+"13.709/2018)."
+
+#: templates/core/legal_privacy_default.html:3
+msgid "Data we collect"
+msgstr "Dados que coletamos"
+
+#: templates/core/legal_privacy_default.html:4
+msgid ""
+"Only the data you type into our booking and contact forms: name, e-mail, "
+"phone or WhatsApp number, preferred language, the experience and date you "
+"are interested in, number of people and any notes you write."
+msgstr ""
+"Apenas os dados que você digita nos formulários de reserva e contato: nome, "
+"e-mail, telefone ou WhatsApp, idioma preferido, a experiência e a data de "
+"interesse, número de pessoas e as observações que escrever."
+
+#: templates/core/legal_privacy_default.html:5
+msgid "Why we use it"
+msgstr "Para que usamos"
+
+#: templates/core/legal_privacy_default.html:6
+msgid ""
+"To answer your request, check availability, organise the experience or "
+"transfer you asked for and keep a record of our conversation. We do not sell"
+" your data and do not use it for advertising without your permission."
+msgstr ""
+"Para responder à sua solicitação, verificar disponibilidade, organizar a "
+"experiência ou o transfer pedido e manter o registro do atendimento. Não "
+"vendemos seus dados e não os usamos para publicidade sem sua autorização."
+
+#: templates/core/legal_privacy_default.html:7
+msgid "Legal basis"
+msgstr "Base legal"
+
+#: templates/core/legal_privacy_default.html:8
+msgid ""
+"Your consent, given when you submit a form, and the steps needed before a "
+"possible contract at your request (LGPD, art. 7, I and V)."
+msgstr ""
+"Seu consentimento, dado ao enviar um formulário, e os procedimentos "
+"preliminares a um possível contrato, a seu pedido (LGPD, art. 7º, I e V)."
+
+#: templates/core/legal_privacy_default.html:9
+msgid "Sharing"
+msgstr "Compartilhamento"
+
+#: templates/core/legal_privacy_default.html:10
+msgid ""
+"When strictly necessary to provide the service you request, we share the "
+"minimum data required (for example, name and number of people) with the "
+"local operator responsible for the tour or transfer."
+msgstr ""
+"Quando estritamente necessário para prestar o serviço solicitado, "
+"compartilhamos o mínimo de dados (por exemplo, nome e número de pessoas) com"
+" o operador local responsável pelo passeio ou transfer."
+
+#: templates/core/legal_privacy_default.html:11
+msgid "Storage and security"
+msgstr "Armazenamento e segurança"
+
+#: templates/core/legal_privacy_default.html:12
+msgid ""
+"Data is stored on secure servers with restricted access for our team. We "
+"keep it only for as long as needed to answer you, provide the service and "
+"meet legal obligations."
+msgstr ""
+"Os dados ficam em servidores seguros, com acesso restrito à nossa equipe. "
+"Mantemos as informações apenas pelo tempo necessário para atender você, "
+"prestar o serviço e cumprir obrigações legais."
+
+#: templates/core/legal_privacy_default.html:13
+msgid "Cookies"
+msgstr "Cookies"
+
+#: templates/core/legal_privacy_default.html:14
+msgid ""
+"This website uses only essential cookies: one to remember your language and "
+"the security cookies needed for forms to work. We do not use advertising "
+"cookies."
+msgstr ""
+"Este site usa apenas cookies essenciais: um para lembrar seu idioma e os "
+"cookies de segurança necessários para os formulários funcionarem. Não usamos"
+" cookies de publicidade."
+
+#: templates/core/legal_privacy_default.html:15
+msgid "Your rights"
+msgstr "Seus direitos"
+
+#: templates/core/legal_privacy_default.html:16
+msgid ""
+"You may ask to access, correct or delete your data, or withdraw your "
+"consent, at any time."
+msgstr ""
+"Você pode pedir acesso, correção ou exclusão dos seus dados, ou revogar o "
+"consentimento, a qualquer momento."
+
+#: templates/core/legal_privacy_default.html:16
+#, python-format
+msgid "Write to <a href=\"mailto:%(email)s\">%(email)s</a>."
+msgstr "Escreva para <a href=\"mailto:%(email)s\">%(email)s</a>."
+
+#: templates/core/legal_privacy_default.html:16
+msgid "Use the contact page to send your request."
+msgstr "Use a página de contato para enviar seu pedido."
+
+#: templates/core/legal_terms_default.html:2
+msgid "Booking requests"
+msgstr "Solicitações de reserva"
+
+#: templates/core/legal_terms_default.html:3
+msgid ""
+"Forms on this website send a booking request. A request is not a confirmed "
+"booking. Your booking is confirmed only after our team contacts you and "
+"agrees on date, details, price and payment terms."
+msgstr ""
+"Os formulários deste site enviam uma solicitação de reserva. A solicitação "
+"não é uma reserva confirmada. A reserva só é confirmada depois que nossa "
+"equipe entra em contato e combina data, detalhes, preço e forma de "
+"pagamento."
+
+#: templates/core/legal_terms_default.html:4
+msgid "Prices and payment"
+msgstr "Preços e pagamento"
+
+#: templates/core/legal_terms_default.html:5
+msgid ""
+"Prices shown are informative and may vary with the date, group size and "
+"availability. The final price is the one confirmed by our team. No payment "
+"is processed on this website."
+msgstr ""
+"Os preços exibidos são informativos e podem variar conforme a data, o "
+"tamanho do grupo e a disponibilidade. O valor final é o confirmado pela "
+"nossa equipe. Nenhum pagamento é processado neste site."
+
+#: templates/core/legal_terms_default.html:6
+msgid "Experiences and operators"
+msgstr "Experiências e operadores"
+
+#: templates/core/legal_terms_default.html:7
+msgid ""
+"Tours and transfers may be carried out by local partner operators selected "
+"by us. Itineraries may change because of weather, tides or sea conditions, "
+"always with your safety in mind."
+msgstr ""
+"Passeios e transfers podem ser realizados por operadores locais parceiros "
+"selecionados por nós. Os roteiros podem mudar por causa do clima, das marés "
+"ou das condições do mar, sempre pensando na sua segurança."
+
+#: templates/core/legal_terms_default.html:8
+msgid "Cancellations"
+msgstr "Cancelamentos"
+
+#: templates/core/legal_terms_default.html:9
+msgid ""
+"Cancellation conditions are shown on each experience page and confirmed "
+"together with your booking."
+msgstr ""
+"As condições de cancelamento aparecem na página de cada experiência e são "
+"confirmadas junto com a reserva."
+
+#: templates/core/legal_terms_default.html:11
+msgid "For any question about these terms, please use our contact page."
+msgstr "Para dúvidas sobre estes termos, use nossa página de contato."
+
+#: templates/core/tides_weather.html:4
+msgid "Tide Table & Weather in Pipa Today"
+msgstr "Tábua de marés e previsão do tempo em Pipa hoje"
+
+#: templates/core/tides_weather.html:5
+msgid ""
+"Tide times for Praia da Pipa for the next 7 days, today's weather, forecast,"
+" sunrise and sunset. Plan the natural pools at low tide and the best sunset."
+msgstr ""
+"Tábua de marés da Praia da Pipa para os próximos 7 dias, tempo agora, "
+"previsão, nascer e pôr do sol. Planeje as piscinas naturais na maré baixa e "
+"o melhor pôr do sol."
+
+#: templates/core/tides_weather.html:15
+msgid "Pipa today"
+msgstr "Pipa hoje"
+
+#: templates/core/tides_weather.html:17
+msgid ""
+"In Pipa, the tide decides a lot: natural pools appear at low tide and some "
+"beaches are only reachable when the sea goes out. Check the conditions "
+"before planning your day."
+msgstr ""
+"Em Pipa, a maré decide muita coisa: as piscinas naturais aparecem na maré "
+"baixa e algumas praias só têm acesso quando o mar recua. Confira as "
+"condições antes de planejar o seu dia."
+
+#: templates/core/tides_weather.html:27
+msgid "Weather now"
+msgstr "Tempo agora"
+
+#: templates/core/tides_weather.html:37
+#, python-format
+msgid "Wind %(w)s km/h"
+msgstr "Vento %(w)s km/h"
+
+#: templates/core/tides_weather.html:38
+#, python-format
+msgid "Humidity %(h)s%%"
+msgstr "Umidade %(h)s%%"
+
+#: templates/core/tides_weather.html:41
+msgid "The weather forecast is temporarily unavailable."
+msgstr "A previsão do tempo está temporariamente indisponível."
+
+#: templates/core/tides_weather.html:47
+msgid "Sun"
+msgstr "Sol"
+
+#: templates/core/tides_weather.html:49
+msgid "Sunrise"
+msgstr "Nascer do sol"
+
+#: templates/core/tides_weather.html:50
+#: templates/includes/conditions_compact.html:6
+msgid "Sunset"
+msgstr "Pôr do sol"
+
+#: templates/core/tides_weather.html:52
+msgid ""
+"Sunsets in Pipa are early all year round — plan to arrive at the viewpoint a"
+" little before."
+msgstr ""
+"Em Pipa o sol se põe cedo o ano todo: chegue ao mirante um pouco antes."
+
+#: templates/core/tides_weather.html:57
+#: templates/includes/conditions_compact.html:9
+msgid "Next low tide"
+msgstr "Próxima maré baixa"
+
+#: templates/core/tides_weather.html:61
+msgid ""
+"Natural pools are best from about one hour before to one hour after low "
+"tide."
+msgstr ""
+"As piscinas naturais ficam melhores de cerca de uma hora antes até uma hora "
+"depois da maré baixa."
+
+#: templates/core/tides_weather.html:63 templates/core/tides_weather.html:114
+msgid "The tide table is temporarily unavailable."
+msgstr "A tábua de marés está temporariamente indisponível."
+
+#: templates/core/tides_weather.html:65
+msgid ""
+"Check the official tide table published by the Brazilian Navy (Natal port)."
+msgstr ""
+"Consulte a tábua de marés oficial da Marinha do Brasil (porto de Natal)."
+
+#: templates/core/tides_weather.html:66
+msgid "Official tide tables"
+msgstr "Tábuas de marés oficiais"
+
+#: templates/core/tides_weather.html:74
+msgid "Weather forecast"
+msgstr "Previsão do tempo"
+
+#: templates/core/tides_weather.html:78 templates/core/tides_weather.html:96
+msgid "Today"
+msgstr "Hoje"
+
+#: templates/core/tides_weather.html:90
+msgid "Tide table for Pipa — next 7 days"
+msgstr "Tábua de marés de Pipa — próximos 7 dias"
+
+#: templates/core/tides_weather.html:102
+msgid "Low tide"
+msgstr "Maré baixa"
+
+#: templates/core/tides_weather.html:102
+msgid "High tide"
+msgstr "Maré alta"
+
+#: templates/core/tides_weather.html:114
+msgid ""
+"The tide table for Pipa follows the predictions for Natal port, published by"
+" the Brazilian Navy."
+msgstr ""
+"A tábua de marés de Pipa segue a previsão do porto de Natal, publicada pela "
+"Marinha do Brasil."
+
+#: templates/core/tides_weather.html:115
+msgid "See the official tide tables"
+msgstr "Veja as tábuas de marés oficiais"
+
+#: templates/core/tides_weather.html:122
+msgid "Why the tide matters in Pipa"
+msgstr "Por que a maré importa em Pipa"
+
+#: templates/core/tides_weather.html:124
+msgid ""
+"Natural pools, like those in Sibaúma and Praia do Giz, appear at low tide."
+msgstr ""
+"As piscinas naturais, como as de Sibaúma e da Praia do Giz, aparecem na maré"
+" baixa."
+
+#: templates/core/tides_weather.html:125
+msgid ""
+"Some beaches and walks along the cliffs are only possible when the sea is "
+"low."
+msgstr ""
+"Algumas praias e caminhadas junto às falésias só são possíveis com a maré "
+"baixa."
+
+#: templates/core/tides_weather.html:126
+msgid "Lower tides (spring tides) happen around new and full moon."
+msgstr ""
+"As marés mais baixas (marés de sizígia) acontecem perto da lua nova e da lua"
+" cheia."
+
+#: templates/core/tides_weather.html:127
+msgid ""
+"When you send a booking request, we check the tide for your date and suggest"
+" the best time."
+msgstr ""
+"Ao enviar uma solicitação de reserva, verificamos a maré da sua data e "
+"sugerimos o melhor horário."
+
+#: templates/core/tides_weather.html:132
+msgid "Experiences planned around the tide"
+msgstr "Experiências que dependem da maré"
+
+#: templates/core/tides_weather.html:143
+msgid ""
+"Forecasts are approximate and may change. Do not use them for navigation."
+msgstr "As previsões são aproximadas e podem mudar. Não use para navegação."
+
+#: templates/core/tides_weather.html:144
+msgid "Weather data from"
+msgstr "Dados meteorológicos:"
+
+#: templates/core/tides_weather.html:146
+msgid "Sunrise and sunset calculated for Praia da Pipa."
+msgstr "Nascer e pôr do sol calculados para a Praia da Pipa."
+
+#: templates/includes/antispam_fields.html:3
+msgid "Leave this field empty"
+msgstr "Deixe este campo vazio"
+
+#: templates/includes/conditions_compact.html:11
+msgid "Tide table & forecast"
+msgstr "Tábua de marés e previsão"
+
+#: templates/includes/conditions_tide_box.html:2
+msgid "Best at low tide"
+msgstr "Melhor na maré baixa"
+
+#: templates/includes/conditions_tide_box.html:4
+msgid "Next low tides in Pipa:"
+msgstr "Próximas marés baixas em Pipa:"
+
+#: templates/includes/conditions_tide_box.html:11
+msgid ""
+"Natural pools on this route appear at low tide. When you send a request, we "
+"check the tide for your date and suggest the best time."
+msgstr ""
+"As piscinas naturais deste roteiro aparecem na maré baixa. Ao enviar sua "
+"solicitação, verificamos a maré da sua data e sugerimos o melhor horário."
+
+#: templates/includes/conditions_tide_box.html:13
+#: templates/tours/experience_detail.html:156
+msgid "Full tide table"
+msgstr "Tábua de marés completa"
+
+#: templates/includes/consent_field.html:3
+msgid "Read the Privacy Policy"
+msgstr "Leia a Política de Privacidade"
+
+#: templates/includes/experience_card.html:8
+msgid "Featured"
+msgstr "Destaque"
+
+#: templates/includes/experience_card.html:9
+msgid "Video"
+msgstr "Vídeo"
+
+#: templates/includes/experience_card.html:10
+#: templates/tours/transfers.html:29 templates/tours/transfers.html:58
+msgid "Demo"
+msgstr "Demonstração"
+
+#: templates/includes/footer.html:17
+msgid "Explore"
+msgstr "Explore"
+
+#: templates/includes/footer.html:19 templates/includes/header.html:9
+#: templates/includes/header.html:45 templates/tours/experience_list.html:13
+#: tours/views.py:42
+msgid "Experiences"
+msgstr "Experiências"
+
+#: templates/includes/footer.html:27
+msgid "Company"
+msgstr "Empresa"
+
+#: templates/includes/footer.html:46
+msgid "Language"
+msgstr "Idioma"
+
+#: templates/includes/header.html:3
+msgid "Main navigation"
+msgstr "Navegação principal"
+
+#: templates/includes/header.html:17
+msgid "Choose language"
+msgstr "Escolher idioma"
+
+#: templates/includes/header.html:28
+msgid "Open menu"
+msgstr "Abrir menu"
+
+#: templates/includes/header.html:38
+msgid "Menu"
+msgstr "Menu"
+
+#: templates/includes/header.html:40
+msgid "Close menu"
+msgstr "Fechar menu"
+
+#: templates/includes/header.html:43
+msgid "Mobile navigation"
+msgstr "Navegação móvel"
+
+#: templates/includes/price.html:1 templates/tours/transfers.html:46
+msgid "From"
+msgstr "A partir de"
+
+#: templates/includes/price.html:1
+msgid "demo value"
+msgstr "valor de demonstração"
+
+#: templates/includes/price.html:1
+msgid "Price on request"
+msgstr "Preço sob consulta"
+
+#: templates/includes/trust_strip.html:1
+msgid "Why you can book with confidence"
+msgstr "Por que reservar com segurança"
+
+#: templates/includes/trust_strip.html:5
+msgid "Licensed tour guides"
+msgstr "Guias de turismo com Cadastur"
+
+#: templates/includes/trust_strip.html:5
+msgid "Registered in Cadastur, Brazil's Ministry of Tourism"
+msgstr "Cadastro oficial do Ministério do Turismo"
+
+#: templates/includes/trust_strip.html:8
+msgid "Registered tourist vehicles"
+msgstr "Veículos de turismo cadastrados"
+
+#: templates/includes/trust_strip.html:8
+msgid "Licensed for tourist transport by DER/RN"
+msgstr "Cadastrados para transporte turístico no DER/RN"
+
+#: templates/includes/trust_strip.html:11
+msgid "Registered agency"
+msgstr "Agência cadastrada"
+
+#: templates/includes/trust_strip.html:11
+#, python-format
+msgid "Cadastur no. %(n)s"
+msgstr "Cadastur nº %(n)s"
+
+#: templates/includes/trust_strip.html:13
+msgid "No online payment"
+msgstr "Sem pagamento online"
+
+#: templates/includes/trust_strip.html:13
+msgid "Your booking is confirmed only after we talk"
+msgstr "A reserva só é confirmada depois de falarmos com você"
+
+#: templates/tours/experience_detail.html:26
+msgid "Demo content."
+msgstr "Conteúdo de demonstração."
+
+#: templates/tours/experience_detail.html:26
+msgid ""
+"This experience is a sample to show how the website works. Texts, photos and"
+" conditions are illustrative and are not a commercial offer."
+msgstr ""
+"Esta experiência é um exemplo para mostrar o funcionamento do site. Textos, "
+"fotos e condições são ilustrativos e não constituem oferta comercial."
+
+#: templates/tours/experience_detail.html:36
+msgid "photos"
+msgstr "fotos"
+
+#: templates/tours/experience_detail.html:55 templates/tours/transfers.html:39
+#: templates/tours/transfers.html:66
+#, python-format
+msgid "Up to %(n)s passenger"
+msgid_plural "Up to %(n)s passengers"
+msgstr[0] "Até %(n)s passageiro"
+msgstr[1] "Até %(n)s passageiros"
+
+#: templates/tours/experience_detail.html:56
+msgid "Assistance in English, Portuguese and Spanish"
+msgstr "Atendimento em português, inglês e espanhol"
+
+#: templates/tours/experience_detail.html:73
+msgid "See what it's like"
+msgstr "Veja como é o passeio"
+
+#: templates/tours/experience_detail.html:77
+msgid "Your browser cannot play this video."
+msgstr "Seu navegador não consegue reproduzir este vídeo."
+
+#: templates/tours/experience_detail.html:85
+msgid "Itinerary"
+msgstr "Roteiro"
+
+#: templates/tours/experience_detail.html:95
+msgid "What's included"
+msgstr "O que está incluído"
+
+#: templates/tours/experience_detail.html:101
+msgid "Not included"
+msgstr "Não incluído"
+
+#: templates/tours/experience_detail.html:111
+msgid "Important information"
+msgstr "Informações importantes"
+
+#: templates/tours/experience_detail.html:117
+msgid "Cancellation policy"
+msgstr "Política de cancelamento"
+
+#: templates/tours/experience_detail.html:119
+msgid ""
+"Cancellation conditions are sent together with the confirmation of your "
+"booking."
+msgstr ""
+"As condições de cancelamento são enviadas junto com a confirmação da "
+"reserva."
+
+#: templates/tours/experience_detail.html:135
+msgid "Booking"
+msgstr "Reserva"
+
+#: templates/tours/experience_detail.html:142
+msgid "Ask on WhatsApp"
+msgstr "Perguntar no WhatsApp"
+
+#: templates/tours/experience_detail.html:145
+msgid ""
+"Sending a request is free and does not confirm the booking. We reply "
+"personally to confirm availability and details."
+msgstr ""
+"Enviar a solicitação é gratuito e não confirma a reserva. Respondemos "
+"pessoalmente para confirmar disponibilidade e detalhes."
+
+#: templates/tours/experience_detail.html:146
+msgid "No online payment is taken on this website."
+msgstr "Nenhum pagamento online é feito neste site."
+
+#: templates/tours/experience_detail.html:148
+msgid "Tour guide registered in Cadastur (Ministry of Tourism)."
+msgstr "Guia de turismo com cadastro no Cadastur (Ministério do Turismo)."
+
+#: templates/tours/experience_detail.html:151
+msgid "Vehicles registered for tourist transport with DER/RN."
+msgstr "Veículos cadastrados para transporte turístico no DER/RN."
+
+#: templates/tours/experience_detail.html:167
+msgid "You may also like"
+msgstr "Você também pode gostar"
+
+#: templates/tours/experience_detail.html:180
+msgid "Photo gallery"
+msgstr "Galeria de fotos"
+
+#: templates/tours/experience_detail.html:185
+msgid "Close"
+msgstr "Fechar"
+
+#: templates/tours/experience_detail.html:189
+msgid "Previous photo"
+msgstr "Foto anterior"
+
+#: templates/tours/experience_detail.html:190
+msgid "Next photo"
+msgstr "Próxima foto"
+
+#: templates/tours/experience_list.html:4
+msgid "Pipa tours"
+msgstr "Passeios em Pipa"
+
+#: templates/tours/experience_list.html:4
+msgid "Pipa Tours & Experiences"
+msgstr "Passeios e experiências em Pipa"
+
+#: templates/tours/experience_list.html:5
+msgid ""
+"Boat tours, buggy adventures, beaches, nature and local experiences in Pipa,"
+" Brazil — a short list of experiences selected by a local agency."
+msgstr ""
+"Passeios de barco, buggy, praias, natureza e experiências locais em Pipa — "
+"uma lista curta de experiências selecionadas por uma agência local."
+
+#: templates/tours/experience_list.html:15
+msgid "Things to do in Pipa"
+msgstr "O que fazer em Pipa"
+
+#: templates/tours/experience_list.html:16
+msgid "Experiences in Pipa"
+msgstr "Experiências em Pipa"
+
+#: templates/tours/experience_list.html:17
+msgid ""
+"Boat trips, buggy rides along the dunes, beaches, nature and local life. "
+"Choose an experience to see the details and send a booking request."
+msgstr ""
+"Passeios de barco, buggy pelas dunas, praias, natureza e vida local. Escolha"
+" uma experiência para ver os detalhes e enviar uma solicitação de reserva."
+
+#: templates/tours/experience_list.html:23
+msgid "Filter by category"
+msgstr "Filtrar por categoria"
+
+#: templates/tours/experience_list.html:24
+msgid "All"
+msgstr "Todas"
+
+#: templates/tours/experience_list.html:41
+msgid "There are no experiences in this category yet."
+msgstr "Ainda não há experiências nesta categoria."
+
+#: templates/tours/experience_list.html:42
+msgid "Ask us for a suggestion"
+msgstr "Peça uma sugestão"
+
+#: templates/tours/experience_list.html:52
+msgid ""
+"Looking for something that is not listed — a private tour, a special "
+"occasion or a multi-day plan?"
+msgstr ""
+"Procura algo que não está na lista — um passeio privativo, uma ocasião "
+"especial ou um roteiro de vários dias?"
+
+#: templates/tours/experience_list.html:52
+msgid "Tell us what you have in mind."
+msgstr "Conte o que você tem em mente."
+
+#: templates/tours/transfers.html:4
+msgid "Natal Airport Transfer to Pipa"
+msgstr "Transfer do aeroporto de Natal para Pipa"
+
+#: templates/tours/transfers.html:5
+msgid ""
+"Transfers from Natal Airport to Pipa and around the region. Send your flight"
+" details and request a quote from a local agency."
+msgstr ""
+"Transfers do aeroporto de Natal para Pipa e região. Envie os dados do voo e "
+"solicite um orçamento a uma agência local."
+
+#: templates/tours/transfers.html:15
+msgid "Getting to Pipa, made simple"
+msgstr "Chegar a Pipa ficou simples"
+
+#: templates/tours/transfers.html:16
+msgid ""
+"Natal International Airport (NAT) is the usual arrival point for Pipa. Send "
+"us your flight details and we arrange the transfer to your accommodation."
+msgstr ""
+"O Aeroporto Internacional de Natal (NAT) é o ponto de chegada mais comum "
+"para Pipa. Envie os dados do voo e organizamos o transfer até sua "
+"hospedagem."
+
+#: templates/tours/transfers.html:29
+msgid "Main route"
+msgstr "Rota principal"
+
+#: templates/tours/transfers.html:45
+msgid "Details"
+msgstr "Detalhes"
+
+#: templates/tours/transfers.html:53
+msgid "Other transfers"
+msgstr "Outros transfers"
+
+#: templates/tours/transfers.html:71
+msgid "Request"
+msgstr "Solicitar"
+
+#: templates/tours/transfers.html:81
+msgid ""
+"Transfer options will be published soon. Meanwhile, ask us for a quote."
+msgstr ""
+"As opções de transfer serão publicadas em breve. Enquanto isso, solicite um "
+"orçamento."
+
+#: templates/tours/transfers.html:91
+msgid "Send your flight"
+msgstr "Envie seu voo"
+
+#: templates/tours/transfers.html:91
+msgid ""
+"Share your flight number and arrival time in the request so the pickup can "
+"be planned around it."
+msgstr ""
+"Informe o número do voo e o horário de chegada na solicitação para "
+"planejarmos o embarque."
+
+#: templates/tours/transfers.html:92
+msgid "Meet your driver"
+msgstr "Encontre seu motorista"
+
+#: templates/tours/transfers.html:92
+msgid ""
+"Once your transfer is confirmed, you receive the meeting point and pickup "
+"details."
+msgstr ""
+"Com o transfer confirmado, você recebe o ponto de encontro e os detalhes do "
+"embarque."
+
+#: templates/tours/transfers.html:93
+msgid "Arrive relaxed"
+msgstr "Chegue tranquilo"
+
+#: templates/tours/transfers.html:93
+msgid ""
+"Go straight to your accommodation in Pipa, with assistance in your language."
+msgstr "Vá direto para sua hospedagem em Pipa, com atendimento no seu idioma."
+
+#: tours/models.py:88
+msgid "Private"
+msgstr "Privativo"
+
+#: tours/models.py:89
+msgid "Shared"
+msgstr "Compartilhado"
+
+#: tours/urls.py:9
+msgid "experiences/"
+msgstr "passeios/"
+
+#: tours/urls.py:10
+msgid "experiences/<slug:slug>/"
+msgstr "passeios/<slug:slug>/"
+
+#: tours/urls.py:11
+msgid "transfers/"
+msgstr "transfers/"
+
+#: tours/views.py:34
+#, python-format
+msgid "Hello! I'm interested in \"%(title)s\" (%(url)s)."
+msgstr "Olá! Tenho interesse em \"%(title)s\" (%(url)s)."

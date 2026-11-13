@@ -1,0 +1,14 @@
+{% extends "panel/base.html" %}
+{% block title %}Excluir{% endblock %}
+{% block content %}
+<div class="card-p" style="max-width:620px">
+  <h1 class="h4"><i class="bi bi-exclamation-triangle text-danger"></i> Excluir {{ kind }}?</h1>
+  <p>Você vai excluir <strong>{{ object }}</strong>. Essa ação não pode ser desfeita.</p>
+  {% if warning %}<div class="alert alert-warning small">{{ warning }}</div>{% endif %}
+  <form method="post" class="d-flex gap-2">
+    {% csrf_token %}
+    <a class="btn btn-outline-secondary" href="{{ cancel_url }}">Cancelar</a>
+    <button class="btn btn-danger" type="submit"><i class="bi bi-trash"></i> Sim, excluir</button>
+  </form>
+</div>
+{% endblock %}

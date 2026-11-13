@@ -1,0 +1,12 @@
+{% load i18n %}{% with weather=conditions.weather sun=conditions.sun tides=conditions.tides %}<div class="cond-strip">
+  {% if weather %}
+    <div class="cond-strip-item"><i class="bi bi-{{ weather.current.icon }}" aria-hidden="true"></i><div><strong>{{ weather.current.temperature }}°C</strong><small>{{ weather.current.label }}</small></div></div>
+  {% endif %}
+  {% if sun.sunset %}
+    <div class="cond-strip-item"><i class="bi bi-sunset" aria-hidden="true"></i><div><strong>{{ sun.sunset|time:"H:i" }}</strong><small>{% trans "Sunset" %}</small></div></div>
+  {% endif %}
+  {% if tides.next_low %}
+    <div class="cond-strip-item"><i class="bi bi-water" aria-hidden="true"></i><div><strong>{{ tides.next_low.time|time:"H:i" }}</strong><small>{% trans "Next low tide" %}{% if tides.next_low.time.date != sun.sunset.date %} · {{ tides.next_low.time|date:"D" }}{% endif %}</small></div></div>
+  {% endif %}
+  <a class="cond-strip-link link-arrow" href="{% url 'core:tides_weather' %}">{% if conditions.tides_enabled %}{% trans "Tide table & forecast" %}{% else %}{% trans "Tides & weather" %}{% endif %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+</div>{% endwith %}

@@ -1,0 +1,5 @@
+{
+  "deploy": {
+    "startCommand": "sh bin/start.sh"
+  }
+}

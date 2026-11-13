@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load i18n travelpipa %}
+
+{% block title %}{% trans "Natal Airport Transfer to Pipa" %}{% endblock %}
+{% block meta_description %}{% trans "Transfers from Natal Airport to Pipa and around the region. Send your flight details and request a quote from a local agency." %}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "Transfers" %}</li>
+    </ol></nav>
+    <p class="eyebrow">{% trans "Transfers" %}</p>
+    <h1>{% trans "Getting to Pipa, made simple" %}</h1>
+    <p class="lead">{% trans "Natal International Airport (NAT) is the usual arrival point for Pipa. Send us your flight details and we arrange the transfer to your accommodation." %}</p>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container">
+    {% if main_transfer %}
+      {% with t=main_transfer %}
+      <div class="transfer-hero-card mb-5">
+        <div class="media">
+          {% with cover=t.cover %}{% if cover %}<img src="{{ cover.image.url }}" alt="{{ cover.alt_text }}" decoding="async">{% else %}<div class="img-placeholder" aria-hidden="true"><i class="bi bi-car-front"></i></div>{% endif %}{% endwith %}
+        </div>
+        <div class="body">
+          <div class="d-flex flex-wrap gap-2 mb-3"><span class="chip chip-featured"><i class="bi bi-airplane" aria-hidden="true"></i> {% trans "Main route" %}</span>{% if t.is_demo %}<span class="demo-chip">{% trans "Demo" %}</span>{% endif %}</div>
+          <h2 class="h3">{{ t.title }}</h2>
+          {% if t.summary %}<p>{{ t.summary }}</p>{% endif %}
+          <div class="route">
+            <div class="route-point"><small>{% trans "From" context "route" %}</small>{{ t.origin }}</div>
+            <div class="route-line"><i class="bi bi-car-front-fill" aria-hidden="true"></i></div>
+            <div class="route-point text-end"><small>{% trans "To" context "route" %}</small>{{ t.destination }}</div>
+          </div>
+          <ul class="facts">
+            {% if t.transfer_type %}<li><i class="bi bi-{% if t.transfer_type == 'private' %}person-check{% else %}people{% endif %}" aria-hidden="true"></i>{{ t.get_transfer_type_display }}</li>{% endif %}
+            {% if t.max_passengers %}<li><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans count n=t.max_passengers %}Up to {{ n }} passenger{% plural %}Up to {{ n }} passengers{% endblocktrans %}</li>{% endif %}
+            {% if t.duration %}<li><i class="bi bi-clock" aria-hidden="true"></i>{{ t.duration }}</li>{% endif %}
+            {% if site.trust_der_vehicles %}<li><i class="bi bi-patch-check" aria-hidden="true"></i>{% trans "Registered with DER/RN" %}</li>{% endif %}
+          </ul>
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <a class="btn btn-accent" href="{% url 'bookings:request' %}?experience={{ t.slug }}">{% if t.price is None %}{% trans "Request a quote" %}{% else %}{% trans "Request a Booking" %}{% endif %}</a>
+            <a class="btn btn-light-ghost" href="{{ t.get_absolute_url }}">{% trans "Details" %}</a>
+            <div class="ms-auto text-white">{% if t.price is not None %}<div class="price" style="color:#fff">{% if t.price_is_starting %}<span class="price-from" style="color:rgba(255,255,255,.7)">{% trans "From" %}</span>{% endif %}<span class="price-amount">{{ t.price|money:t.currency }}</span></div>{% endif %}</div>
+          </div>
+        </div>
+      </div>
+      {% endwith %}
+
+      {% if other_transfers %}
+        <h2 class="h3 mb-4">{% trans "Other transfers" %}</h2>
+        <div class="row g-4">
+          {% for t in other_transfers %}
+            <div class="col-md-6 col-lg-4">
+              <div class="transfer-card">
+                <div class="d-flex justify-content-between gap-2 mb-2"><span class="exp-card-cat mb-0">{{ t.get_transfer_type_display|default:t.category.name }}</span>{% if t.is_demo %}<span class="demo-chip">{% trans "Demo" %}</span>{% endif %}</div>
+                <h3 class="h5"><a class="text-reset text-decoration-none" href="{{ t.get_absolute_url }}">{{ t.title }}</a></h3>
+                <div class="route route-light my-3">
+                  <div class="route-point"><small>{% trans "From" context "route" %}</small>{{ t.origin }}</div>
+                  <div class="route-line"><i class="bi bi-car-front-fill" aria-hidden="true"></i></div>
+                  <div class="route-point text-end"><small>{% trans "To" context "route" %}</small>{{ t.destination }}</div>
+                </div>
+                <ul class="facts facts-light">
+                  {% if t.max_passengers %}<li><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans count n=t.max_passengers %}Up to {{ n }} passenger{% plural %}Up to {{ n }} passengers{% endblocktrans %}</li>{% endif %}
+                </ul>
+                {% if t.summary %}<p class="text-muted-tp small">{{ t.summary }}</p>{% endif %}
+                <div class="mt-auto d-flex justify-content-between align-items-center gap-2 pt-2">
+                  {% price_block t compact=True %}
+                  <a class="btn btn-primary btn-sm" href="{% url 'bookings:request' %}?experience={{ t.slug }}">{% if t.price is None %}{% trans "Request a quote" %}{% else %}{% trans "Request" %}{% endif %}</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="empty-state">
+        <i class="bi bi-car-front" aria-hidden="true"></i>
+        <p class="mt-3">{% trans "Transfer options will be published soon. Meanwhile, ask us for a quote." %}</p>
+        <a class="btn btn-accent" href="{% url 'core:contact' %}">{% trans "Request a quote" %}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section-tight bg-white">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-airplane" aria-hidden="true"></i></div><h3>{% trans "Send your flight" %}</h3><p>{% trans "Share your flight number and arrival time in the request so the pickup can be planned around it." %}</p></div></div>
+      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-signpost" aria-hidden="true"></i></div><h3>{% trans "Meet your driver" %}</h3><p>{% trans "Once your transfer is confirmed, you receive the meeting point and pickup details." %}</p></div></div>
+      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-house-heart" aria-hidden="true"></i></div><h3>{% trans "Arrive relaxed" %}</h3><p>{% trans "Go straight to your accommodation in Pipa, with assistance in your language." %}</p></div></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block title %}{% trans "About TravelPipa — Local Boutique Travel Agency in Pipa" %}{% endblock %}
+{% block meta_description %}{% trans "TravelPipa is a boutique travel agency in Praia da Pipa, Brazil, offering selected tours, local experiences and transfers with personal assistance." %}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "About" %}</li>
+    </ol></nav>
+    <p class="eyebrow">{% trans "About us" %}</p>
+    <h1>{% trans "A boutique agency for travellers who want to experience Pipa well" %}</h1>
+    {% if site.about_intro %}<p class="lead">{{ site.about_intro }}</p>{% endif %}
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-7">
+        <div class="prose" style="font-size:1.06rem">
+          {% if site.about_paragraphs %}
+            {% for p in site.about_paragraphs %}<p>{{ p|linebreaksbr }}</p>{% endfor %}
+          {% else %}
+            <p>{% trans "TravelPipa helps visitors discover Praia da Pipa and the surrounding region through a small selection of tours, local experiences and transfers." %}</p>
+            <p>{% trans "Instead of offering everything, we focus on a few experiences we know well and that we are comfortable recommending. Each one is presented with clear information about what is included, what to bring and how cancellations work." %}</p>
+            <p>{% trans "Before and during your trip, you talk to a person — in English, Portuguese or Spanish — who helps you choose, adjusts plans to the weather and tides, and keeps you informed." %}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="booking-box">
+          <h2 class="h5 mb-4">{% trans "Our commitment" %}</h2>
+          <ul class="check-list">
+            <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>{% trans "Recommend only experiences we know and trust." %}</span></li>
+            <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>{% trans "Give clear information before you book." %}</span></li>
+            <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>{% trans "Answer personally, in your language." %}</span></li>
+            <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>{% trans "Respect your personal data." %}</span></li>
+          </ul>
+          <hr>
+          <div class="d-grid gap-2">
+            <a class="btn btn-accent" href="{% url 'tours:experience_list' %}">{% trans "Explore Experiences" %}</a>
+            <a class="btn btn-outline-ocean" href="{% url 'core:contact' %}">{% trans "Contact us" %}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

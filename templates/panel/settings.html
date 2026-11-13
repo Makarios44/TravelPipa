@@ -1,0 +1,36 @@
+{% extends "panel/base.html" %}
+{% block title %}Configurações do site{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Configurações do site</h1><p class="sub">Contatos, fotos do banner, textos institucionais e selos. As alterações aparecem no site em poucos minutos.</p></div></div>
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors|join:" " }}</div>{% endif %}
+  <div class="row g-3">
+    {% for title, fields in form.groups %}
+      <div class="col-lg-6">
+        <div class="card-p h-100">
+          <h2>{{ title }}</h2>
+          {% for field in fields %}{% include "panel/_field.html" %}{% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="card-p mt-3">
+    <h2><i class="bi bi-translate"></i> Textos do site</h2>
+    <p class="small muted">Se ficarem vazios, o site usa os textos padrão. Separe parágrafos com uma linha em branco.</p>
+    <ul class="nav nav-tabs mb-3" role="tablist">
+      {% for tab in form.text_tabs %}<li class="nav-item" role="presentation"><button class="nav-link{% if forloop.first %} active{% endif %}" type="button" role="tab" data-bs-toggle="tab" data-bs-target="#st-{{ tab.code }}">{{ tab.label }}</button></li>{% endfor %}
+    </ul>
+    <div class="tab-content">
+      {% for tab in form.text_tabs %}
+        <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="st-{{ tab.code }}" role="tabpanel">
+          {% for field in tab.fields %}{% include "panel/_field.html" %}{% endfor %}
+          <details><summary class="fw-semibold text-secondary">Páginas legais (privacidade e termos)</summary>
+            <div class="pt-3">{% for field in tab.legal %}{% include "panel/_field.html" %}{% endfor %}</div></details>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="save-bar"><button class="btn btn-primary" type="submit"><i class="bi bi-check-lg"></i> Salvar configurações</button></div>
+</form>
+{% endblock %}

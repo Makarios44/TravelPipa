@@ -1,0 +1,57 @@
+{% load i18n travelpipa %}<footer class="site-footer">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        {% include "includes/brand.html" %}
+        <p class="mt-3 mb-4" style="max-width:34ch">{% trans "Curated tours, local experiences and seamless transfers in Pipa, Brazil." %}</p>
+        {% if site.social_links %}
+          <div class="social-row">
+            {% for s in site.social_links %}
+              <a href="{{ s.url }}" target="_blank" rel="noopener" aria-label="{{ s.name }}"><i class="bi bi-{% if s.icon == 'tripadvisor' %}star{% else %}{{ s.icon }}{% endif %}" aria-hidden="true"></i></a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="col-6 col-lg-2">
+        <h2>{% trans "Explore" %}</h2>
+        <ul class="footer-links">
+          <li><a href="{% url 'tours:experience_list' %}">{% trans "Experiences" %}</a></li>
+          <li><a href="{% url 'tours:transfers' %}">{% trans "Transfers" %}</a></li>
+          <li><a href="{% url 'bookings:request' %}">{% trans "Request a Booking" %}</a></li>
+          <li><a href="{% url 'core:tides_weather' %}">{% trans "Tides & weather" %}</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-lg-2">
+        <h2>{% trans "Company" %}</h2>
+        <ul class="footer-links">
+          <li><a href="{% url 'core:about' %}">{% trans "About" %}</a></li>
+          <li><a href="{% url 'core:contact' %}">{% trans "Contact" %}</a></li>
+          <li><a href="{% url 'core:privacy' %}">{% trans "Privacy Policy" %}</a></li>
+          <li><a href="{% url 'core:terms' %}">{% trans "Terms & Conditions" %}</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-4">
+        <h2>{% trans "Contact" %}</h2>
+        <ul class="footer-links">
+          {% if whatsapp_general_url %}<li><a href="{{ whatsapp_general_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i>WhatsApp {{ site.whatsapp }}</a></li>{% endif %}
+          {% if site.email %}<li><a href="mailto:{{ site.email }}"><i class="bi bi-envelope" aria-hidden="true"></i>{{ site.email }}</a></li>{% endif %}
+          {% if site.phone %}<li><a href="tel:{{ site.phone }}"><i class="bi bi-telephone" aria-hidden="true"></i>{{ site.phone }}</a></li>{% endif %}
+          {% if site.address %}<li><i class="bi bi-geo-alt" aria-hidden="true"></i>{% if site.google_maps_url %}<a href="{{ site.google_maps_url }}" target="_blank" rel="noopener">{{ site.address }}</a>{% else %}{{ site.address }}{% endif %}</li>{% endif %}
+          {% if site.opening_hours %}<li><i class="bi bi-clock" aria-hidden="true"></i>{{ site.opening_hours }}</li>{% endif %}
+          {% if not whatsapp_general_url and not site.email and not site.address %}<li><a href="{% url 'core:contact' %}"><i class="bi bi-chat-dots" aria-hidden="true"></i>{% trans "Send us a message" %}</a></li>{% endif %}
+        </ul>
+        <div class="footer-lang d-flex gap-2 mt-4" aria-label="{% trans 'Language' %}">
+          {% for lang in site_languages %}<a class="{% if lang.current %}active{% endif %}" href="{% lang_url lang.code request.get_full_path %}" hreflang="{{ lang.code }}" lang="{{ lang.code }}">{{ lang.name }}</a>{% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom d-flex flex-column flex-md-row gap-2 justify-content-between">
+      <span>© {% now "Y" %} {{ site.company_legal_name|default:site.site_name }}{% if site.company_document %} · CNPJ {{ site.company_document }}{% endif %}{% if site.cadastur %} · Cadastur {{ site.cadastur }}{% endif %}</span>
+      <span>Praia da Pipa · Rio Grande do Norte · {% trans "Brazil" %}</span>
+    </div>
+  </div>
+</footer>

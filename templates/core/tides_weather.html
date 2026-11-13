@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Tide Table & Weather in Pipa Today" %}{% endblock %}
+{% block meta_description %}{% trans "Tide times for Praia da Pipa for the next 7 days, today's weather, forecast, sunrise and sunset. Plan the natural pools at low tide and the best sunset." %}{% endblock %}
+
+{% block content %}
+{% with weather=conditions.weather sun=conditions.sun tides=conditions.tides %}
+<section class="page-hero pb-4">
+  <div class="container">
+    <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "Tides & weather" %}</li>
+    </ol></nav>
+    <p class="eyebrow">{% trans "Pipa today" %}</p>
+    <h1>{% trans "Tides and weather in Pipa" %}</h1>
+    <p class="lead">{% trans "In Pipa, the tide decides a lot: natural pools appear at low tide and some beaches are only reachable when the sea goes out. Check the conditions before planning your day." %}</p>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container">
+    {# ---------- Now ---------- #}
+    <div class="row g-3 g-lg-4 mb-4">
+      <div class="col-md-4">
+        <div class="cond-card h-100">
+          <p class="cond-label">{% trans "Weather now" %}</p>
+          {% if weather %}
+            <div class="d-flex align-items-center gap-3">
+              <i class="bi bi-{{ weather.current.icon }} cond-icon" aria-hidden="true"></i>
+              <div>
+                <div class="cond-big">{{ weather.current.temperature }}°C</div>
+                <div class="text-muted-tp">{{ weather.current.label }}</div>
+              </div>
+            </div>
+            <ul class="cond-facts">
+              <li><i class="bi bi-wind" aria-hidden="true"></i>{% blocktrans with w=weather.current.wind_kmh %}Wind {{ w }} km/h{% endblocktrans %}</li>
+              {% if weather.current.humidity is not None %}<li><i class="bi bi-droplet" aria-hidden="true"></i>{% blocktrans with h=weather.current.humidity %}Humidity {{ h }}%{% endblocktrans %}</li>{% endif %}
+            </ul>
+          {% else %}
+            <p class="text-muted-tp mb-0">{% trans "The weather forecast is temporarily unavailable." %}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="cond-card h-100">
+          <p class="cond-label">{% trans "Sun" %}</p>
+          <div class="d-flex gap-4">
+            {% if sun.sunrise %}<div><i class="bi bi-sunrise cond-icon-sm" aria-hidden="true"></i><div class="cond-mid">{{ sun.sunrise|time:"H:i" }}</div><small class="text-muted-tp">{% trans "Sunrise" %}</small></div>{% endif %}
+            {% if sun.sunset %}<div><i class="bi bi-sunset cond-icon-sm" aria-hidden="true"></i><div class="cond-mid">{{ sun.sunset|time:"H:i" }}</div><small class="text-muted-tp">{% trans "Sunset" %}</small></div>{% endif %}
+          </div>
+          <p class="small text-muted-tp mt-3 mb-0">{% trans "Sunsets in Pipa are early all year round — plan to arrive at the viewpoint a little before." %}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="cond-card cond-card-accent h-100">
+          <p class="cond-label">{% trans "Next low tide" %}</p>
+          {% if tides.next_low %}
+            <div class="cond-big">{{ tides.next_low.time|time:"H:i" }}</div>
+            <div>{{ tides.next_low.time|date:"l" }}, {{ tides.next_low.time|date:"MONTH_DAY_FORMAT" }} · {{ tides.next_low.height|floatformat:1 }} m</div>
+            <p class="small mt-3 mb-0">{% trans "Natural pools are best from about one hour before to one hour after low tide." %}</p>
+          {% elif conditions.tides_enabled %}
+            <p class="mb-0">{% trans "The tide table is temporarily unavailable." %}</p>
+          {% else %}
+            <p class="mb-2">{% trans "Check the official tide table published by the Brazilian Navy (Natal port)." %}</p>
+            <a class="link-arrow" href="{{ conditions.navy_url }}" target="_blank" rel="noopener">{% trans "Official tide tables" %} <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {# ---------- Forecast ---------- #}
+    {% if weather.daily %}
+      <h2 class="h4 mt-5 mb-3">{% trans "Weather forecast" %}</h2>
+      <div class="forecast-strip mb-5">
+        {% for day in weather.daily %}
+          <div class="forecast-day">
+            <div class="fw-semibold">{% if forloop.first %}{% trans "Today" %}{% else %}{{ day.date_obj|date:"D" }}{% endif %}</div>
+            <small class="text-muted-tp">{{ day.date_obj|date:"j/n" }}</small>
+            <i class="bi bi-{{ day.icon }} d-block my-2" aria-hidden="true"></i>
+            <span class="visually-hidden">{{ day.label }}</span>
+            <div><strong>{{ day.max }}°</strong> <span class="text-muted-tp">{{ day.min }}°</span></div>
+            {% if day.rain_mm >= 0.5 %}<small class="forecast-rain"><i class="bi bi-umbrella" aria-hidden="true"></i> {{ day.rain_mm|floatformat:1 }} mm</small>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# ---------- Tide table ---------- #}
+    <h2 class="h4 mb-3" id="tide-table">{% trans "Tide table for Pipa — next 7 days" %}</h2>
+    {% if tides.days %}
+      <div class="row g-3">
+        {% for day in tides.days %}
+          <div class="col-sm-6 col-lg-3">
+            <div class="tide-day h-100">
+              <div class="tide-day-head">{% if forloop.first %}{% trans "Today" %}{% else %}{{ day.date|date:"l" }}{% endif %} <small>{{ day.date|date:"j/n" }}</small></div>
+              <ul class="tide-list">
+                {% for e in day.events %}
+                  <li class="{% if e.type == 'low' %}is-low{% endif %}{% if e.past %} is-past{% endif %}">
+                    <i class="bi bi-arrow-{% if e.type == 'low' %}down{% else %}up{% endif %}-circle-fill" aria-hidden="true"></i>
+                    <span class="tide-time">{{ e.time|time:"H:i" }}</span>
+                    <span class="tide-kind">{% if e.type == 'low' %}{% trans "Low tide" %}{% else %}{% trans "High tide" %}{% endif %}</span>
+                    <span class="tide-height">{{ e.height|floatformat:1 }} m</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="notice notice-teal">
+        <i class="bi bi-water" aria-hidden="true"></i>
+        <div>{% if conditions.tides_enabled %}{% trans "The tide table is temporarily unavailable." %}{% else %}{% trans "The tide table for Pipa follows the predictions for Natal port, published by the Brazilian Navy." %}{% endif %}
+          <a href="{{ conditions.navy_url }}" target="_blank" rel="noopener">{% trans "See the official tide tables" %}</a>.</div>
+      </div>
+    {% endif %}
+
+    {# ---------- Why it matters ---------- #}
+    <div class="row g-5 mt-4 align-items-start">
+      <div class="col-lg-6">
+        <h2 class="h4">{% trans "Why the tide matters in Pipa" %}</h2>
+        <ul class="info-list mt-3">
+          <li><i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>{% trans "Natural pools, like those in Sibaúma and Praia do Giz, appear at low tide." %}</span></li>
+          <li><i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>{% trans "Some beaches and walks along the cliffs are only possible when the sea is low." %}</span></li>
+          <li><i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>{% trans "Lower tides (spring tides) happen around new and full moon." %}</span></li>
+          <li><i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>{% trans "When you send a booking request, we check the tide for your date and suggest the best time." %}</span></li>
+        </ul>
+      </div>
+      {% if tide_tours %}
+        <div class="col-lg-6">
+          <h2 class="h4">{% trans "Experiences planned around the tide" %}</h2>
+          <ul class="tide-tours mt-3">
+            {% for exp in tide_tours %}
+              <li><a href="{{ exp.get_absolute_url }}">{{ exp.title }}</a>{% if exp.duration %}<small>{{ exp.duration }}</small>{% endif %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+
+    <p class="cond-credits">
+      {% trans "Forecasts are approximate and may change. Do not use them for navigation." %}
+      {% if conditions.weather %}{% trans "Weather data from" %} <a href="https://www.met.no/en" target="_blank" rel="noopener">MET Norway</a> (<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>).{% endif %}
+      {% if tides.copyright %}{{ tides.copyright }}{% endif %}
+      {% trans "Sunrise and sunset calculated for Praia da Pipa." %}
+    </p>
+  </div>
+</section>
+{% endwith %}
+{% endblock %}

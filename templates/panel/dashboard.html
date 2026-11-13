@@ -1,0 +1,40 @@
+{% extends "panel/base.html" %}
+{% block title %}Início{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Olá, {{ request.user.first_name|default:request.user.get_username }}!</h1><p class="sub">Resumo da TravelPipa hoje.</p></div>
+  <a class="btn btn-accent" href="{% url 'panel:experience_new' %}"><i class="bi bi-plus-lg"></i> Novo passeio</a>
+</div>
+
+{% if demo_count %}
+  <div class="alert alert-warning d-flex gap-2 align-items-start"><i class="bi bi-info-circle mt-1"></i>
+    <div>Há {{ demo_count }} passeio(s) de <strong>demonstração</strong> visíveis no site. <a href="{% url 'panel:experiences' %}?show=active">Revise e desative</a> os que não são reais.</div></div>
+{% endif %}
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3"><a class="stat {% if stats.pending %}hot{% endif %}" href="{% url 'panel:bookings' %}?status=pending"><div class="n">{{ stats.pending }}</div><div class="l">Reservas pendentes</div></a></div>
+  <div class="col-6 col-lg-3"><a class="stat" href="{% url 'panel:bookings' %}?when=upcoming"><div class="n">{{ stats.upcoming }}</div><div class="l">Reservas a partir de hoje</div></a></div>
+  <div class="col-6 col-lg-3"><a class="stat" href="{% url 'panel:experiences' %}?show=active"><div class="n">{{ stats.active_tours }}</div><div class="l">Passeios ativos{% if stats.inactive_tours %} · {{ stats.inactive_tours }} desativado(s){% endif %}</div></a></div>
+  <div class="col-6 col-lg-3"><a class="stat {% if stats.messages %}hot{% endif %}" href="{% url 'panel:messages' %}"><div class="n">{{ stats.messages }}</div><div class="l">Mensagens sem resposta</div></a></div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card-p h-100">
+      <h2><i class="bi bi-calendar-event"></i> Próximas reservas</h2>
+      {% if upcoming %}
+        <div class="row-list">{% for b in upcoming %}{% include "panel/_booking_card.html" %}{% endfor %}</div>
+      {% else %}<p class="muted mb-0">Nenhuma reserva com data a partir de hoje.</p>{% endif %}
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card-p h-100">
+      <h2><i class="bi bi-inbox"></i> Últimas solicitações recebidas</h2>
+      {% if latest %}
+        <div class="row-list">{% for b in latest %}{% include "panel/_booking_card.html" %}{% endfor %}</div>
+        <a class="d-inline-block mt-3 fw-semibold" href="{% url 'panel:bookings' %}">Ver todas as reservas →</a>
+      {% else %}<p class="muted mb-0">Ainda não chegou nenhuma solicitação pelo site.</p>{% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

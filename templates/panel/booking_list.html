@@ -1,0 +1,22 @@
+{% extends "panel/base.html" %}
+{% block title %}Reservas{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Reservas</h1><p class="sub">Solicitações enviadas pelo site. Nenhuma é confirmada automaticamente: entre em contato e atualize o status.</p></div></div>
+<form class="search-row" method="get">
+  <input type="hidden" name="status" value="{{ status }}">
+  <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Buscar por nome, código, e-mail, telefone ou passeio" aria-label="Buscar">
+  <select class="form-select" name="when" aria-label="Ordenar" data-autosubmit>
+    <option value="">Mais recentes primeiro</option>
+    <option value="upcoming"{% if when == 'upcoming' %} selected{% endif %}>Próximas datas</option>
+  </select>
+  <button class="btn btn-outline-secondary" type="submit" aria-label="Buscar"><i class="bi bi-search"></i></button>
+</form>
+<div class="filters">
+  {% for value, label, n in tabs %}<a class="pill {% if status == value %}active{% endif %}" href="?status={{ value }}&q={{ q|urlencode }}&when={{ when }}">{{ label }} <span class="c">{{ n }}</span></a>{% endfor %}
+</div>
+{% if bookings %}
+  <div class="row-list">{% for b in bookings %}{% include "panel/_booking_card.html" %}{% endfor %}</div>
+{% else %}
+  <div class="empty"><i class="bi bi-calendar-x"></i>Nenhuma solicitação encontrada.</div>
+{% endif %}
+{% endblock %}

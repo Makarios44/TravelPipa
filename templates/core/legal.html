@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% if page == "privacy" %}{% trans "Privacy Policy" %}{% else %}{% trans "Terms & Conditions" %}{% endif %}{% endblock %}
+{% block meta_description %}{% if page == "privacy" %}{% trans "How TravelPipa collects, uses and protects your personal data, in line with Brazil's LGPD." %}{% else %}{% trans "Terms and conditions for booking requests, tours and transfers with TravelPipa." %}{% endif %}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% if page == "privacy" %}{% trans "Privacy Policy" %}{% else %}{% trans "Terms & Conditions" %}{% endif %}</li>
+    </ol></nav>
+    <h1>{% if page == "privacy" %}{% trans "Privacy Policy" %}{% else %}{% trans "Terms & Conditions" %}{% endif %}</h1>
+  </div>
+</section>
+<section class="pb-5">
+  <div class="container">
+    <div class="legal-body prose">
+      {% if page == "privacy" %}
+        {% if site.privacy_policy %}{{ site.privacy_policy|linebreaks }}{% else %}{% include "core/legal_privacy_default.html" %}{% endif %}
+      {% else %}
+        {% if site.terms %}{{ site.terms|linebreaks }}{% else %}{% include "core/legal_terms_default.html" %}{% endif %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% load i18n %}
+<p>{% blocktrans with name=site.site_name %}This policy explains how {{ name }} handles the personal data you send through this website, in accordance with Brazil's General Data Protection Law (LGPD — Law 13.709/2018).{% endblocktrans %}</p>
+<h2>{% trans "Data we collect" %}</h2>
+<p>{% trans "Only the data you type into our booking and contact forms: name, e-mail, phone or WhatsApp number, preferred language, the experience and date you are interested in, number of people and any notes you write." %}</p>
+<h2>{% trans "Why we use it" %}</h2>
+<p>{% trans "To answer your request, check availability, organise the experience or transfer you asked for and keep a record of our conversation. We do not sell your data and do not use it for advertising without your permission." %}</p>
+<h2>{% trans "Legal basis" %}</h2>
+<p>{% trans "Your consent, given when you submit a form, and the steps needed before a possible contract at your request (LGPD, art. 7, I and V)." %}</p>
+<h2>{% trans "Sharing" %}</h2>
+<p>{% trans "When strictly necessary to provide the service you request, we share the minimum data required (for example, name and number of people) with the local operator responsible for the tour or transfer." %}</p>
+<h2>{% trans "Storage and security" %}</h2>
+<p>{% trans "Data is stored on secure servers with restricted access for our team. We keep it only for as long as needed to answer you, provide the service and meet legal obligations." %}</p>
+<h2>{% trans "Cookies" %}</h2>
+<p>{% trans "This website uses only essential cookies: one to remember your language and the security cookies needed for forms to work. We do not use advertising cookies." %}</p>
+<h2>{% trans "Your rights" %}</h2>
+<p>{% trans "You may ask to access, correct or delete your data, or withdraw your consent, at any time." %}{% if site.email %} {% blocktrans with email=site.email %}Write to <a href="mailto:{{ email }}">{{ email }}</a>.{% endblocktrans %}{% else %} {% trans "Use the contact page to send your request." %}{% endif %}</p>

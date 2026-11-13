@@ -1,0 +1,39 @@
+{% with wt=field.widget_type %}
+{% if wt == "checkbox" %}
+  <div class="form-check form-switch {{ wrapper|default:'mb-3' }}">
+    {{ field }}
+    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+    {% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+  </div>
+{% elif wt == "clearablefile" or wt == "file" %}
+  <div class="{{ wrapper|default:'mb-3' }} file-field">
+    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>
+    {% if field.value and field.value.url %}
+      <div class="file-current">
+        {% with name=field.value.name|lower %}
+          {% if ".mp4" in name or ".webm" in name %}
+            <a href="{{ field.value.url }}" target="_blank" rel="noopener" class="file-video"><i class="bi bi-play-circle"></i> {{ field.value.name|cut:"experiences/videos/" }}</a>
+          {% else %}
+            <a href="{{ field.value.url }}" target="_blank" rel="noopener"><img src="{{ field.value.url }}" alt="" loading="lazy"></a>
+          {% endif %}
+        {% endwith %}
+        {% if not field.field.required %}
+          <div class="form-check mt-2"><input class="form-check-input" type="checkbox" name="{{ field.html_name }}-clear" id="{{ field.auto_id }}_clear"><label class="form-check-label small" for="{{ field.auto_id }}_clear">Remover</label></div>
+        {% endif %}
+      </div>
+      <small class="text-secondary d-block mb-1">Para trocar, escolha um novo arquivo:</small>
+    {% endif %}
+    <input type="file" name="{{ field.html_name }}" id="{{ field.auto_id }}" class="form-control{% if field.errors %} is-invalid{% endif %}"{% if field.field.widget.attrs.accept %} accept="{{ field.field.widget.attrs.accept }}"{% endif %}>
+    {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+    {% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+  </div>
+{% else %}
+  <div class="{{ wrapper|default:'mb-3' }}">
+    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="text-danger">*</span>{% endif %}</label>
+    {{ field }}
+    {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+    {% for e in field.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}
+  </div>
+{% endif %}
+{% endwith %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n travelpipa %}
+
+{% block title %}{% if selected_category %}{{ selected_category.name }} — {% trans "Pipa tours" %}{% else %}{% trans "Pipa Tours & Experiences" %}{% endif %}{% endblock %}
+{% block meta_description %}{% if selected_category.description %}{{ selected_category.description|truncatechars:160 }}{% else %}{% trans "Boat tours, buggy adventures, beaches, nature and local experiences in Pipa, Brazil — a short list of experiences selected by a local agency." %}{% endif %}{% endblock %}
+{% block robots %}{% if filtered and not selected_category %}<meta name="robots" content="noindex, follow">{% else %}<meta name="robots" content="index, follow, max-image-preview:large">{% endif %}{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "Experiences" %}</li>
+    </ol></nav>
+    <p class="eyebrow">{% trans "Things to do in Pipa" %}</p>
+    <h1>{% if selected_category %}{{ selected_category.name }}{% else %}{% trans "Experiences in Pipa" %}{% endif %}</h1>
+    <p class="lead">{% if selected_category.description %}{{ selected_category.description }}{% else %}{% trans "Boat trips, buggy rides along the dunes, beaches, nature and local life. Choose an experience to see the details and send a booking request." %}{% endif %}</p>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container">
+    <nav class="filter-bar mb-4" aria-label="{% trans 'Filter by category' %}">
+      <a class="filter-pill{% if not selected_category %} active{% endif %}" href="{% url 'tours:experience_list' %}"{% if not selected_category %} aria-current="page"{% endif %}>{% trans "All" %}</a>
+      {% for cat in categories %}
+        <a class="filter-pill{% if selected_category == cat %} active{% endif %}" href="?category={{ cat.slug }}"{% if selected_category == cat %} aria-current="page"{% endif %}>
+          {% if cat.icon %}<i class="bi bi-{{ cat.icon }}" aria-hidden="true"></i>{% endif %}{{ cat.name }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    {% if experiences %}
+      <div class="row g-4">
+        {% for exp in experiences %}
+          <div class="col-sm-6 col-lg-4 reveal">{% include "includes/experience_card.html" with exp=exp show_featured=True %}</div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <i class="bi bi-compass" aria-hidden="true"></i>
+        <p class="mt-3">{% trans "There are no experiences in this category yet." %}</p>
+        <a class="btn btn-outline-ocean" href="{% url 'core:contact' %}">{% trans "Ask us for a suggestion" %}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="notice notice-teal">
+      <i class="bi bi-chat-heart" aria-hidden="true"></i>
+      <div>{% trans "Looking for something that is not listed — a private tour, a special occasion or a multi-day plan?" %} <a href="{% url 'core:contact' %}">{% trans "Tell us what you have in mind." %}</a></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

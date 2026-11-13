@@ -1,0 +1,28 @@
+{% extends "panel/base.html" %}
+{% block title %}Depoimentos{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Depoimentos</h1><p class="sub">Somente avaliações reais. Sem depoimentos publicados, a seção fica escondida no site.</p></div>
+  <a class="btn btn-accent" href="{% url 'panel:testimonial_new' %}"><i class="bi bi-plus-lg"></i> Novo depoimento</a>
+</div>
+{% if items %}
+  <div class="row-list">
+    {% for t in items %}
+      <div class="row-item{% if not t.active or not t.confirmed_real %} off{% endif %}">
+        <div class="thumb"><i class="bi bi-chat-quote"></i></div>
+        <div>
+          <a class="title" href="{% url 'panel:testimonial_edit' t.pk %}">{{ t.author_name }}</a>
+          <div class="meta">{% if t.rating %}{{ t.rating }}★ · {% endif %}{{ t.source|default:"" }}{% if t.experience %} · {{ t.experience.title_pt|default:t.experience.title_en }}{% endif %}
+            {% if not t.confirmed_real %}<span class="tag demo">Não confirmado como real</span>{% elif not t.active %}<span class="tag">Não publicado</span>{% endif %}</div>
+        </div>
+        <div class="row-actions">
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'panel:testimonial_edit' t.pk %}"><i class="bi bi-pencil"></i> Editar</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'panel:testimonial_delete' t.pk %}"><i class="bi bi-trash"></i></a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty"><i class="bi bi-chat-quote"></i>Nenhum depoimento ainda. Peça aos clientes que avaliem no Google e cadastre aqui os reais.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% load static %}<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}Gestão{% endblock %} · TravelPipa</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+<body class="panel">
+{% url 'panel:dashboard' as u_dash %}{% url 'panel:experiences' as u_exp %}{% url 'panel:bookings' as u_book %}
+{% url 'panel:messages' as u_msg %}{% url 'panel:categories' as u_cat %}{% url 'panel:testimonials' as u_test %}{% url 'panel:settings' as u_set %}
+<div class="panel-shell">
+  <aside class="panel-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="panelNav" aria-labelledby="panelNavLabel">
+    <div class="panel-brand">
+      <a href="{{ u_dash }}" id="panelNavLabel"><span class="sun" aria-hidden="true"></span>Travel<span>Pipa</span> <small>Gestão</small></a>
+      <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#panelNav" aria-label="Fechar menu"></button>
+    </div>
+    <nav class="panel-nav" aria-label="Menu do painel">
+      <a href="{{ u_dash }}" class="{% if section == 'dashboard' %}active{% endif %}"><i class="bi bi-house"></i>Início</a>
+      <a href="{{ u_book }}" class="{% if section == 'bookings' %}active{% endif %}"><i class="bi bi-calendar-check"></i>Reservas{% if nav_counts.bookings %}<span class="count">{{ nav_counts.bookings }}</span>{% endif %}</a>
+      <a href="{{ u_exp }}" class="{% if section == 'experiences' %}active{% endif %}"><i class="bi bi-compass"></i>Passeios</a>
+      <a href="{{ u_cat }}" class="{% if section == 'categories' %}active{% endif %}"><i class="bi bi-tags"></i>Categorias</a>
+      <a href="{{ u_msg }}" class="{% if section == 'messages' %}active{% endif %}"><i class="bi bi-envelope"></i>Mensagens{% if nav_counts.messages %}<span class="count">{{ nav_counts.messages }}</span>{% endif %}</a>
+      <a href="{{ u_test }}" class="{% if section == 'testimonials' %}active{% endif %}"><i class="bi bi-chat-quote"></i>Depoimentos</a>
+      <a href="{{ u_set }}" class="{% if section == 'settings' %}active{% endif %}"><i class="bi bi-gear"></i>Configurações do site</a>
+    </nav>
+    <div class="panel-nav panel-nav-foot">
+      <a href="/" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i>Ver o site</a>
+      <a href="{% url 'panel:password' %}" class="{% if section == 'account' %}active{% endif %}"><i class="bi bi-key"></i>Alterar senha</a>
+      <form method="post" action="{% url 'panel:logout' %}">{% csrf_token %}<button type="submit"><i class="bi bi-box-arrow-right"></i>Sair ({{ request.user.get_username }})</button></form>
+    </div>
+  </aside>
+
+  <div class="panel-main">
+    <header class="panel-topbar d-lg-none">
+      <button class="btn btn-icon" type="button" data-bs-toggle="offcanvas" data-bs-target="#panelNav" aria-controls="panelNav" aria-label="Abrir menu"><i class="bi bi-list"></i></button>
+      <a class="panel-topbar-brand" href="{{ u_dash }}">Travel<span>Pipa</span> · Gestão</a>
+      <a class="btn btn-icon position-relative" href="{{ u_book }}" aria-label="Reservas"><i class="bi bi-calendar-check"></i>{% if nav_counts.bookings %}<span class="dot"></span>{% endif %}</a>
+    </header>
+
+    <main class="panel-content">
+      {% if messages %}
+        <div class="panel-messages" role="status" aria-live="polite">
+          {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %} alert-dismissible fade show">
+              {{ message }}<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3"><div id="panelToast" class="toast align-items-center text-bg-dark border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body"></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fechar"></button></div></div></div>
+<script src="{% static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/panel.js' %}"></script>
+</body>
+</html>

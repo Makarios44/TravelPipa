@@ -1,0 +1,58 @@
+{% extends "panel/base.html" %}
+{% block title %}Passeios{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Passeios</h1><p class="sub">Ligue ou desligue para mostrar ou esconder no site. Toque no nome para editar textos, preço e fotos.</p></div>
+  <a class="btn btn-accent" href="{% url 'panel:experience_new' %}"><i class="bi bi-plus-lg"></i> Novo passeio</a>
+</div>
+
+<form class="search-row" method="get">
+  <input type="hidden" name="show" value="{{ show }}">
+  <input class="form-control" type="search" name="q" value="{{ q }}" placeholder="Buscar passeio pelo nome" aria-label="Buscar">
+  <select class="form-select" name="category" aria-label="Categoria" data-autosubmit>
+    <option value="">Todas as categorias</option>
+    {% for c in categories %}<option value="{{ c.slug }}"{% if c.slug == category %} selected{% endif %}>{{ c.name_pt|default:c.name_en }}</option>{% endfor %}
+  </select>
+  <button class="btn btn-outline-secondary" type="submit" aria-label="Buscar"><i class="bi bi-search"></i></button>
+</form>
+<div class="filters">
+  <a class="pill {% if show == 'all' %}active{% endif %}" href="?show=all&q={{ q|urlencode }}&category={{ category }}">Todos</a>
+  <a class="pill {% if show == 'active' %}active{% endif %}" href="?show=active&q={{ q|urlencode }}&category={{ category }}">Ativos no site</a>
+  <a class="pill {% if show == 'inactive' %}active{% endif %}" href="?show=inactive&q={{ q|urlencode }}&category={{ category }}">Desativados</a>
+</div>
+
+{% if experiences %}
+<div class="row-list">
+  {% for e in experiences %}
+    <div class="row-item{% if not e.active %} off{% endif %}" data-row>
+      {% with cover=e.cover %}{% if cover %}<img class="thumb" src="{{ cover.image.url }}" alt="" loading="lazy">{% else %}<div class="thumb"><i class="bi bi-image"></i></div>{% endif %}{% endwith %}
+      <div>
+        <a class="title" href="{% url 'panel:experience_edit' e.pk %}">{{ e.title_pt|default:e.title_en }}</a>
+        <div class="meta">
+          <span class="tag">{{ e.category.name_pt|default:e.category.name_en }}</span>
+          {% if e.is_demo %}<span class="tag demo">Demonstração</span>{% endif %}
+          {% if e.price is not None %}{{ e.currency }} {{ e.price|floatformat:"-2" }}{% else %}Preço sob consulta{% endif %}
+          · {{ e.photo_count }} foto{{ e.photo_count|pluralize }}
+        </div>
+      </div>
+      <div class="row-actions">
+        <form method="post" action="{% url 'panel:experience_toggle' e.pk 'active' %}" data-toggle="active">
+          {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="act{{ e.pk }}" {% if e.active %}checked{% endif %}><label class="form-check-label" for="act{{ e.pk }}">Ativo</label></div>
+          <button type="submit" class="btn btn-sm btn-outline-secondary">{% if e.active %}Desativar{% else %}Ativar{% endif %}</button>
+        </form>
+        <form method="post" action="{% url 'panel:experience_toggle' e.pk 'featured' %}" data-toggle="featured">
+          {% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="fea{{ e.pk }}" {% if e.featured %}checked{% endif %}><label class="form-check-label" for="fea{{ e.pk }}">Destaque</label></div>
+          <button type="submit" class="btn btn-sm btn-outline-secondary">{% if e.featured %}Tirar destaque{% else %}Destacar{% endif %}</button>
+        </form>
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'panel:experience_edit' e.pk %}"><i class="bi bi-pencil"></i> Editar</a>
+        {% if e.active %}<a class="btn btn-sm btn-link" href="{{ e.get_absolute_url }}" target="_blank" rel="noopener" title="Ver no site"><i class="bi bi-box-arrow-up-right"></i></a>{% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% else %}
+  <div class="empty"><i class="bi bi-compass"></i>Nenhum passeio encontrado.</div>
+{% endif %}
+{% endblock %}

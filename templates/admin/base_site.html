@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | TravelPipa{% endblock %}
+{% block extrastyle %}{{ block.super }}
+<style>
+  :root, html[data-theme="light"] {
+    --primary: #123B50; --secondary: #007F86; --accent: #FFB547; --primary-fg: #fff;
+    --header-color: #fff; --header-branding-color: #FFB547; --header-bg: #123B50; --header-link-color: #fff;
+    --breadcrumbs-bg: #007F86; --link-fg: #007F86; --link-hover-color: #00666C; --link-selected-fg: #123B50;
+    --button-bg: #007F86; --button-hover-bg: #00666C; --default-button-bg: #F47745; --default-button-hover-bg: #D95E2E;
+    --selected-row: #FFF3E0;
+  }
+  #branding h1 a { font-weight: 800; letter-spacing: -.02em; }
+  fieldset.module h2, fieldset.module summary { background: #007F86; }
+  .help, .helptext { font-size: 12.5px !important; }
+</style>{% endblock %}
+{% block branding %}<div id="site-name"><a href="{% url 'admin:index' %}">TravelPipa · Painel</a></div>
+{% if user.is_anonymous %}{% include "admin/color_theme_toggle.html" %}{% endif %}{% endblock %}

@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% load static i18n travelpipa %}
+
+{% block title %}{% trans "Pipa Tours, Boat Trips & Natal Airport Transfers" %}{% endblock %}
+{% block meta_description %}{% trans "Things to do in Pipa, Brazil: curated boat tours, buggy adventures, nature experiences and Natal airport transfers to Pipa, with personal assistance from a local boutique agency." %}{% endblock %}
+{% block body_class %}has-hero{% endblock %}
+{% block schema %}{{ schema }}{% endblock %}
+{% block head_extra %}<link rel="preload" as="image" href="{% if site.hero_image %}{{ site.hero_image.url }}{% else %}{% static 'img/demo/hero-pipa-demo.jpg' %}{% endif %}">{% endblock %}
+
+{% block content %}
+{# ---------- 1. Hero ---------- #}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-media">
+    {% if site.hero_image %}
+      <img src="{{ site.hero_image.url }}" alt="{% trans 'Panoramic view of Praia da Pipa, Brazil' %}" fetchpriority="high">
+    {% else %}
+      <img src="{% static 'img/demo/hero-pipa-demo.jpg' %}" alt="" fetchpriority="high" width="1920" height="1080">
+    {% endif %}
+  </div>
+  {% if not site.hero_image %}<span class="demo-chip"><i class="bi bi-image" aria-hidden="true"></i> {% trans "Demo image — replace in the admin panel" %}</span>{% endif %}
+  <div class="container">
+    <p class="eyebrow">Praia da Pipa · Rio Grande do Norte · {% trans "Brazil" %}</p>
+    <h1 id="hero-title">{% trans "Discover Pipa." %} <span class="accent">{% trans "Experience More." %}</span></h1>
+    <p class="hero-sub">{% trans "Curated tours, local experiences and seamless transfers in Pipa, Brazil." %}</p>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-accent btn-lg" href="{% url 'tours:experience_list' %}">{% trans "Explore Experiences" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      <a class="btn btn-light-ghost btn-lg" href="{% url 'tours:transfers' %}">{% trans "Airport transfers" %}</a>
+    </div>
+    <div class="hero-meta">
+      <span><i class="bi bi-geo-alt" aria-hidden="true"></i>{% trans "Local team in Pipa" %}</span>
+      <span><i class="bi bi-translate" aria-hidden="true"></i>English · Português · Español</span>
+      <span><i class="bi bi-chat-heart" aria-hidden="true"></i>{% trans "Personal assistance before and during your trip" %}</span>
+    </div>
+  </div>
+</section>
+
+{# ---------- Conditions strip (weather, sunset, tide) — loaded asynchronously ---------- #}
+<section class="cond-strip-wrap" aria-label="{% trans 'Tides and weather in Pipa' %}">
+  <div class="container">
+    <div data-fragment="{% url 'core:conditions_widget' %}">
+      <div class="cond-strip"><a class="cond-strip-link link-arrow" href="{% url 'core:tides_weather' %}">{% trans "Tides & weather" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
+    </div>
+  </div>
+</section>
+
+{# ---------- 3. Selected experiences ---------- #}
+<section class="section" aria-labelledby="exp-title">
+  <div class="container">
+    <div class="section-head-row reveal">
+      <div class="section-head">
+        <p class="eyebrow">{% trans "Selected experiences" %}</p>
+        <h2 id="exp-title">{% trans "A few things worth doing in Pipa" %}</h2>
+        <p class="lead mb-0">{% trans "A short, carefully chosen list instead of an endless catalogue — each experience is one we know and recommend." %}</p>
+      </div>
+      <a class="link-arrow" href="{% url 'tours:experience_list' %}">{% trans "See all experiences" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+    </div>
+
+    {% if featured %}
+      <div class="row g-4 exp-grid-editorial">
+        {% for exp in featured %}
+          <div class="{% if forloop.first and featured|length > 2 %}col-12{% else %}{{ rest_col }}{% endif %} reveal">
+            {% include "includes/experience_card.html" with exp=exp %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state"><i class="bi bi-compass" aria-hidden="true"></i><p class="mt-3 mb-0">{% trans "Our experiences will be published here soon." %}</p></div>
+    {% endif %}
+  </div>
+</section>
+
+{# ---------- 4. Transfers ---------- #}
+<section class="section-tight pb-0" aria-labelledby="transfer-title">
+  <div class="container">
+    <div class="transfer-hero-card reveal">
+      <div class="media">
+        {% with cover=main_transfer.cover %}
+          {% if cover %}<img src="{{ cover.image.url }}" alt="{{ cover.alt_text }}" loading="lazy" decoding="async">
+          {% else %}<div class="img-placeholder" aria-hidden="true"><i class="bi bi-car-front"></i></div>{% endif %}
+        {% endwith %}
+      </div>
+      <div class="body">
+        <p class="eyebrow">{% trans "Transfers" %}</p>
+        <h2 id="transfer-title">{% trans "Natal Airport to Pipa, without the guesswork" %}</h2>
+        <p>{% trans "Go from Natal airport straight to your accommodation in Pipa. Tell us your flight details and we organise the transfer with you." %}</p>
+        <div class="route">
+          <div class="route-point"><small>{% trans "From" context "route" %}</small>{{ main_transfer.origin|default:_("Natal Airport (NAT)") }}</div>
+          <div class="route-line"><i class="bi bi-car-front-fill" aria-hidden="true"></i></div>
+          <div class="route-point text-end"><small>{% trans "To" context "route" %}</small>{{ main_transfer.destination|default:"Praia da Pipa" }}</div>
+        </div>
+        <ul class="facts">
+          {% for t in transfers %}
+            {% if t.transfer_type %}<li><i class="bi bi-{% if t.transfer_type == 'private' %}person-check{% else %}people{% endif %}" aria-hidden="true"></i>{{ t.get_transfer_type_display }}{% if t.max_passengers %} · {% blocktrans count n=t.max_passengers %}up to {{ n }} passenger{% plural %}up to {{ n }} passengers{% endblocktrans %}{% endif %}</li>{% endif %}
+          {% endfor %}
+          {% if site.trust_der_vehicles %}<li><i class="bi bi-patch-check" aria-hidden="true"></i>{% trans "Registered with DER/RN" %}</li>{% endif %}
+          <li><i class="bi bi-people" aria-hidden="true"></i>{% trans "7-seat cars and large groups" %}</li>
+        </ul>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-accent" href="{% url 'bookings:request' %}{% if main_transfer %}?experience={{ main_transfer.slug }}{% endif %}">{% trans "Request a quote" %}</a>
+          <a class="btn btn-light-ghost" href="{% url 'tours:transfers' %}">{% trans "All transfers" %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- 5. Why TravelPipa ---------- #}
+<section class="section" aria-labelledby="why-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">{% trans "Why TravelPipa?" %}</p>
+      <h2 id="why-title">{% trans "A small agency that knows Pipa closely" %}</h2>
+    </div>
+    <div class="row g-4 g-lg-5">
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="why-item">
+          <span class="why-num">01</span>
+          <div class="why-icon"><i class="bi bi-geo-alt" aria-hidden="true"></i></div>
+          <h3>{% trans "Local knowledge" %}</h3>
+          <p>{% trans "We are based in Pipa and suggest what fits your dates, the tides and the kind of trip you want." %}</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="why-item">
+          <span class="why-num">02</span>
+          <div class="why-icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></div>
+          <h3>{% trans "Personal assistance" %}</h3>
+          <p>{% trans "A real person answers you in English, Portuguese or Spanish — before you book and during your stay." %}</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="why-item">
+          <span class="why-num">03</span>
+          <div class="why-icon"><i class="bi bi-patch-check" aria-hidden="true"></i></div>
+          <h3>{% trans "Carefully selected experiences" %}</h3>
+          <p>{% trans "Fewer options, chosen with care. We work with operators we know and only list experiences we would recommend to friends." %}</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3 reveal">
+        <div class="why-item">
+          <span class="why-num">04</span>
+          <div class="why-icon"><i class="bi bi-card-checklist" aria-hidden="true"></i></div>
+          <h3>{% trans "Clear booking information" %}</h3>
+          <p>{% trans "What is included, what is not, meeting points and cancellation rules — written clearly before you decide." %}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- 6. About the Pipa region ---------- #}
+<section class="section bg-white" aria-labelledby="pipa-title">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5 reveal">
+        <div class="region-media">
+          {% if site.about_image %}
+            <img src="{{ site.about_image.url }}" alt="{% trans 'Low tide at sunset in Praia da Pipa' %}" loading="lazy" decoding="async">
+          {% else %}
+            <img src="{% static 'img/demo/region-pipa-demo.jpg' %}" alt="" loading="lazy" decoding="async" width="1200" height="1500">
+            <span class="demo-chip"><i class="bi bi-image" aria-hidden="true"></i> {% trans "Demo image" %}</span>
+          {% endif %}
+          <div class="region-tag">Praia da Pipa<small>Tibau do Sul · RN</small></div>
+        </div>
+      </div>
+      <div class="col-lg-6 offset-lg-1 reveal">
+        <p class="eyebrow">{% trans "The region" %}</p>
+        <h2 id="pipa-title">{% trans "Cliffs, warm sea and a relaxed village" %}</h2>
+        {% if site.pipa_paragraphs %}
+          <div class="prose mt-4">{% for p in site.pipa_paragraphs %}<p>{{ p|linebreaksbr }}</p>{% endfor %}</div>
+        {% else %}
+          <div class="prose mt-4">
+            <p>{% trans "Praia da Pipa is a coastal village in Tibau do Sul, on the southern coast of Rio Grande do Norte, around 80 km from Natal. It is known for its coloured cliffs, natural pools at low tide and beaches backed by protected Atlantic Forest." %}</p>
+            <p>{% trans "Days here follow the rhythm of the sea: beaches and bays in the morning, sunset over the lagoon, and dinner in the village centre. We help you plan around the tides so you see each place at its best." %}</p>
+          </div>
+        {% endif %}
+        <a class="link-arrow mt-2" href="{% url 'core:about' %}">{% trans "About TravelPipa" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- 7. Testimonials (only real, published reviews) ---------- #}
+{% if testimonials %}
+<section class="section" aria-labelledby="reviews-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <p class="eyebrow">{% trans "Guest reviews" %}</p>
+      <h2 id="reviews-title">{% trans "What our guests say" %}</h2>
+    </div>
+    <div class="row g-4">
+      {% for t in testimonials %}
+        <div class="col-md-6 col-lg-4 reveal">
+          <figure class="quote-card m-0">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="quote-mark" aria-hidden="true">“</span>
+              {% if t.rating %}<span class="stars" aria-label="{% blocktrans with r=t.rating %}{{ r }} out of 5{% endblocktrans %}">{% for i in "12345" %}{% if forloop.counter <= t.rating %}<i class="bi bi-star-fill" aria-hidden="true"></i>{% else %}<i class="bi bi-star" aria-hidden="true"></i>{% endif %}{% endfor %}</span>{% endif %}
+            </div>
+            <blockquote class="mb-0">{{ t.text|linebreaksbr }}</blockquote>
+            <figcaption class="quote-author">
+              <span class="avatar" aria-hidden="true">{{ t.author_name|initials }}</span>
+              <span><strong>{{ t.author_name }}</strong>{% if t.author_country or t.source %}<br><small class="text-muted-tp">{{ t.author_country }}{% if t.author_country and t.source %} · {% endif %}{{ t.source }}</small>{% endif %}</span>
+            </figcaption>
+          </figure>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ---------- 8. Final call to action ---------- #}
+<section class="section{% if not testimonials %} pt-0{% endif %}" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta-band reveal">
+      <span class="sun" aria-hidden="true"></span><span class="sun-ring" aria-hidden="true"></span>
+      <div class="row align-items-end g-4">
+        <div class="col-lg-8">
+          <h2 id="cta-title">{% trans "Tell us your dates. We'll plan the rest with you." %}</h2>
+          <p class="mb-0">{% trans "Send a booking request with no commitment. We reply personally to confirm availability, details and price." %}</p>
+        </div>
+        <div class="col-lg-4 d-flex flex-wrap gap-2 justify-content-lg-end">
+          <a class="btn btn-light btn-lg" href="{% url 'bookings:request' %}" style="color:var(--tp-ocean)">{% trans "Request a Booking" %}</a>
+          {% if whatsapp_general_url %}<a class="btn btn-light-ghost btn-lg" href="{{ whatsapp_general_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> WhatsApp</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

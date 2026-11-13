@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load i18n travelpipa %}
+
+{% block title %}{{ experience.meta_title|default:experience.title }}{% endblock %}
+{% block meta_description %}{{ experience.meta_description|default:experience.summary|default:experience.description|striptags|truncatechars:160 }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_title %}{{ experience.title }}{% endblock %}
+{% block og_description %}{{ experience.summary|default:experience.description|truncatechars:200 }}{% endblock %}
+{% block og_image %}{% with cover=experience.cover %}{% if cover %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ cover.image.url }}">{% endif %}{% endwith %}{% endblock %}
+{% block robots %}{% if experience.is_demo %}<meta name="robots" content="noindex, follow">{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block schema %}{{ schema }}{% endblock %}
+{% block body_class %}has-book-bar{% endblock %}
+{% block whatsapp_float_url %}{{ whatsapp_url|default:whatsapp_general_url }}{% endblock %}
+
+{% block content %}
+{% url 'bookings:request' as booking_url %}
+<div class="container pt-4 pt-lg-5">
+  <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+    {% for name, url in breadcrumbs %}
+      {% if forloop.last %}<li class="breadcrumb-item active" aria-current="page">{{ name }}</li>
+      {% else %}<li class="breadcrumb-item"><a href="{{ url }}">{{ name }}</a></li>{% endif %}
+    {% endfor %}
+  </ol></nav>
+
+  {% if experience.is_demo %}
+    <div class="notice mb-4"><i class="bi bi-info-circle" aria-hidden="true"></i><div><strong>{% trans "Demo content." %}</strong> {% trans "This experience is a sample to show how the website works. Texts, photos and conditions are illustrative and are not a commercial offer." %}</div></div>
+  {% endif %}
+
+  {# ---------- Gallery ---------- #}
+  {% with images=experience.gallery %}
+    {% if images %}
+      <div class="gallery{% if images|length > 1 %} has-thumbs{% endif %}{% if images|length == 2 %} one-thumb{% endif %}">
+        {% for img in images|slice:":3" %}
+          <a class="{% if forloop.first %}g-main{% else %}g-thumb{% endif %}" href="{{ img.image.url }}" data-gallery data-alt="{{ img.alt_text }}">
+            <img src="{{ img.image.url }}" alt="{{ img.alt_text }}" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} decoding="async"{% if img.width %} width="{{ img.width }}" height="{{ img.height }}"{% endif %}>
+            {% if forloop.last and images|length > 3 %}<span class="g-more">+{{ images|length|add:"-3" }} {% trans "photos" %}</span>{% endif %}
+          </a>
+        {% endfor %}
+        {% for img in images|slice:"3:" %}<a href="{{ img.image.url }}" data-gallery data-alt="{{ img.alt_text }}" class="d-none" tabindex="-1" aria-hidden="true"></a>{% endfor %}
+      </div>
+    {% else %}
+      <div class="gallery"><div class="g-main"><div class="img-placeholder" aria-hidden="true"><i class="bi bi-image"></i></div></div></div>
+    {% endif %}
+  {% endwith %}
+</div>
+
+<div class="container py-4 py-lg-5">
+  <div class="row g-5">
+    <article class="col-lg-8">
+      <p class="eyebrow">{{ experience.category.name }}</p>
+      <h1 class="detail-title">{{ experience.title }}</h1>
+      <div class="detail-facts">
+        {% if experience.duration %}<span><i class="bi bi-clock" aria-hidden="true"></i>{{ experience.duration }}</span>{% endif %}
+        {% if experience.is_transfer and experience.transfer_type %}<span><i class="bi bi-car-front" aria-hidden="true"></i>{{ experience.get_transfer_type_display }}</span>{% endif %}
+        {% if experience.max_passengers %}<span><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans count n=experience.max_passengers %}Up to {{ n }} passenger{% plural %}Up to {{ n }} passengers{% endblocktrans %}</span>{% endif %}
+        <span><i class="bi bi-translate" aria-hidden="true"></i>{% trans "Assistance in English, Portuguese and Spanish" %}</span>
+      </div>
+
+      {% if experience.is_transfer and experience.origin %}
+        <div class="route route-light mb-4">
+          <div class="route-point"><small>{% trans "From" context "route" %}</small>{{ experience.origin }}</div>
+          <div class="route-line"><i class="bi bi-car-front-fill" aria-hidden="true"></i></div>
+          <div class="route-point text-end"><small>{% trans "To" context "route" %}</small>{{ experience.destination }}</div>
+        </div>
+      {% endif %}
+
+      {% if experience.description_paragraphs %}
+        <div class="prose lead-like mb-2">{% for p in experience.description_paragraphs %}<p>{{ p|linebreaksbr }}</p>{% endfor %}</div>
+      {% endif %}
+
+      {% if experience.video %}
+        <section class="detail-section" aria-labelledby="h-video">
+          <h2 id="h-video">{% trans "See what it's like" %}</h2>
+          <div class="video-frame">
+            <video controls playsinline preload="none"{% if experience.video_poster %} poster="{{ experience.video_poster.url }}"{% endif %}>
+              <source src="{{ experience.video.url }}" type="video/{% if experience.video.name|slice:'-5:' == '.webm' %}webm{% else %}mp4{% endif %}">
+              {% trans "Your browser cannot play this video." %}
+            </video>
+          </div>
+        </section>
+      {% endif %}
+
+      {% if experience.itinerary_list %}
+        <section class="detail-section" aria-labelledby="h-itinerary">
+          <h2 id="h-itinerary">{% trans "Itinerary" %}</h2>
+          <ol class="timeline">{% for step in experience.itinerary_list %}<li>{{ step }}</li>{% endfor %}</ol>
+        </section>
+      {% endif %}
+
+      {% if experience.included_list or experience.not_included_list %}
+        <section class="detail-section" aria-labelledby="h-included">
+          <div class="row g-4">
+            {% if experience.included_list %}
+              <div class="col-md-6">
+                <h2 id="h-included">{% trans "What's included" %}</h2>
+                <ul class="check-list">{% for item in experience.included_list %}<li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>{{ item }}</span></li>{% endfor %}</ul>
+              </div>
+            {% endif %}
+            {% if experience.not_included_list %}
+              <div class="col-md-6">
+                <h2{% if not experience.included_list %} id="h-included"{% endif %}>{% trans "Not included" %}</h2>
+                <ul class="x-list">{% for item in experience.not_included_list %}<li><i class="bi bi-x-circle-fill" aria-hidden="true"></i><span>{{ item }}</span></li>{% endfor %}</ul>
+              </div>
+            {% endif %}
+          </div>
+        </section>
+      {% endif %}
+
+      {% if experience.important_info_list %}
+        <section class="detail-section" aria-labelledby="h-important">
+          <h2 id="h-important">{% trans "Important information" %}</h2>
+          <ul class="info-list">{% for item in experience.important_info_list %}<li><i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>{{ item }}</span></li>{% endfor %}</ul>
+        </section>
+      {% endif %}
+
+      <section class="detail-section" aria-labelledby="h-cancel">
+        <h2 id="h-cancel">{% trans "Cancellation policy" %}</h2>
+        {% if cancellation_policy %}<div class="prose">{{ cancellation_policy|linebreaks }}</div>
+        {% else %}<p class="text-muted-tp mb-0">{% trans "Cancellation conditions are sent together with the confirmation of your booking." %}</p>{% endif %}
+      </section>
+
+      {% if testimonials %}
+        <section class="detail-section" aria-labelledby="h-reviews">
+          <h2 id="h-reviews">{% trans "Guest reviews" %}</h2>
+          <div class="d-grid gap-3">
+            {% for t in testimonials %}
+              <figure class="quote-card m-0"><blockquote class="m-0 mb-3">{{ t.text|linebreaksbr }}</blockquote>
+                <figcaption><strong>{{ t.author_name }}</strong>{% if t.author_country %} · <span class="text-muted-tp">{{ t.author_country }}</span>{% endif %}</figcaption></figure>
+            {% endfor %}
+          </div>
+        </section>
+      {% endif %}
+    </article>
+
+    <aside class="col-lg-4" aria-label="{% trans 'Booking' %}">
+      <div class="booking-aside">
+        <div class="booking-box" id="book">
+          {% price_block experience %}
+          <hr>
+          <div class="d-grid gap-2">
+            <a class="btn btn-accent btn-lg" href="{{ booking_url }}?experience={{ experience.slug }}">{% trans "Request a Booking" %}</a>
+            {% if whatsapp_url %}<a class="btn btn-whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> {% trans "Ask on WhatsApp" %}</a>{% endif %}
+          </div>
+          <hr>
+          <p class="note-small mb-2"><i class="bi bi-shield-check" aria-hidden="true"></i><span>{% trans "Sending a request is free and does not confirm the booking. We reply personally to confirm availability and details." %}</span></p>
+          <p class="note-small mb-0"><i class="bi bi-credit-card" aria-hidden="true"></i><span>{% trans "No online payment is taken on this website." %}</span></p>
+          {% if experience.cadastur_guide and site.trust_cadastur_guides %}
+            <p class="note-small trust-note mt-2 mb-0"><i class="bi bi-person-badge" aria-hidden="true"></i><span>{% trans "Tour guide registered in Cadastur (Ministry of Tourism)." %}</span></p>
+          {% endif %}
+          {% if experience.is_transfer and site.trust_der_vehicles %}
+            <p class="note-small trust-note mt-2 mb-0"><i class="bi bi-car-front" aria-hidden="true"></i><span>{% trans "Vehicles registered for tourist transport with DER/RN." %}</span></p>
+          {% endif %}
+        </div>
+        {% if experience.tide_dependent %}
+          <div class="mt-3" data-fragment="{% url 'core:conditions_widget' %}?v=tide">
+            <div class="booking-box tide-box"><a class="link-arrow small" href="{% url 'core:tides_weather' %}#tide-table">{% trans "Full tide table" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
+          </div>
+        {% endif %}
+      </div>
+    </aside>
+  </div>
+</div>
+
+{% if related %}
+<section class="section-tight bg-sand-2">
+  <div class="container">
+    <h2 class="h3 mb-4">{% trans "You may also like" %}</h2>
+    <div class="row g-4">
+      {% for exp in related %}<div class="col-sm-6 col-lg-4">{% include "includes/experience_card.html" with exp=exp %}</div>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<div class="mobile-book-bar">
+  {% price_block experience compact=True %}
+  <a class="btn btn-accent" href="{{ booking_url }}?experience={{ experience.slug }}">{% trans "Request a Booking" %}</a>
+</div>
+
+<div class="modal fade" id="galleryModal" tabindex="-1" aria-label="{% trans 'Photo gallery' %}" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <div class="d-flex justify-content-between align-items-center mb-2 text-white">
+        <span class="gallery-caption small"></span>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
+      </div>
+      <img alt="" class="w-100 rounded-4" style="max-height:80vh;object-fit:contain">
+      <div class="d-flex justify-content-center gap-2 mt-3">
+        <button type="button" class="btn btn-light-ghost btn-sm" data-gallery-nav="-1" aria-label="{% trans 'Previous photo' %}"><i class="bi bi-arrow-left" aria-hidden="true"></i></button>
+        <button type="button" class="btn btn-light-ghost btn-sm" data-gallery-nav="1" aria-label="{% trans 'Next photo' %}"><i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

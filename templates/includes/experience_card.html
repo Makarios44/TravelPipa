@@ -1,0 +1,22 @@
+{% load i18n travelpipa %}<article class="exp-card">
+  <div class="exp-card-media">
+    {% with cover=exp.cover %}
+      {% if cover %}<img src="{{ cover.image.url }}" alt="{{ cover.alt_text }}" loading="lazy" decoding="async"{% if cover.width %} width="{{ cover.width }}" height="{{ cover.height }}"{% endif %}>
+      {% else %}<div class="img-placeholder" aria-hidden="true"><i class="bi bi-image"></i></div>{% endif %}
+    {% endwith %}
+    <div class="exp-card-badges">
+      {% if exp.featured and show_featured %}<span class="chip chip-featured"><i class="bi bi-star-fill" aria-hidden="true"></i> {% trans "Featured" %}</span>{% else %}<span></span>{% endif %}
+      {% if exp.video %}<span class="chip"><i class="bi bi-play-circle-fill" aria-hidden="true"></i> {% trans "Video" %}</span>{% endif %}
+      {% if exp.is_demo %}<span class="demo-chip"><i class="bi bi-info-circle" aria-hidden="true"></i> {% trans "Demo" %}</span>{% endif %}
+    </div>
+  </div>
+  <div class="exp-card-body">
+    <div class="exp-card-cat">{{ exp.category.name }}</div>
+    <h3 class="exp-card-title"><a href="{{ exp.get_absolute_url }}">{{ exp.title }}</a></h3>
+    {% if exp.summary %}<p class="exp-card-summary">{{ exp.summary }}</p>{% endif %}
+    <div class="exp-card-foot">
+      {% if exp.duration %}<span class="exp-card-duration" title="{{ exp.duration }}"><i class="bi bi-clock" aria-hidden="true"></i><span class="exp-card-duration-text">{{ exp.duration }}</span></span>{% else %}<span></span>{% endif %}
+      {% price_block exp compact=True %}
+    </div>
+  </div>
+</article>

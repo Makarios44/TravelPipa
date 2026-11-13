@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n travelpipa %}
+
+{% block title %}{% trans "Request a Booking" %}{% if preselected %} — {{ preselected.title }}{% endif %}{% endblock %}
+{% block meta_description %}{% trans "Send a booking request for tours and transfers in Pipa, Brazil. No payment online — we reply personally to confirm availability." %}{% endblock %}
+{% block alternates %}<link rel="canonical" href="{{ canonical_url }}">{% for lang in site_languages %}<link rel="alternate" hreflang="{{ lang.code }}" href="{{ lang.url }}">{% endfor %}{% endblock %}
+
+{% block content %}
+<section class="page-hero pb-4">
+  <div class="container">
+    <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "Request a Booking" %}</li>
+    </ol></nav>
+    <p class="eyebrow">{% trans "Booking request" %}</p>
+    <h1>{% trans "Request a Booking" %}</h1>
+    <p class="lead">{% trans "Tell us what you would like to do and when. We reply personally — usually by WhatsApp or e-mail — to confirm availability, details and price." %}</p>
+  </div>
+</section>
+
+<section class="pb-5">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-8">
+        <form class="form-card" method="post" action="{% url 'bookings:request' %}" novalidate data-once>
+          {% csrf_token %}
+          {% include "includes/antispam_fields.html" %}
+
+          <div class="notice mb-4">
+            <i class="bi bi-info-circle" aria-hidden="true"></i>
+            <div><strong>{% trans "This is a request, not a confirmed booking." %}</strong> {% trans "Your booking is only confirmed after we contact you and agree on the details. No payment is taken on this website." %}</div>
+          </div>
+
+          {% if preselected %}
+            <div class="selected-exp">
+              {% with cover=preselected.cover %}{% if cover %}<img src="{{ cover.image.url }}" alt="" width="72" height="72">{% else %}<div class="img-placeholder"><i class="bi bi-image"></i></div>{% endif %}{% endwith %}
+              <div><small class="text-muted-tp d-block">{{ preselected.category.name }}</small><strong>{{ preselected.title }}</strong>{% if preselected.duration %}<small class="d-block text-muted-tp">{{ preselected.duration }}</small>{% endif %}</div>
+            </div>
+          {% endif %}
+
+          <fieldset>
+            <legend class="h5 mb-3">{% trans "Your trip" %}</legend>
+            {% include "includes/form_field.html" with field=form.experience %}
+            <div class="row g-3 mb-3">
+              <div class="col-sm-7">{% include "includes/form_field.html" with field=form.preferred_date wrapper_class="mb-0" %}</div>
+              <div class="col-sm-5">{% include "includes/form_field.html" with field=form.people wrapper_class="mb-0" %}</div>
+            </div>
+          </fieldset>
+
+          <fieldset class="mt-4">
+            <legend class="h5 mb-3">{% trans "Your details" %}</legend>
+            {% include "includes/form_field.html" with field=form.full_name %}
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">{% include "includes/form_field.html" with field=form.email wrapper_class="mb-0" %}</div>
+              <div class="col-md-6">{% include "includes/form_field.html" with field=form.phone wrapper_class="mb-0" %}</div>
+            </div>
+            {% include "includes/form_field.html" with field=form.service_language %}
+            {% include "includes/form_field.html" with field=form.notes %}
+          </fieldset>
+
+          {% include "includes/consent_field.html" %}
+
+          <div class="d-grid d-sm-flex gap-2 align-items-center">
+            <button type="submit" class="btn btn-accent btn-lg">{% trans "Send booking request" %} <i class="bi bi-send" aria-hidden="true"></i></button>
+            <small class="text-muted-tp ms-sm-2"><span class="text-danger">*</span> {% trans "Required fields" %}</small>
+          </div>
+        </form>
+      </div>
+
+      <aside class="col-lg-4">
+        <div class="booking-aside d-grid gap-3">
+          <div class="booking-box">
+            <h2 class="h5 mb-3">{% trans "How it works" %}</h2>
+            <ol class="timeline">
+              <li>{% trans "Send your request with the date and number of people." %}</li>
+              <li>{% trans "We check availability with the operator and contact you." %}</li>
+              <li>{% trans "Your booking is confirmed only after we agree on all details." %}</li>
+            </ol>
+          </div>
+          {% if whatsapp_general_url %}
+            <div class="booking-box">
+              <h2 class="h6">{% trans "Prefer to chat?" %}</h2>
+              <p class="small text-muted-tp">{% trans "Send us a message on WhatsApp and we will help you choose." %}</p>
+              <a class="btn btn-whatsapp w-100" href="{{ whatsapp_general_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> WhatsApp</a>
+            </div>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

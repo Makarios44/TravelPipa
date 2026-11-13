@@ -1,0 +1,5 @@
+{% load i18n %}{% url 'core:privacy' as privacy_url %}<div class="form-check mb-4">
+  {{ form.consent }}
+  <label class="form-check-label" for="{{ form.consent.id_for_label }}">{{ form.consent.label }} <a href="{{ privacy_url }}" target="_blank" rel="noopener">{% trans "Read the Privacy Policy" %}</a>. <span class="req text-danger" aria-hidden="true">*</span></label>
+  {% if form.consent.errors %}<div class="invalid-feedback d-block" id="id_consent_error">{{ form.consent.errors|join:" " }}</div>{% endif %}
+</div>
