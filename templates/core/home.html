@@ -217,10 +217,10 @@
       <div class="row align-items-end g-4">
         <div class="col-lg-8">
           <h2 id="cta-title">{% trans "Tell us your dates. We'll plan the rest with you." %}</h2>
-          <p class="mb-0">{% trans "Send a booking request with no commitment. We reply personally to confirm availability, details and price." %}</p>
+          <p class="mb-0">{% trans "Book online in a few minutes, with no payment now. We contact you shortly with all the details." %}</p>
         </div>
         <div class="col-lg-4 d-flex flex-wrap gap-2 justify-content-lg-end">
-          <a class="btn btn-light btn-lg" href="{% url 'bookings:request' %}" style="color:var(--tp-ocean)">{% trans "Request a Booking" %}</a>
+          <a class="btn btn-light btn-lg" href="{% url 'bookings:request' %}" style="color:var(--tp-ocean)">{% trans "Book Now" %}</a>
           {% if whatsapp_general_url %}<a class="btn btn-light-ghost btn-lg" href="{{ whatsapp_general_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> WhatsApp</a>{% endif %}
         </div>
       </div>

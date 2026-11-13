@@ -16,7 +16,7 @@
       <h2><i class="bi bi-person"></i> Cliente e pedido</h2>
       <dl class="dl">
         <dt>Passeio</dt><dd>{% if booking.experience %}<a href="{% url 'panel:experience_edit' booking.experience.pk %}">{{ booking.experience.title_pt|default:booking.experience.title_en }}</a>{% else %}{{ booking.experience_title }} <small class="muted">(passeio excluído)</small>{% endif %}</dd>
-        <dt>Data pretendida</dt><dd>{{ booking.preferred_date|date:"l, d/m/Y" }}</dd>
+        <dt>Data do passeio</dt><dd>{{ booking.preferred_date|date:"l, d/m/Y" }}</dd>
         <dt>Pessoas</dt><dd>{{ booking.people }}</dd>
         <dt>Nome</dt><dd>{{ booking.full_name }}</dd>
         <dt>E-mail</dt><dd><a href="mailto:{{ booking.email }}">{{ booking.email }}</a></dd>

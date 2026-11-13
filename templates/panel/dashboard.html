@@ -12,7 +12,7 @@
 {% endif %}
 
 <div class="row g-3 mb-4">
-  <div class="col-6 col-lg-3"><a class="stat {% if stats.pending %}hot{% endif %}" href="{% url 'panel:bookings' %}?status=pending"><div class="n">{{ stats.pending }}</div><div class="l">Reservas pendentes</div></a></div>
+  <div class="col-6 col-lg-3"><a class="stat {% if stats.pending %}hot{% endif %}" href="{% url 'panel:bookings' %}?status=pending"><div class="n">{{ stats.pending }}</div><div class="l">Reservas novas (falta contato)</div></a></div>
   <div class="col-6 col-lg-3"><a class="stat" href="{% url 'panel:bookings' %}?when=upcoming"><div class="n">{{ stats.upcoming }}</div><div class="l">Reservas a partir de hoje</div></a></div>
   <div class="col-6 col-lg-3"><a class="stat" href="{% url 'panel:experiences' %}?show=active"><div class="n">{{ stats.active_tours }}</div><div class="l">Passeios ativos{% if stats.inactive_tours %} · {{ stats.inactive_tours }} desativado(s){% endif %}</div></a></div>
   <div class="col-6 col-lg-3"><a class="stat {% if stats.messages %}hot{% endif %}" href="{% url 'panel:messages' %}"><div class="n">{{ stats.messages }}</div><div class="l">Mensagens sem resposta</div></a></div>

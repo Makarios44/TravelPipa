@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-12 21:33-0300\n"
+"POT-Creation-Date: 2026-11-13 20:42-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr "Elige una experiencia disponible."
 
 #: bookings/forms.py:25
 msgid "Preferred date"
-msgstr "Fecha deseada"
+msgstr "Fecha del paseo"
 
 #: bookings/forms.py:26
 msgid "Number of people"
@@ -301,22 +301,17 @@ msgstr "Escríbenos por WhatsApp"
 
 #: templates/bookings/booking_form.html:4
 #: templates/bookings/booking_form.html:13
-#: templates/bookings/booking_form.html:16 templates/core/home.html:223
-#: templates/includes/footer.html:21 templates/includes/header.html:27
-#: templates/includes/header.html:51
-#: templates/tours/experience_detail.html:141
-#: templates/tours/experience_detail.html:177
-#: templates/tours/transfers.html:44
-msgid "Request a Booking"
-msgstr "Solicitar reserva"
+#: templates/bookings/booking_form.html:16
+msgid "Book your experience"
+msgstr "Haz tu reserva"
 
 #: templates/bookings/booking_form.html:5
 msgid ""
-"Send a booking request for tours and transfers in Pipa, Brazil. No payment "
-"online — we reply personally to confirm availability."
+"Book tours and transfers in Pipa, Brazil, online in a few minutes. Our team "
+"then contacts you with all the details."
 msgstr ""
-"Envía una solicitud de reserva para tours y traslados en Pipa, Brasil. Sin "
-"pago online: respondemos personalmente para confirmar la disponibilidad."
+"Reserva paseos y traslados en Pipa online, en pocos minutos. Después, "
+"nuestro equipo te contacta con todos los detalles."
 
 #: templates/bookings/booking_form.html:11 templates/core/about.html:9
 #: templates/core/contact.html:9 templates/core/legal.html:9
@@ -336,29 +331,27 @@ msgid "Home"
 msgstr "Inicio"
 
 #: templates/bookings/booking_form.html:15
-msgid "Booking request"
-msgstr "Solicitud de reserva"
+msgid "Online booking"
+msgstr "Reserva online"
 
 #: templates/bookings/booking_form.html:17
 msgid ""
-"Tell us what you would like to do and when. We reply personally — usually by"
-" WhatsApp or e-mail — to confirm availability, details and price."
+"Choose the date and the number of people. Your booking is registered right "
+"away and we contact you by WhatsApp or e-mail with the next details."
 msgstr ""
-"Cuéntanos qué te gustaría hacer y cuándo. Respondemos personalmente "
-"—normalmente por WhatsApp o correo— para confirmar disponibilidad, detalles "
-"y precio."
+"Elige la fecha y el número de personas. Tu reserva queda registrada al "
+"instante y te contactamos por WhatsApp o e-mail con los siguientes detalles."
 
 #: templates/bookings/booking_form.html:31
-msgid "This is a request, not a confirmed booking."
-msgstr "Esto es una solicitud, no una reserva confirmada."
+msgid "Quick, with no payment now."
+msgstr "Rápido y sin pagar nada ahora."
 
 #: templates/bookings/booking_form.html:31
 msgid ""
-"Your booking is only confirmed after we contact you and agree on the "
-"details. No payment is taken on this website."
+"We agree on payment and the meeting point with you right after the booking."
 msgstr ""
-"Tu reserva solo se confirma después de que te contactemos y acordemos los "
-"detalles. No se realiza ningún pago en este sitio."
+"El pago y el punto de encuentro se acuerdan contigo justo después de la "
+"reserva."
 
 #: templates/bookings/booking_form.html:42
 msgid "Your trip"
@@ -369,8 +362,8 @@ msgid "Your details"
 msgstr "Tus datos"
 
 #: templates/bookings/booking_form.html:64
-msgid "Send booking request"
-msgstr "Enviar solicitud de reserva"
+msgid "Confirm booking"
+msgstr "Confirmar reserva"
 
 #: templates/bookings/booking_form.html:65
 msgid "Required fields"
@@ -381,16 +374,17 @@ msgid "How it works"
 msgstr "Cómo funciona"
 
 #: templates/bookings/booking_form.html:75
-msgid "Send your request with the date and number of people."
-msgstr "Envía tu solicitud con la fecha y el número de personas."
+msgid "Choose the date and the number of people."
+msgstr "Elige la fecha y el número de personas."
 
 #: templates/bookings/booking_form.html:76
-msgid "We check availability with the operator and contact you."
-msgstr "Comprobamos la disponibilidad con el operador y te contactamos."
+msgid "Your booking is registered right away."
+msgstr "Tu reserva queda registrada al instante."
 
 #: templates/bookings/booking_form.html:77
-msgid "Your booking is confirmed only after we agree on all details."
-msgstr "La reserva solo se confirma cuando acordamos todos los detalles."
+msgid "We contact you with the meeting point, time and payment details."
+msgstr ""
+"Te contactamos con el punto de encuentro, el horario y la forma de pago."
 
 #: templates/bookings/booking_form.html:82
 msgid "Prefer to chat?"
@@ -401,33 +395,33 @@ msgid "Send us a message on WhatsApp and we will help you choose."
 msgstr "Envíanos un mensaje por WhatsApp y te ayudamos a elegir."
 
 #: templates/bookings/booking_thanks.html:3
-msgid "Request received"
-msgstr "Solicitud recibida"
+msgid "Booking done"
+msgstr "Reserva hecha"
 
 #: templates/bookings/booking_thanks.html:12
-msgid "Thank you! Your request was received."
-msgstr "¡Gracias! Recibimos tu solicitud."
+msgid "Your booking is done!"
+msgstr "¡Reserva hecha!"
 
 #: templates/bookings/booking_thanks.html:13
 #, python-format
-msgid "We received your request for <strong>%(title)s</strong>."
-msgstr "Recibimos tu solicitud para <strong>%(title)s</strong>."
+msgid "Your booking for <strong>%(title)s</strong> has been registered."
+msgstr "Tu reserva para <strong>%(title)s</strong> ha sido registrada."
 
 #: templates/bookings/booking_thanks.html:14
-msgid "Your request code"
-msgstr "Código de tu solicitud"
+msgid "Your booking code"
+msgstr "Tu código de reserva"
 
 #: templates/bookings/booking_thanks.html:18
-msgid "Your booking is not confirmed yet."
-msgstr "Tu reserva aún no está confirmada."
+msgid "Next step:"
+msgstr "Próximo paso:"
 
 #: templates/bookings/booking_thanks.html:18
 msgid ""
-"We will contact you personally to confirm availability, details and price. "
-"Please keep your request code for reference."
+"our team will contact you shortly by WhatsApp or e-mail with the meeting "
+"point, time and payment details. Keep your booking code handy."
 msgstr ""
-"Te contactaremos personalmente para confirmar disponibilidad, detalles y "
-"precio. Guarda el código de tu solicitud como referencia."
+"nuestro equipo te contactará en breve por WhatsApp o e-mail con el punto de "
+"encuentro, el horario y la forma de pago. Guarda tu código de reserva."
 
 #: templates/bookings/booking_thanks.html:21
 msgid "Send a WhatsApp message"
@@ -774,7 +768,6 @@ msgstr ""
 " antes de que decidas."
 
 #: templates/core/home.html:158
-#| msgid "Cliffs and beach in Praia da Pipa"
 msgid "Low tide at sunset in Praia da Pipa"
 msgstr "Marea baja al atardecer en Praia da Pipa"
 
@@ -835,11 +828,19 @@ msgstr "Cuéntanos tus fechas. Planificamos el resto contigo."
 
 #: templates/core/home.html:220
 msgid ""
-"Send a booking request with no commitment. We reply personally to confirm "
-"availability, details and price."
+"Book online in a few minutes, with no payment now. We contact you shortly "
+"with all the details."
 msgstr ""
-"Envía una solicitud de reserva sin compromiso. Respondemos personalmente "
-"para confirmar disponibilidad, detalles y precio."
+"Reserva online en pocos minutos, sin pagar nada ahora. En breve te "
+"contactamos con todos los detalles."
+
+#: templates/core/home.html:223 templates/includes/footer.html:21
+#: templates/includes/header.html:27 templates/includes/header.html:51
+#: templates/tours/experience_detail.html:141
+#: templates/tours/experience_detail.html:177
+#: templates/tours/transfers.html:44
+msgid "Book Now"
+msgstr "Reservar ahora"
 
 #: templates/core/legal.html:3 templates/core/legal.html:11
 #: templates/core/legal.html:13 templates/includes/footer.html:31
@@ -861,10 +862,10 @@ msgstr ""
 
 #: templates/core/legal.html:4
 msgid ""
-"Terms and conditions for booking requests, tours and transfers with "
+"Terms and conditions for online bookings, tours and transfers with "
 "TravelPipa."
 msgstr ""
-"Términos y condiciones para solicitudes de reserva, tours y traslados con "
+"Términos y condiciones para reservas online, paseos y traslados con "
 "TravelPipa."
 
 #: templates/core/legal_privacy_default.html:2
@@ -983,19 +984,21 @@ msgid "Use the contact page to send your request."
 msgstr "Usa la página de contacto para enviar tu solicitud."
 
 #: templates/core/legal_terms_default.html:2
-msgid "Booking requests"
-msgstr "Solicitudes de reserva"
+msgid "Online bookings"
+msgstr "Reservas online"
 
 #: templates/core/legal_terms_default.html:3
 msgid ""
-"Forms on this website send a booking request. A request is not a confirmed "
-"booking. Your booking is confirmed only after our team contacts you and "
-"agrees on date, details, price and payment terms."
+"Bookings made on this website are registered immediately. Our team then "
+"contacts you to agree on the meeting point, time and payment. If weather, "
+"tides or sea conditions make the experience unsafe on the chosen date, we "
+"offer you another date or time."
 msgstr ""
-"Los formularios de este sitio envían una solicitud de reserva. Una solicitud"
-" no es una reserva confirmada. La reserva solo se confirma después de que "
-"nuestro equipo te contacte y acuerde fecha, detalles, precio y forma de "
-"pago."
+"Las reservas hechas en este sitio se registran al instante. Después, nuestro"
+" equipo te contacta para acordar el punto de encuentro, el horario y el "
+"pago. Si el clima, la marea o las condiciones del mar hacen que la "
+"experiencia no sea segura en la fecha elegida, te ofrecemos otra fecha u "
+"horario."
 
 #: templates/core/legal_terms_default.html:4
 msgid "Prices and payment"
@@ -1194,11 +1197,11 @@ msgstr ""
 
 #: templates/core/tides_weather.html:127
 msgid ""
-"When you send a booking request, we check the tide for your date and suggest"
-" the best time."
+"After you book, we check the tide for your date and set the best time with "
+"you."
 msgstr ""
-"Cuando envías una solicitud de reserva, revisamos la marea de tu fecha y te "
-"sugerimos el mejor horario."
+"Después de reservar, revisamos la marea de tu fecha y acordamos contigo el "
+"mejor horario."
 
 #: templates/core/tides_weather.html:132
 msgid "Experiences planned around the tide"
@@ -1236,11 +1239,12 @@ msgstr "Próximas mareas bajas en Pipa:"
 
 #: templates/includes/conditions_tide_box.html:11
 msgid ""
-"Natural pools on this route appear at low tide. When you send a request, we "
-"check the tide for your date and suggest the best time."
+"Natural pools on this route appear at low tide. After you book, we check the"
+" tide for your date and set the best time with you."
 msgstr ""
-"Las piscinas naturales de esta ruta aparecen con la marea baja. Al enviar tu"
-" solicitud, revisamos la marea de tu fecha y te sugerimos el mejor horario."
+"Las piscinas naturales de esta ruta aparecen con la marea baja. Después de "
+"reservar, revisamos la marea de tu fecha y acordamos contigo el mejor "
+"horario."
 
 #: templates/includes/conditions_tide_box.html:13
 #: templates/tours/experience_detail.html:156
@@ -1348,12 +1352,12 @@ msgid "Cadastur no. %(n)s"
 msgstr "Cadastur n.º %(n)s"
 
 #: templates/includes/trust_strip.html:13
-msgid "No online payment"
-msgstr "Sin pago online"
+msgid "Book now, pay later"
+msgstr "Reserva ahora, paga después"
 
 #: templates/includes/trust_strip.html:13
-msgid "Your booking is confirmed only after we talk"
-msgstr "La reserva se confirma solo después de hablar contigo"
+msgid "Nothing is charged on the website"
+msgstr "No se cobra nada en el sitio"
 
 #: templates/tours/experience_detail.html:26
 msgid "Demo content."
@@ -1430,15 +1434,15 @@ msgstr "Preguntar por WhatsApp"
 
 #: templates/tours/experience_detail.html:145
 msgid ""
-"Sending a request is free and does not confirm the booking. We reply "
-"personally to confirm availability and details."
+"Book in a few minutes. We contact you shortly with the meeting point and "
+"details."
 msgstr ""
-"Enviar la solicitud es gratis y no confirma la reserva. Respondemos "
-"personalmente para confirmar disponibilidad y detalles."
+"Reserva en pocos minutos. En breve te contactamos con el punto de encuentro "
+"y los detalles."
 
 #: templates/tours/experience_detail.html:146
-msgid "No online payment is taken on this website."
-msgstr "No se realizan pagos online en este sitio."
+msgid "No payment now: you pay after we agree on the details."
+msgstr "Sin pago ahora: pagas después de acordar los detalles."
 
 #: templates/tours/experience_detail.html:148
 msgid "Tour guide registered in Cadastur (Ministry of Tourism)."
@@ -1495,10 +1499,10 @@ msgstr "Experiencias en Pipa"
 #: templates/tours/experience_list.html:17
 msgid ""
 "Boat trips, buggy rides along the dunes, beaches, nature and local life. "
-"Choose an experience to see the details and send a booking request."
+"Choose an experience to see the details and book online."
 msgstr ""
 "Paseos en barco, buggy por las dunas, playas, naturaleza y vida local. Elige"
-" una experiencia para ver los detalles y enviar una solicitud de reserva."
+" una experiencia para ver los detalles y reservar online."
 
 #: templates/tours/experience_list.html:23
 msgid "Filter by category"
@@ -1566,8 +1570,8 @@ msgid "Other transfers"
 msgstr "Otros traslados"
 
 #: templates/tours/transfers.html:71
-msgid "Request"
-msgstr "Solicitar"
+msgid "Book"
+msgstr "Reservar"
 
 #: templates/tours/transfers.html:81
 msgid ""
@@ -1582,23 +1586,21 @@ msgstr "Envía tu vuelo"
 
 #: templates/tours/transfers.html:91
 msgid ""
-"Share your flight number and arrival time in the request so the pickup can "
-"be planned around it."
+"Share your flight number and arrival time when you book so the pickup can be"
+" planned around it."
 msgstr ""
-"Indica tu número de vuelo y la hora de llegada en la solicitud para "
-"planificar la recogida."
+"Indica el número de vuelo y la hora de llegada al reservar para organizar la"
+" recogida."
 
 #: templates/tours/transfers.html:92
 msgid "Meet your driver"
 msgstr "Encuentra a tu conductor"
 
 #: templates/tours/transfers.html:92
-msgid ""
-"Once your transfer is confirmed, you receive the meeting point and pickup "
-"details."
+msgid "After you book, you receive the meeting point and pickup details."
 msgstr ""
-"Con el traslado confirmado, recibes el punto de encuentro y los detalles de "
-"la recogida."
+"Después de reservar, recibes el punto de encuentro y los detalles de la "
+"recogida."
 
 #: templates/tours/transfers.html:93
 msgid "Arrive relaxed"

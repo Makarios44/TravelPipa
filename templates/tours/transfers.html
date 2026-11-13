@@ -41,7 +41,7 @@
             {% if site.trust_der_vehicles %}<li><i class="bi bi-patch-check" aria-hidden="true"></i>{% trans "Registered with DER/RN" %}</li>{% endif %}
           </ul>
           <div class="d-flex flex-wrap align-items-center gap-3">
-            <a class="btn btn-accent" href="{% url 'bookings:request' %}?experience={{ t.slug }}">{% if t.price is None %}{% trans "Request a quote" %}{% else %}{% trans "Request a Booking" %}{% endif %}</a>
+            <a class="btn btn-accent" href="{% url 'bookings:request' %}?experience={{ t.slug }}">{% if t.price is None %}{% trans "Request a quote" %}{% else %}{% trans "Book Now" %}{% endif %}</a>
             <a class="btn btn-light-ghost" href="{{ t.get_absolute_url }}">{% trans "Details" %}</a>
             <div class="ms-auto text-white">{% if t.price is not None %}<div class="price" style="color:#fff">{% if t.price_is_starting %}<span class="price-from" style="color:rgba(255,255,255,.7)">{% trans "From" %}</span>{% endif %}<span class="price-amount">{{ t.price|money:t.currency }}</span></div>{% endif %}</div>
           </div>
@@ -68,7 +68,7 @@
                 {% if t.summary %}<p class="text-muted-tp small">{{ t.summary }}</p>{% endif %}
                 <div class="mt-auto d-flex justify-content-between align-items-center gap-2 pt-2">
                   {% price_block t compact=True %}
-                  <a class="btn btn-primary btn-sm" href="{% url 'bookings:request' %}?experience={{ t.slug }}">{% if t.price is None %}{% trans "Request a quote" %}{% else %}{% trans "Request" %}{% endif %}</a>
+                  <a class="btn btn-primary btn-sm" href="{% url 'bookings:request' %}?experience={{ t.slug }}">{% if t.price is None %}{% trans "Request a quote" %}{% else %}{% trans "Book" %}{% endif %}</a>
                 </div>
               </div>
             </div>
@@ -88,8 +88,8 @@
 <section class="section-tight bg-white">
   <div class="container">
     <div class="row g-4">
-      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-airplane" aria-hidden="true"></i></div><h3>{% trans "Send your flight" %}</h3><p>{% trans "Share your flight number and arrival time in the request so the pickup can be planned around it." %}</p></div></div>
-      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-signpost" aria-hidden="true"></i></div><h3>{% trans "Meet your driver" %}</h3><p>{% trans "Once your transfer is confirmed, you receive the meeting point and pickup details." %}</p></div></div>
+      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-airplane" aria-hidden="true"></i></div><h3>{% trans "Send your flight" %}</h3><p>{% trans "Share your flight number and arrival time when you book so the pickup can be planned around it." %}</p></div></div>
+      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-signpost" aria-hidden="true"></i></div><h3>{% trans "Meet your driver" %}</h3><p>{% trans "After you book, you receive the meeting point and pickup details." %}</p></div></div>
       <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-house-heart" aria-hidden="true"></i></div><h3>{% trans "Arrive relaxed" %}</h3><p>{% trans "Go straight to your accommodation in Pipa, with assistance in your language." %}</p></div></div>
     </div>
   </div>

@@ -169,8 +169,8 @@ Os arquivos `.mo` compilados já estão no projeto, então o servidor não preci
 
 1. O visitante escolhe a experiência (ou chega pelo botão “Request a Booking” da página do passeio, que já pré-seleciona a experiência).
 2. Informa data, número de pessoas, nome, e-mail, WhatsApp/telefone, idioma de atendimento, observações e aceita o consentimento LGPD.
-3. A solicitação é salva com código único `TP-XXXXXXX`, status **Pendente**, data e horário.
-4. A página de confirmação mostra o código e deixa claro que **a reserva ainda não está confirmada**. Nenhum pagamento é processado.
+3. A reserva é salva com código único `TP-XXXXXXX`, status **Nova — falta contato**, data e horário.
+4. O cliente vê **"Reserva feita!"** com o código, e a informação de que a equipe entra em contato em breve com ponto de encontro, horário e forma de pagamento. Nenhum pagamento é processado no site.
 5. Com o e-mail configurado (`RESEND_API_KEY`, ou `EMAIL_HOST` em servidores que permitem SMTP), a equipe recebe um aviso com os dados e o link para o painel. **Responder esse e-mail responde direto para o cliente.** Os destinatários vêm de `NOTIFICATION_EMAILS` ou, se vazio, do e-mail das configurações do site. Configuração na seção 9.4.
 
 Os botões de WhatsApp usam o número das configurações do site e já levam uma mensagem com o nome e o link da experiência.
@@ -293,7 +293,7 @@ O Railway bloqueia o envio por SMTP nos planos Free, Trial e Hobby. Por isso, o 
 1. Crie a conta em resend.com → **Domains → Add Domain** → `travelpipa.com.br`.
 2. A Resend mostra alguns registros (TXT/MX/CNAME) num **subdomínio próprio de envio**. Crie esses registros na Cloudflare. Eles não mexem no e-mail `suporte@`, que continua recebendo normalmente.
 3. Depois que o domínio aparecer como verificado, crie uma **API Key** (permissão *Sending access*) e coloque em `RESEND_API_KEY`.
-4. Faça uma solicitação de reserva de teste: o aviso chega em `suporte@`, e **responder o e-mail responde direto para o cliente**.
+4. Faça uma reserva de teste: o aviso chega no e-mail de `NOTIFICATION_EMAILS`, e **responder o e-mail responde direto para o cliente**.
 
 ### 9.5 Depois de publicar
 - Entre em `https://travelpipa.com.br/gestao/` com o usuário criado e preencha **Configurações**: WhatsApp, CNPJ, número Cadastur e redes sociais.

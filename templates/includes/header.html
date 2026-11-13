@@ -24,7 +24,7 @@
             {% endfor %}
           </ul>
         </div>
-        <a class="btn btn-accent btn-sm d-none d-md-inline-flex" href="{% url 'bookings:request' %}">{% trans "Request a Booking" %}</a>
+        <a class="btn btn-accent btn-sm d-none d-md-inline-flex" href="{% url 'bookings:request' %}">{% trans "Book Now" %}</a>
         <button class="menu-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="{% trans 'Open menu' %}">
           <i class="bi bi-list" aria-hidden="true"></i>
         </button>
@@ -48,7 +48,7 @@
       <a class="nav-link{% if url_name == 'contact' %} active{% endif %}" href="{% url 'core:contact' %}">{% trans "Contact" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
     </nav>
     <div class="mt-4 d-grid gap-2">
-      <a class="btn btn-accent btn-lg" href="{% url 'bookings:request' %}">{% trans "Request a Booking" %}</a>
+      <a class="btn btn-accent btn-lg" href="{% url 'bookings:request' %}">{% trans "Book Now" %}</a>
       {% if whatsapp_general_url %}<a class="btn btn-whatsapp btn-lg" href="{{ whatsapp_general_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> WhatsApp</a>{% endif %}
     </div>
     <div class="mobile-lang d-flex gap-2 mt-auto pt-4">

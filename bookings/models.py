@@ -17,7 +17,7 @@ class BookingRequest(TimeStampedModel):
     """A booking *request*. It is never confirmed automatically and no payment is taken."""
 
     class Status(models.TextChoices):
-        PENDING = "pending", "Pendente (Pending)"
+        PENDING = "pending", "Nova — falta contato (New)"
         CONTACTED = "contacted", "Contatado (Contacted)"
         CONFIRMED = "confirmed", "Confirmada (Confirmed)"
         REJECTED = "rejected", "Recusada (Rejected)"
@@ -75,7 +75,7 @@ class BookingRequest(TimeStampedModel):
 
     @property
     def status_label(self):
-        """Portuguese status name only, e.g. "Pendente"."""
+        """Portuguese status name only, e.g. "Nova — falta contato"."""
         return self.get_status_display().split(" (")[0]
 
     @property

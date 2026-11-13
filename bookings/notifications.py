@@ -47,11 +47,11 @@ def notify_new_booking(request, booking):
     panel_url = absolute(request, reverse("panel:booking_detail", args=[booking.pk]))
     created = timezone.localtime(booking.created_at)
     body = "\n".join([
-        "Nova solicitação de reserva recebida pelo site.",
+        "Nova reserva feita pelo site.",
         "",
         f"Código: {booking.reference}",
         f"Experiência: {booking.experience_title}",
-        f"Data pretendida: {booking.preferred_date:%d/%m/%Y}",
+        f"Data do passeio: {booking.preferred_date:%d/%m/%Y}",
         f"Pessoas: {booking.people}",
         f"Cliente: {booking.full_name}",
         f"E-mail: {booking.email}",
@@ -62,11 +62,12 @@ def notify_new_booking(request, booking):
         "",
         f"Abrir no painel: {panel_url}",
         "",
-        "Lembre-se: a solicitação NÃO está confirmada. Entre em contato com o cliente.",
+        "O cliente já recebeu a mensagem de que a reserva foi feita e aguarda o contato da equipe.",
+        "Entre em contato em breve com ponto de encontro, horário e forma de pagamento.",
         "Responder este e-mail envia a resposta direto para o cliente.",
     ])
     try:
-        send(f"[TravelPipa] Nova solicitação {booking.reference} — {booking.experience_title}",
+        send(f"[TravelPipa] Nova reserva {booking.reference} — {booking.experience_title}",
              body, recipients, reply_to=booking.email)
     except Exception:
         logger.exception("Could not send notification for booking %s", booking.reference)

@@ -175,8 +175,8 @@ class PublicPagesTests(BaseTestCase):
         self.assertContains(self.client.get("/en/"), "Discover Pipa.")
         pt_detail = self.client.get("/pt-br/passeios/dolphin-bay-boat-tour/")
         self.assertContains(pt_detail, "Passeio à Baía dos Golfinhos")
-        self.assertContains(pt_detail, "Solicitar reserva")
-        self.assertNotContains(pt_detail, "Request a Booking")
+        self.assertContains(pt_detail, "Reservar agora")
+        self.assertNotContains(pt_detail, "Book Now")
 
     def test_seo_tags(self):
         response = self.client.get("/en/experiences/dolphin-bay-boat-tour/")
@@ -276,7 +276,7 @@ class BookingFlowTests(BaseTestCase):
     def test_preselected_experience(self):
         response = self.client.get("/en/book/?experience=dolphin-bay-boat-tour")
         self.assertEqual(response.context["form"].initial["experience"], self.boat.pk)
-        self.assertContains(response, "This is a request, not a confirmed booking.")
+        self.assertContains(response, "Quick, with no payment now.")
 
     def test_valid_request_is_saved_and_not_confirmed(self):
         response = self.client.post(reverse("bookings:request"), self.booking_payload())
@@ -288,7 +288,7 @@ class BookingFlowTests(BaseTestCase):
         self.assertIsNotNone(booking.consent_at)
         thanks = self.client.get(reverse("bookings:thanks"))
         self.assertContains(thanks, booking.reference)
-        self.assertContains(thanks, "not confirmed yet")
+        self.assertContains(thanks, "Your booking is done!")
         # No personal data on the confirmation page
         self.assertNotContains(thanks, "maria@example.com")
         self.assertNotContains(thanks, "7700")
@@ -301,7 +301,7 @@ class BookingFlowTests(BaseTestCase):
         response = self.client.post(url, data)
         self.assertRedirects(response, "/pt-br/reservar/obrigado/")
         self.assertEqual(BookingRequest.objects.get().site_language, "pt-br")
-        self.assertContains(self.client.get("/pt-br/reservar/obrigado/"), "ainda não está confirmada")
+        self.assertContains(self.client.get("/pt-br/reservar/obrigado/"), "Reserva feita!")
 
     def test_required_fields(self):
         response = self.client.post(reverse("bookings:request"), {"form_ts": self.booking_payload()["form_ts"]})
@@ -378,7 +378,7 @@ class BookingFlowTests(BaseTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertIn(booking.reference, mail.outbox[0].subject)
         self.assertEqual(mail.outbox[0].to, ["team@example.com"])
-        self.assertIn("NÃO está confirmada", mail.outbox[0].body)
+        self.assertIn("aguarda o contato da equipe", mail.outbox[0].body)
         self.assertTrue(booking.notification_sent)
 
 

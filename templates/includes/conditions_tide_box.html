@@ -8,7 +8,7 @@
       {% endfor %}
     </ul>
   {% else %}
-    <p class="small text-muted-tp mb-2">{% trans "Natural pools on this route appear at low tide. When you send a request, we check the tide for your date and suggest the best time." %}</p>
+    <p class="small text-muted-tp mb-2">{% trans "Natural pools on this route appear at low tide. After you book, we check the tide for your date and set the best time with you." %}</p>
   {% endif %}
   <a class="link-arrow small" href="{% url 'core:tides_weather' %}#tide-table">{% trans "Full tide table" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
 </div>{% endwith %}

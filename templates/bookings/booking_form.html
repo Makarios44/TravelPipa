@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load i18n travelpipa %}
 
-{% block title %}{% trans "Request a Booking" %}{% if preselected %} — {{ preselected.title }}{% endif %}{% endblock %}
-{% block meta_description %}{% trans "Send a booking request for tours and transfers in Pipa, Brazil. No payment online — we reply personally to confirm availability." %}{% endblock %}
+{% block title %}{% trans "Book your experience" %}{% if preselected %} — {{ preselected.title }}{% endif %}{% endblock %}
+{% block meta_description %}{% trans "Book tours and transfers in Pipa, Brazil, online in a few minutes. Our team then contacts you with all the details." %}{% endblock %}
 {% block alternates %}<link rel="canonical" href="{{ canonical_url }}">{% for lang in site_languages %}<link rel="alternate" hreflang="{{ lang.code }}" href="{{ lang.url }}">{% endfor %}{% endblock %}
 
 {% block content %}
@@ -10,11 +10,11 @@
   <div class="container">
     <nav aria-label="{% trans 'Breadcrumb' %}"><ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{% trans "Request a Booking" %}</li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "Book your experience" %}</li>
     </ol></nav>
-    <p class="eyebrow">{% trans "Booking request" %}</p>
-    <h1>{% trans "Request a Booking" %}</h1>
-    <p class="lead">{% trans "Tell us what you would like to do and when. We reply personally — usually by WhatsApp or e-mail — to confirm availability, details and price." %}</p>
+    <p class="eyebrow">{% trans "Online booking" %}</p>
+    <h1>{% trans "Book your experience" %}</h1>
+    <p class="lead">{% trans "Choose the date and the number of people. Your booking is registered right away and we contact you by WhatsApp or e-mail with the next details." %}</p>
   </div>
 </section>
 
@@ -27,8 +27,8 @@
           {% include "includes/antispam_fields.html" %}
 
           <div class="notice mb-4">
-            <i class="bi bi-info-circle" aria-hidden="true"></i>
-            <div><strong>{% trans "This is a request, not a confirmed booking." %}</strong> {% trans "Your booking is only confirmed after we contact you and agree on the details. No payment is taken on this website." %}</div>
+            <i class="bi bi-lightning-charge" aria-hidden="true"></i>
+            <div><strong>{% trans "Quick, with no payment now." %}</strong> {% trans "We agree on payment and the meeting point with you right after the booking." %}</div>
           </div>
 
           {% if preselected %}
@@ -61,7 +61,7 @@
           {% include "includes/consent_field.html" %}
 
           <div class="d-grid d-sm-flex gap-2 align-items-center">
-            <button type="submit" class="btn btn-accent btn-lg">{% trans "Send booking request" %} <i class="bi bi-send" aria-hidden="true"></i></button>
+            <button type="submit" class="btn btn-accent btn-lg">{% trans "Confirm booking" %} <i class="bi bi-check2-circle" aria-hidden="true"></i></button>
             <small class="text-muted-tp ms-sm-2"><span class="text-danger">*</span> {% trans "Required fields" %}</small>
           </div>
         </form>
@@ -72,9 +72,9 @@
           <div class="booking-box">
             <h2 class="h5 mb-3">{% trans "How it works" %}</h2>
             <ol class="timeline">
-              <li>{% trans "Send your request with the date and number of people." %}</li>
-              <li>{% trans "We check availability with the operator and contact you." %}</li>
-              <li>{% trans "Your booking is confirmed only after we agree on all details." %}</li>
+              <li>{% trans "Choose the date and the number of people." %}</li>
+              <li>{% trans "Your booking is registered right away." %}</li>
+              <li>{% trans "We contact you with the meeting point, time and payment details." %}</li>
             </ol>
           </div>
           {% if whatsapp_general_url %}
