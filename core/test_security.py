@@ -137,3 +137,17 @@ class EmailTests(TestCase):
         self.assertTrue(notify_new_booking(RequestFactory().get("/"), booking))
         self.assertEqual(mail.outbox[0].reply_to, ["ana@example.com"])
         self.assertIn(reverse("panel:booking_detail", args=[booking.pk]), mail.outbox[0].body)
+
+
+class PrepareSitePasswordTests(TestCase):
+    def test_variable_resets_existing_user_password(self):
+        from django.core.management import call_command
+        import io
+        User = get_user_model()
+        User.objects.create_superuser("equipe", "e@example.com", "Senha-antiga-123")
+        cache.set("panel-login-user:x", 99)
+        env = {"DJANGO_SUPERUSER_USERNAME": "Equipe", "DJANGO_SUPERUSER_PASSWORD": "Senha-nova-456"}
+        with mock.patch.dict("os.environ", env), mock.patch("core.management.commands.prepare_site.call_command"):
+            call_command("prepare_site", stdout=io.StringIO())
+        self.assertTrue(User.objects.get(username="equipe").check_password("Senha-nova-456"))
+        self.assertIsNone(cache.get("panel-login-user:x"))

@@ -13,6 +13,7 @@ import os
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
@@ -49,7 +50,20 @@ class Command(BaseCommand):
         User = get_user_model()
         username = os.environ.get("DJANGO_SUPERUSER_USERNAME", "").strip()
         password = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "")
-        if User.objects.filter(is_superuser=True).exists() or not (username and password):
+        if not (username and password):
+            return
+        user = User.objects.filter(username__iexact=username).first()
+        if user:
+            # Password recovery: putting the variable back and redeploying sets a new password.
+            user.set_password(password)
+            user.is_active = user.is_staff = user.is_superuser = True
+            user.save()
+            cache.clear()  # also lifts any login lock from failed attempts
+            self.stdout.write(self.style.SUCCESS(
+                f"Senha do usuário '{user.username}' redefinida. Agora apague DJANGO_SUPERUSER_PASSWORD "
+                "das variáveis do Railway."))
+            return
+        if User.objects.filter(is_superuser=True).exists():
             return
         User.objects.create_superuser(username=username, password=password,
                                       email=os.environ.get("DJANGO_SUPERUSER_EMAIL", DEFAULT_CONTACT_EMAIL))

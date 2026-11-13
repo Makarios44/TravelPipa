@@ -131,6 +131,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 # --------------------------------------------------------------------------
 # Database: PostgreSQL in production (DATABASE_URL), SQLite for development.
 # --------------------------------------------------------------------------
+if not DEBUG and not os.environ.get("DATABASE_URL") and not env_bool("ALLOW_SQLITE_IN_PRODUCTION", False):
+    # On Railway the container disk is erased on every deploy: an SQLite file there
+    # would silently lose bookings, users and photos. Fail loudly instead.
+    raise ImproperlyConfigured(
+        "DATABASE_URL is not set. On Railway use DATABASE_URL=${{Postgres.DATABASE_URL}}.")
+
 DATABASES = {
     "default": dj_database_url.parse(
         os.environ.get("DATABASE_URL") or f"sqlite:///{BASE_DIR / 'db.sqlite3'}",

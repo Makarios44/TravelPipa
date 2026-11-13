@@ -298,6 +298,7 @@ O Railway bloqueia o envio por SMTP nos planos Free, Trial e Hobby. Por isso, o 
 ### 9.5 Depois de publicar
 - Entre em `https://travelpipa.com.br/gestao/` com o usuário criado e preencha **Configurações**: WhatsApp, CNPJ, número Cadastur e redes sociais.
 - Apague a variável `DJANGO_SUPERUSER_PASSWORD` no Railway.
+- **Esqueceu a senha?** Crie de novo `DJANGO_SUPERUSER_USERNAME` e `DJANGO_SUPERUSER_PASSWORD` (com a nova senha) e faça um redeploy. O usuário recebe a nova senha e qualquer bloqueio por tentativas é liberado. Depois, apague a variável da senha outra vez.
 - Cadastre o site no Google Search Console e envie `https://travelpipa.com.br/sitemap.xml`.
 - **Health check (opcional):** em **Settings → Deploy → Healthcheck Path**, use `/healthz/`.
 
