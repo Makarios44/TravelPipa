@@ -1139,16 +1139,22 @@ class Command(BaseCommand):
             "--replace-media", action="store_true",
             help="Substitui as fotos e o vídeo dos passeios que têm arquivos na pasta content/ "
                  "(apaga os que estão no site para esses passeios).")
+        parser.add_argument(
+            "--only-new", action="store_true",
+            help="Só cria os passeios que ainda não existem; não altera os que já estão no site.")
 
     @transaction.atomic
     def handle(self, *args, **options):
         self.replace_media = options.get("replace_media", False)
+        only_new = options.get("only_new", False)
         categories = {}
         for slug, data in CATEGORIES.items():
             cat, _ = Category.objects.get_or_create(slug=slug, defaults=data)
             categories[slug] = cat
 
         for tour in TOURS:
+            if only_new and Experience.objects.filter(slug=tour["slug"]).exists():
+                continue
             values = {
                 "category": categories[tour["category"]],
                 "featured": tour["featured"],
@@ -1177,6 +1183,8 @@ class Command(BaseCommand):
             if tour.get("media"):
                 self.attach_media(obj, tour["media"])
 
+        if only_new:
+            return
         self.attach_site_images()
         self.stdout.write("Envie as fotos de cada passeio pelo painel (Experiências / passeios).")
 

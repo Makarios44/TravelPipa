@@ -151,3 +151,18 @@ class PrepareSitePasswordTests(TestCase):
             call_command("prepare_site", stdout=io.StringIO())
         self.assertTrue(User.objects.get(username="equipe").check_password("Senha-nova-456"))
         self.assertIsNone(cache.get("panel-login-user:x"))
+
+
+class PrepareSiteNewToursTests(TestCase):
+    def test_only_missing_tours_are_created_and_edits_are_kept(self):
+        from django.core.management import call_command
+        import io
+        from tours.models import Experience
+        call_command("load_tours", stdout=io.StringIO())
+        airport = Experience.objects.get(slug="natal-airport-pipa-transfer")
+        airport.title_pt = "Editado no painel"
+        airport.save()
+        Experience.objects.filter(slug="pipa-ponta-negra-natal-transfer").delete()
+        call_command("prepare_site", stdout=io.StringIO())
+        self.assertTrue(Experience.objects.filter(slug="pipa-ponta-negra-natal-transfer").exists())
+        self.assertEqual(Experience.objects.get(slug="natal-airport-pipa-transfer").title_pt, "Editado no painel")

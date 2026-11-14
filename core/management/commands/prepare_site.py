@@ -30,6 +30,10 @@ class Command(BaseCommand):
         if not Experience.objects.exists():
             self.stdout.write("Banco vazio: carregando os passeios reais (load_tours)...")
             call_command("load_tours", stdout=self.stdout)
+        else:
+            # New tours/transfers added to the code appear on the next deploy;
+            # the ones already on the site (and edited in the panel) are left alone.
+            call_command("load_tours", only_new=True, stdout=self.stdout)
 
         site = SiteSettings.load()
         changed = []
