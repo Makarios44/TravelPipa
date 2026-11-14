@@ -60,6 +60,28 @@
     });
   }
 
+  // Booking form: one-way / round-trip choice only for transfers
+  var tripBox = document.querySelector("[data-trip-options]");
+  if (tripBox) {
+    var select = document.getElementById("id_experience");
+    var returnBox = tripBox.querySelector("[data-return-date]");
+    var returnInput = returnBox ? returnBox.querySelector("input") : null;
+    var radios = tripBox.querySelectorAll("input[type=radio]");
+    var syncTrip = function () {
+      var option = select && select.options[select.selectedIndex];
+      var isTransfer = !!(option && option.getAttribute("data-transfer"));
+      tripBox.hidden = !isTransfer;
+      var round = false;
+      radios.forEach(function (r) { if (r.checked && r.value === "round_trip") round = true; });
+      var showReturn = isTransfer && round;
+      if (returnBox) returnBox.hidden = !showReturn;
+      if (returnInput) returnInput.required = showReturn;
+    };
+    if (select) select.addEventListener("change", syncTrip);
+    radios.forEach(function (r) { r.addEventListener("change", syncTrip); });
+    syncTrip();
+  }
+
   // Prevent double submission of forms
   document.querySelectorAll("form[data-once]").forEach(function (form) {
     form.addEventListener("submit", function () {

@@ -526,7 +526,7 @@ class LoadToursTests(TestCase):
         boat = Experience.objects.get(slug="pipa-dolphin-bay-speedboat-tour")
         self.assertFalse(boat.is_demo)
         self.assertEqual(boat.price, 70)
-        self.assertEqual(Experience.objects.filter(is_demo=False).count(), 7)
+        self.assertEqual(Experience.objects.filter(is_demo=False).count(), 8)
         self.assertContains(self.client.get("/pt-br/passeios/guarairas-lagoon-gastronomic-boat-tour/"), "R$ 325")
         self.assertContains(self.client.get("/pt-br/passeios/pipa-dolphin-bay-speedboat-tour/"), "A partir de")
         self.assertContains(self.client.get("/en/experiences/pipa-dolphin-bay-speedboat-tour/"), "Dolphin Bay")
@@ -622,3 +622,39 @@ class MediaServingTests(TestCase):
 
     def test_post_not_allowed(self):
         self.assertEqual(self.client.post("/media/test/clip.mp4").status_code, 405)
+
+
+class RoundTripBookingTests(BaseTestCase):
+    def day(self, n):
+        return (timezone.localdate() + datetime.timedelta(days=n)).isoformat()
+
+    def test_transfer_round_trip_is_saved(self):
+        data = self.booking_payload(experience=self.transfer.pk, trip_type="round_trip", return_date=self.day(15))
+        response = self.client.post(reverse("bookings:request"), data)
+        self.assertRedirects(response, reverse("bookings:thanks"))
+        booking = BookingRequest.objects.get()
+        self.assertTrue(booking.round_trip)
+        self.assertEqual(booking.return_date.isoformat(), self.day(15))
+        thanks = self.client.get(reverse("bookings:thanks"))
+        self.assertContains(thanks, "Round trip: special discount")
+
+    def test_round_trip_needs_a_valid_return_date(self):
+        url = reverse("bookings:request")
+        missing = self.client.post(url, self.booking_payload(experience=self.transfer.pk, trip_type="round_trip"))
+        self.assertContains(missing, "Please choose the date of the return trip.")
+        before = self.client.post(url, self.booking_payload(experience=self.transfer.pk, trip_type="round_trip",
+                                                            return_date=self.day(5)))
+        self.assertContains(before, "on or after the outbound date")
+        self.assertFalse(BookingRequest.objects.exists())
+
+    def test_round_trip_is_ignored_for_tours(self):
+        data = self.booking_payload(trip_type="round_trip", return_date=self.day(15))
+        self.client.post(reverse("bookings:request"), data)
+        booking = BookingRequest.objects.get()
+        self.assertFalse(booking.round_trip)
+        self.assertIsNone(booking.return_date)
+
+    def test_transfer_options_are_marked_in_the_select(self):
+        page = self.client.get(reverse("bookings:request"))
+        self.assertContains(page, 'data-transfer="1"', count=1)
+        self.assertContains(page, "10% deposit")

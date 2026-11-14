@@ -13,7 +13,7 @@ class StyledFormMixin:
             widget = field.widget
             if isinstance(widget, forms.HiddenInput):
                 continue
-            if isinstance(widget, forms.CheckboxInput):
+            if isinstance(widget, (forms.CheckboxInput, forms.RadioSelect)):
                 widget.attrs.setdefault("class", "form-check-input")
             elif isinstance(widget, forms.Select):
                 widget.attrs.setdefault("class", "form-select")

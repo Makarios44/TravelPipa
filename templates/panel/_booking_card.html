@@ -1,5 +1,5 @@
 <a class="bk" href="{% url 'panel:booking_detail' b.pk %}">
   <div class="top"><span class="ref">{{ b.reference }}</span><span class="badge-status st-{{ b.status }}">{{ b.status_label }}</span></div>
   <div class="who">{{ b.full_name }} · {{ b.people }} pessoa{{ b.people|pluralize }}</div>
-  <div class="when"><i class="bi bi-calendar3"></i> {{ b.preferred_date|date:"d/m/Y" }} · {% if b.experience %}{{ b.experience.title_pt|default:b.experience.title_en }}{% else %}{{ b.experience_title }}{% endif %}</div>
+  <div class="when"><i class="bi bi-calendar3"></i> {{ b.preferred_date|date:"d/m/Y" }}{% if b.round_trip %} ⇄ {{ b.return_date|date:"d/m/Y" }}{% endif %} · {% if b.experience %}{{ b.experience.title_pt|default:b.experience.title_en }}{% else %}{{ b.experience_title }}{% endif %}</div>
 </a>

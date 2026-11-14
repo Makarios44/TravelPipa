@@ -34,7 +34,10 @@ class BookingRequest(TimeStampedModel):
                                    null=True, blank=True, related_name="booking_requests")
     experience_title = models.CharField("experiência (no momento do pedido)", max_length=150, blank=True,
                                         help_text="Guardado para manter o histórico se a experiência for excluída.")
-    preferred_date = models.DateField("data pretendida")
+    preferred_date = models.DateField("data do passeio / da ida")
+    round_trip = models.BooleanField("ida e volta", default=False,
+                                     help_text="Só para transfers: o cliente quer ida e volta (tem desconto).")
+    return_date = models.DateField("data da volta", null=True, blank=True)
     people = models.PositiveSmallIntegerField("quantidade de pessoas",
                                               validators=[MinValueValidator(1), MaxValueValidator(60)])
     full_name = models.CharField("nome completo", max_length=150)

@@ -48,10 +48,11 @@ def booking_thanks(request):
         return redirect("bookings:request")
     site = SiteSettings.load()
     title = booking.experience.title if booking.experience else booking.experience_title
-    message = _("Hello! I just sent booking request %(ref)s for \"%(title)s\".") % {"ref": reference, "title": title}
+    message = _("Hello! I just made booking %(ref)s for \"%(title)s\".") % {"ref": reference, "title": title}
     # Only non-personal information is shown on this page.
     return render(request, "bookings/booking_thanks.html", {
         "reference": reference,
         "experience_title": title,
+        "round_trip": booking.round_trip,
         "whatsapp_url": whatsapp_link(site, message),
     })

@@ -2,7 +2,7 @@
 {% load i18n travelpipa %}
 
 {% block title %}{% trans "Natal Airport Transfer to Pipa" %}{% endblock %}
-{% block meta_description %}{% trans "Transfers from Natal Airport to Pipa and around the region. Send your flight details and request a quote from a local agency." %}{% endblock %}
+{% block meta_description %}{% trans "Transfers from Natal Airport to Pipa and to Ponta Negra (Natal), priced per car, with a round-trip discount. Book online with a local agency." %}{% endblock %}
 
 {% block content %}
 <section class="page-hero">
@@ -13,7 +13,7 @@
     </ol></nav>
     <p class="eyebrow">{% trans "Transfers" %}</p>
     <h1>{% trans "Getting to Pipa, made simple" %}</h1>
-    <p class="lead">{% trans "Natal International Airport (NAT) is the usual arrival point for Pipa. Send us your flight details and we arrange the transfer to your accommodation." %}</p>
+    <p class="lead">{% trans "Natal International Airport (NAT) is the usual arrival point for Pipa. Book one way or round trip — round trips get a special discount." %}</p>
   </div>
 </section>
 
@@ -26,7 +26,7 @@
           {% with cover=t.cover %}{% if cover %}<img src="{{ cover.image.url }}" alt="{{ cover.alt_text }}" decoding="async">{% else %}<div class="img-placeholder" aria-hidden="true"><i class="bi bi-car-front"></i></div>{% endif %}{% endwith %}
         </div>
         <div class="body">
-          <div class="d-flex flex-wrap gap-2 mb-3"><span class="chip chip-featured"><i class="bi bi-airplane" aria-hidden="true"></i> {% trans "Main route" %}</span>{% if t.is_demo %}<span class="demo-chip">{% trans "Demo" %}</span>{% endif %}</div>
+          <div class="d-flex flex-wrap gap-2 mb-3"><span class="chip chip-featured"><i class="bi bi-airplane" aria-hidden="true"></i> {% trans "Main route" %}</span>{% if t.price is not None %}<span class="trip-badge"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> {% trans "Round-trip discount" %}</span>{% endif %}{% if t.is_demo %}<span class="demo-chip">{% trans "Demo" %}</span>{% endif %}</div>
           <h2 class="h3">{{ t.title }}</h2>
           {% if t.summary %}<p>{{ t.summary }}</p>{% endif %}
           <div class="route">
@@ -43,7 +43,7 @@
           <div class="d-flex flex-wrap align-items-center gap-3">
             <a class="btn btn-accent" href="{% url 'bookings:request' %}?experience={{ t.slug }}">{% if t.price is None %}{% trans "Request a quote" %}{% else %}{% trans "Book Now" %}{% endif %}</a>
             <a class="btn btn-light-ghost" href="{{ t.get_absolute_url }}">{% trans "Details" %}</a>
-            <div class="ms-auto text-white">{% if t.price is not None %}<div class="price" style="color:#fff">{% if t.price_is_starting %}<span class="price-from" style="color:rgba(255,255,255,.7)">{% trans "From" %}</span>{% endif %}<span class="price-amount">{{ t.price|money:t.currency }}</span></div>{% endif %}</div>
+            <div class="ms-auto text-white">{% if t.price is not None %}<div class="price" style="color:#fff">{% if t.price_is_starting %}<span class="price-from" style="color:rgba(255,255,255,.7)">{% trans "From" %}</span>{% endif %}<span class="price-amount">{{ t.price|money:t.currency }}</span> <span class="price-unit" style="color:rgba(255,255,255,.75)">{{ t.get_price_unit_display }}</span></div>{% endif %}</div>
           </div>
         </div>
       </div>
@@ -65,6 +65,7 @@
                 <ul class="facts facts-light">
                   {% if t.max_passengers %}<li><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans count n=t.max_passengers %}Up to {{ n }} passenger{% plural %}Up to {{ n }} passengers{% endblocktrans %}</li>{% endif %}
                 </ul>
+                {% if t.price is not None %}<p class="mb-2"><span class="trip-badge"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> {% trans "Round-trip discount" %}</span></p>{% endif %}
                 {% if t.summary %}<p class="text-muted-tp small">{{ t.summary }}</p>{% endif %}
                 <div class="mt-auto d-flex justify-content-between align-items-center gap-2 pt-2">
                   {% price_block t compact=True %}

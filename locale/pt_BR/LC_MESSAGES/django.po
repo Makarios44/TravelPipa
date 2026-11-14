@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 20:42-0300\n"
+"POT-Creation-Date: 2026-11-13 21:31-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,51 +18,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: bookings/forms.py:21
+#: bookings/forms.py:38
 msgid "Experience or transfer"
 msgstr "Experiência ou transfer"
 
-#: bookings/forms.py:22
+#: bookings/forms.py:39
 msgid "Select an option"
 msgstr "Selecione uma opção"
 
-#: bookings/forms.py:23
+#: bookings/forms.py:40
 msgid "Please choose an available experience."
 msgstr "Escolha uma experiência disponível."
 
-#: bookings/forms.py:25
-msgid "Preferred date"
-msgstr "Data do passeio"
+#: bookings/forms.py:42
+msgid "Date"
+msgstr "Data"
 
-#: bookings/forms.py:26
+#: bookings/forms.py:44
+msgid "Trip"
+msgstr "Trajeto"
+
+#: bookings/forms.py:45
+msgid "One way"
+msgstr "Só ida"
+
+#: bookings/forms.py:45
+msgid "Round trip (special discount)"
+msgstr "Ida e volta (desconto especial)"
+
+#: bookings/forms.py:46
+msgid "Return date"
+msgstr "Data da volta"
+
+#: bookings/forms.py:48
 msgid "Number of people"
 msgstr "Número de pessoas"
 
-#: bookings/forms.py:28 core/forms.py:48
+#: bookings/forms.py:50 core/forms.py:48
 msgid "Full name"
 msgstr "Nome completo"
 
-#: bookings/forms.py:30 core/forms.py:50 templates/core/contact.html:25
+#: bookings/forms.py:52 core/forms.py:50 templates/core/contact.html:25
 msgid "E-mail"
 msgstr "E-mail"
 
-#: bookings/forms.py:31
+#: bookings/forms.py:53
 msgid "WhatsApp or phone"
 msgstr "WhatsApp ou telefone"
 
-#: bookings/forms.py:32
+#: bookings/forms.py:54
 msgid "Include the country code, e.g. +1 555 123 4567."
 msgstr "Inclua o código do país, ex.: +55 84 99999-9999."
 
-#: bookings/forms.py:34
+#: bookings/forms.py:56
 msgid "Preferred language for our contact"
 msgstr "Idioma preferido para o atendimento"
 
-#: bookings/forms.py:36
+#: bookings/forms.py:58
 msgid "Additional notes (optional)"
 msgstr "Observações (opcional)"
 
-#: bookings/forms.py:38
+#: bookings/forms.py:60
 msgid ""
 "Hotel or pickup area, flight number for transfers, children's ages, special "
 "needs…"
@@ -70,15 +86,23 @@ msgstr ""
 "Hotel ou local de embarque, número do voo para transfers, idade das "
 "crianças, necessidades especiais…"
 
-#: bookings/forms.py:57
+#: bookings/forms.py:80
 msgid "Please choose a date from today onwards."
 msgstr "Escolha uma data a partir de hoje."
 
-#: bookings/forms.py:59
+#: bookings/forms.py:82
 msgid "Please choose a date within the next two years."
 msgstr "Escolha uma data dentro dos próximos dois anos."
 
-#: bookings/forms.py:66
+#: bookings/forms.py:95
+msgid "Please choose the date of the return trip."
+msgstr "Escolha a data da volta."
+
+#: bookings/forms.py:97
+msgid "The return date must be on or after the outbound date."
+msgstr "A data da volta deve ser igual ou posterior à data da ida."
+
+#: bookings/forms.py:104
 msgid "Please enter a valid phone number with country code."
 msgstr "Informe um telefone válido com código do país."
 
@@ -100,9 +124,8 @@ msgstr ""
 
 #: bookings/views.py:51
 #, python-format
-msgid "Hello! I just sent booking request %(ref)s for \"%(title)s\"."
-msgstr ""
-"Olá! Acabei de enviar a solicitação de reserva %(ref)s para \"%(title)s\"."
+msgid "Hello! I just made booking %(ref)s for \"%(title)s\"."
+msgstr "Olá! Acabei de fazer a reserva %(ref)s para \"%(title)s\"."
 
 #: core/antispam.py:25
 msgid ""
@@ -348,51 +371,56 @@ msgid "Quick, with no payment now."
 msgstr "Rápido e sem pagar nada agora."
 
 #: templates/bookings/booking_form.html:31
+#, python-format
 msgid ""
-"We agree on payment and the meeting point with you right after the booking."
+"Right after the booking we contact you to confirm the meeting point and the "
+"10%% deposit that secures your date."
 msgstr ""
-"O pagamento e o ponto de encontro são combinados com você logo depois da "
-"reserva."
+"Logo depois da reserva, entramos em contato para combinar o ponto de "
+"encontro e o sinal de 10%% que garante a sua data."
 
 #: templates/bookings/booking_form.html:42
 msgid "Your trip"
 msgstr "Sua viagem"
 
-#: templates/bookings/booking_form.html:51
+#: templates/bookings/booking_form.html:60
 msgid "Your details"
 msgstr "Seus dados"
 
-#: templates/bookings/booking_form.html:64
+#: templates/bookings/booking_form.html:73
 msgid "Confirm booking"
 msgstr "Confirmar reserva"
 
-#: templates/bookings/booking_form.html:65
+#: templates/bookings/booking_form.html:74
 msgid "Required fields"
 msgstr "Campos obrigatórios"
 
-#: templates/bookings/booking_form.html:73
+#: templates/bookings/booking_form.html:82
 msgid "How it works"
 msgstr "Como funciona"
 
-#: templates/bookings/booking_form.html:75
+#: templates/bookings/booking_form.html:84
 msgid "Choose the date and the number of people."
 msgstr "Escolha a data e o número de pessoas."
 
-#: templates/bookings/booking_form.html:76
+#: templates/bookings/booking_form.html:85
 msgid "Your booking is registered right away."
 msgstr "Sua reserva fica registrada na hora."
 
-#: templates/bookings/booking_form.html:77
-msgid "We contact you with the meeting point, time and payment details."
+#: templates/bookings/booking_form.html:86
+#, python-format
+msgid ""
+"We contact you with the meeting point, time and the 10%% deposit that "
+"secures your date."
 msgstr ""
-"Entramos em contato com o ponto de encontro, o horário e a forma de "
-"pagamento."
+"Entramos em contato com o ponto de encontro, o horário e o sinal de 10%% que"
+" garante a sua data."
 
-#: templates/bookings/booking_form.html:82
+#: templates/bookings/booking_form.html:91
 msgid "Prefer to chat?"
 msgstr "Prefere conversar?"
 
-#: templates/bookings/booking_form.html:83
+#: templates/bookings/booking_form.html:92
 msgid "Send us a message on WhatsApp and we will help you choose."
 msgstr "Mande uma mensagem pelo WhatsApp e ajudamos você a escolher."
 
@@ -410,26 +438,34 @@ msgid "Your booking for <strong>%(title)s</strong> has been registered."
 msgstr "Sua reserva para <strong>%(title)s</strong> foi registrada."
 
 #: templates/bookings/booking_thanks.html:14
+msgid "Round trip: special discount applied when we confirm the details."
+msgstr ""
+"Ida e volta: o desconto especial é aplicado quando combinarmos os detalhes."
+
+#: templates/bookings/booking_thanks.html:15
 msgid "Your booking code"
 msgstr "Seu código de reserva"
 
-#: templates/bookings/booking_thanks.html:18
+#: templates/bookings/booking_thanks.html:19
 msgid "Next step:"
 msgstr "Próximo passo:"
 
-#: templates/bookings/booking_thanks.html:18
+#: templates/bookings/booking_thanks.html:19
+#, python-format
 msgid ""
 "our team will contact you shortly by WhatsApp or e-mail with the meeting "
-"point, time and payment details. Keep your booking code handy."
+"point, time and the 10%% deposit that secures your booking. Keep your "
+"booking code handy."
 msgstr ""
 "nossa equipe entra em contato em breve por WhatsApp ou e-mail com o ponto de"
-" encontro, o horário e a forma de pagamento. Guarde seu código de reserva."
+" encontro, o horário e o sinal de 10%% que garante a sua reserva. Guarde seu"
+" código de reserva."
 
-#: templates/bookings/booking_thanks.html:21
+#: templates/bookings/booking_thanks.html:22
 msgid "Send a WhatsApp message"
 msgstr "Enviar mensagem no WhatsApp"
 
-#: templates/bookings/booking_thanks.html:22
+#: templates/bookings/booking_thanks.html:23
 msgid "Back to experiences"
 msgstr "Voltar para experiências"
 
@@ -530,7 +566,7 @@ msgstr ""
 "Instagram. Atendemos em português, inglês e espanhol."
 
 #: templates/core/contact.html:11 templates/core/contact.html:13
-#: templates/core/legal_terms_default.html:10
+#: templates/core/legal_terms_default.html:12
 #: templates/includes/footer.html:30 templates/includes/footer.html:37
 #: templates/includes/header.html:12 templates/includes/header.html:48
 msgid "Contact"
@@ -703,7 +739,7 @@ msgid "7-seat cars and large groups"
 msgstr "Carros de 7 lugares e grupos grandes"
 
 #: templates/core/home.html:99 templates/tours/transfers.html:44
-#: templates/tours/transfers.html:71 templates/tours/transfers.html:82
+#: templates/tours/transfers.html:72 templates/tours/transfers.html:83
 msgid "Request a quote"
 msgstr "Solicitar orçamento"
 
@@ -999,10 +1035,28 @@ msgstr ""
 "na data escolhida, oferecemos outra data ou horário."
 
 #: templates/core/legal_terms_default.html:4
+msgid "Deposit"
+msgstr "Sinal"
+
+#: templates/core/legal_terms_default.html:5
+#, python-format
+msgid ""
+"To secure your booking we ask for a 10%% deposit, paid after our team "
+"contacts you. If we cancel or reschedule for safety reasons (weather, tides "
+"or sea conditions), you can move to another date or receive the deposit back"
+" in full. If you cancel, the cancellation policy of the experience applies."
+msgstr ""
+"Para garantir a reserva, pedimos um sinal de 10%%, pago depois que nossa "
+"equipe entra em contato. Se cancelarmos ou remarcarmos por segurança (tempo,"
+" maré ou condições do mar), você pode passar para outra data ou receber o "
+"sinal de volta integralmente. Se você cancelar, vale a política de "
+"cancelamento da experiência."
+
+#: templates/core/legal_terms_default.html:6
 msgid "Prices and payment"
 msgstr "Preços e pagamento"
 
-#: templates/core/legal_terms_default.html:5
+#: templates/core/legal_terms_default.html:7
 msgid ""
 "Prices shown are informative and may vary with the date, group size and "
 "availability. The final price is the one confirmed by our team. No payment "
@@ -1012,11 +1066,11 @@ msgstr ""
 "tamanho do grupo e a disponibilidade. O valor final é o confirmado pela "
 "nossa equipe. Nenhum pagamento é processado neste site."
 
-#: templates/core/legal_terms_default.html:6
+#: templates/core/legal_terms_default.html:8
 msgid "Experiences and operators"
 msgstr "Experiências e operadores"
 
-#: templates/core/legal_terms_default.html:7
+#: templates/core/legal_terms_default.html:9
 msgid ""
 "Tours and transfers may be carried out by local partner operators selected "
 "by us. Itineraries may change because of weather, tides or sea conditions, "
@@ -1026,11 +1080,11 @@ msgstr ""
 "selecionados por nós. Os roteiros podem mudar por causa do clima, das marés "
 "ou das condições do mar, sempre pensando na sua segurança."
 
-#: templates/core/legal_terms_default.html:8
+#: templates/core/legal_terms_default.html:10
 msgid "Cancellations"
 msgstr "Cancelamentos"
 
-#: templates/core/legal_terms_default.html:9
+#: templates/core/legal_terms_default.html:11
 msgid ""
 "Cancellation conditions are shown on each experience page and confirmed "
 "together with your booking."
@@ -1038,7 +1092,7 @@ msgstr ""
 "As condições de cancelamento aparecem na página de cada experiência e são "
 "confirmadas junto com a reserva."
 
-#: templates/core/legal_terms_default.html:11
+#: templates/core/legal_terms_default.html:13
 msgid "For any question about these terms, please use our contact page."
 msgstr "Para dúvidas sobre estes termos, use nossa página de contato."
 
@@ -1351,8 +1405,9 @@ msgid "Book now, pay later"
 msgstr "Reserve agora, pague depois"
 
 #: templates/includes/trust_strip.html:13
-msgid "Nothing is charged on the website"
-msgstr "Nada é cobrado no site"
+#, python-format
+msgid "Only a 10%% deposit secures your date"
+msgstr "Só um sinal de 10%% garante a sua data"
 
 #: templates/tours/experience_detail.html:26
 msgid "Demo content."
@@ -1435,8 +1490,11 @@ msgstr ""
 "encontro e os detalhes."
 
 #: templates/tours/experience_detail.html:146
-msgid "No payment now: you pay after we agree on the details."
-msgstr "Sem pagamento agora: você paga depois de combinarmos os detalhes."
+#, python-format
+msgid "No payment now: a 10%% deposit secures your date after we talk."
+msgstr ""
+"Sem pagamento agora: um sinal de 10%% garante a sua data depois que "
+"conversarmos."
 
 #: templates/tours/experience_detail.html:148
 msgid "Tour guide registered in Cadastur (Ministry of Tourism)."
@@ -1532,11 +1590,12 @@ msgstr "Transfer do aeroporto de Natal para Pipa"
 
 #: templates/tours/transfers.html:5
 msgid ""
-"Transfers from Natal Airport to Pipa and around the region. Send your flight"
-" details and request a quote from a local agency."
+"Transfers from Natal Airport to Pipa and to Ponta Negra (Natal), priced per "
+"car, with a round-trip discount. Book online with a local agency."
 msgstr ""
-"Transfers do aeroporto de Natal para Pipa e região. Envie os dados do voo e "
-"solicite um orçamento a uma agência local."
+"Transfers do Aeroporto de Natal para Pipa e para Ponta Negra (Natal), com "
+"preço por carro e desconto na ida e volta. Reserve online com uma agência "
+"local."
 
 #: templates/tours/transfers.html:15
 msgid "Getting to Pipa, made simple"
@@ -1544,16 +1603,20 @@ msgstr "Chegar a Pipa ficou simples"
 
 #: templates/tours/transfers.html:16
 msgid ""
-"Natal International Airport (NAT) is the usual arrival point for Pipa. Send "
-"us your flight details and we arrange the transfer to your accommodation."
+"Natal International Airport (NAT) is the usual arrival point for Pipa. Book "
+"one way or round trip — round trips get a special discount."
 msgstr ""
-"O Aeroporto Internacional de Natal (NAT) é o ponto de chegada mais comum "
-"para Pipa. Envie os dados do voo e organizamos o transfer até sua "
-"hospedagem."
+"O Aeroporto Internacional de Natal (NAT) é a chegada mais comum para quem "
+"vai a Pipa. Reserve só a ida ou ida e volta — na ida e volta você ganha "
+"desconto especial."
 
 #: templates/tours/transfers.html:29
 msgid "Main route"
 msgstr "Rota principal"
+
+#: templates/tours/transfers.html:29 templates/tours/transfers.html:68
+msgid "Round-trip discount"
+msgstr "Desconto na ida e volta"
 
 #: templates/tours/transfers.html:45
 msgid "Details"
@@ -1563,22 +1626,22 @@ msgstr "Detalhes"
 msgid "Other transfers"
 msgstr "Outros transfers"
 
-#: templates/tours/transfers.html:71
+#: templates/tours/transfers.html:72
 msgid "Book"
 msgstr "Reservar"
 
-#: templates/tours/transfers.html:81
+#: templates/tours/transfers.html:82
 msgid ""
 "Transfer options will be published soon. Meanwhile, ask us for a quote."
 msgstr ""
 "As opções de transfer serão publicadas em breve. Enquanto isso, solicite um "
 "orçamento."
 
-#: templates/tours/transfers.html:91
+#: templates/tours/transfers.html:92
 msgid "Send your flight"
 msgstr "Envie seu voo"
 
-#: templates/tours/transfers.html:91
+#: templates/tours/transfers.html:92
 msgid ""
 "Share your flight number and arrival time when you book so the pickup can be"
 " planned around it."
@@ -1586,21 +1649,21 @@ msgstr ""
 "Informe o número do voo e o horário de chegada na reserva para organizarmos "
 "a busca."
 
-#: templates/tours/transfers.html:92
+#: templates/tours/transfers.html:93
 msgid "Meet your driver"
 msgstr "Encontre seu motorista"
 
-#: templates/tours/transfers.html:92
+#: templates/tours/transfers.html:93
 msgid "After you book, you receive the meeting point and pickup details."
 msgstr ""
 "Depois da reserva, você recebe o ponto de encontro e os detalhes do "
 "embarque."
 
-#: templates/tours/transfers.html:93
+#: templates/tours/transfers.html:94
 msgid "Arrive relaxed"
 msgstr "Chegue tranquilo"
 
-#: templates/tours/transfers.html:93
+#: templates/tours/transfers.html:94
 msgid ""
 "Go straight to your accommodation in Pipa, with assistance in your language."
 msgstr "Vá direto para sua hospedagem em Pipa, com atendimento no seu idioma."

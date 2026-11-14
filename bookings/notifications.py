@@ -51,7 +51,8 @@ def notify_new_booking(request, booking):
         "",
         f"Código: {booking.reference}",
         f"Experiência: {booking.experience_title}",
-        f"Data do passeio: {booking.preferred_date:%d/%m/%Y}",
+        f"Data do passeio / ida: {booking.preferred_date:%d/%m/%Y}",
+        *([f"IDA E VOLTA — volta em {booking.return_date:%d/%m/%Y} (aplicar desconto)"] if booking.round_trip else []),
         f"Pessoas: {booking.people}",
         f"Cliente: {booking.full_name}",
         f"E-mail: {booking.email}",
@@ -63,7 +64,7 @@ def notify_new_booking(request, booking):
         f"Abrir no painel: {panel_url}",
         "",
         "O cliente já recebeu a mensagem de que a reserva foi feita e aguarda o contato da equipe.",
-        "Entre em contato em breve com ponto de encontro, horário e forma de pagamento.",
+        "Entre em contato em breve com ponto de encontro, horário e o sinal de 10% que garante a reserva.",
         "Responder este e-mail envia a resposta direto para o cliente.",
     ])
     try:

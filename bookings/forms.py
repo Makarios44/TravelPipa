@@ -11,9 +11,26 @@ from tours.models import Experience
 from .models import BookingRequest
 
 
+class ExperienceSelect(forms.Select):
+    """Marks transfer options so the form can show the one-way / round-trip choice."""
+
+    def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+        option = super().create_option(name, value, label, selected, index, subindex, attrs)
+        instance = getattr(value, "instance", None)
+        if instance is not None and instance.is_transfer:
+            option["attrs"]["data-transfer"] = "1"
+        return option
+
+
 class ExperienceChoiceField(forms.ModelChoiceField):
+    widget = ExperienceSelect
+
     def label_from_instance(self, obj):
         return obj.title
+
+
+TRIP_ONE_WAY = "one_way"
+TRIP_ROUND = "round_trip"
 
 
 class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
@@ -22,7 +39,12 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
         empty_label=_("Select an option"),
         error_messages={"invalid_choice": _("Please choose an available experience.")},
     )
-    preferred_date = forms.DateField(label=_("Preferred date"), widget=forms.DateInput(attrs={"type": "date"}))
+    preferred_date = forms.DateField(label=_("Date"), widget=forms.DateInput(attrs={"type": "date"}))
+    trip_type = forms.ChoiceField(
+        label=_("Trip"), required=False, initial=TRIP_ONE_WAY, widget=forms.RadioSelect,
+        choices=[(TRIP_ONE_WAY, _("One way")), (TRIP_ROUND, _("Round trip (special discount)"))])
+    return_date = forms.DateField(label=_("Return date"), required=False,
+                                  widget=forms.DateInput(attrs={"type": "date"}))
     people = forms.IntegerField(label=_("Number of people"), min_value=1, max_value=60, initial=2,
                                 widget=forms.NumberInput(attrs={"inputmode": "numeric"}))
     full_name = forms.CharField(label=_("Full name"), max_length=150,
@@ -45,6 +67,7 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
         today = timezone.localdate()
         self.fields["preferred_date"].widget.attrs["min"] = today.isoformat()
         self.fields["preferred_date"].widget.attrs["max"] = (today + datetime.timedelta(days=730)).isoformat()
+        self.fields["return_date"].widget.attrs["min"] = today.isoformat()
         if not self.is_bound:
             lang = get_language()
             self.initial.setdefault("service_language", lang if lang in dict(BookingRequest.Language.choices) else "en")
@@ -59,6 +82,21 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
             raise forms.ValidationError(_("Please choose a date within the next two years."))
         return value
 
+    def clean(self):
+        cleaned = super().clean()
+        experience = cleaned.get("experience")
+        is_round = (cleaned.get("trip_type") == TRIP_ROUND and experience is not None and experience.is_transfer)
+        cleaned["round_trip"] = is_round
+        if not is_round:
+            cleaned["return_date"] = None
+        else:
+            back, going = cleaned.get("return_date"), cleaned.get("preferred_date")
+            if not back:
+                self.add_error("return_date", _("Please choose the date of the return trip."))
+            elif going and back < going:
+                self.add_error("return_date", _("The return date must be on or after the outbound date."))
+        return cleaned
+
     def clean_phone(self):
         value = self.cleaned_data["phone"].strip()
         digits = "".join(ch for ch in value if ch.isdigit())
@@ -72,6 +110,8 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
             experience=data["experience"],
             experience_title=data["experience"].title_en,
             preferred_date=data["preferred_date"],
+            round_trip=data.get("round_trip", False),
+            return_date=data.get("return_date"),
             people=data["people"],
             full_name=data["full_name"].strip(),
             email=data["email"],

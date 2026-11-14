@@ -11,11 +11,12 @@
       <div class="success-mark"><i class="bi bi-check2" aria-hidden="true"></i></div>
       <h1 class="h2">{% trans "Your booking is done!" %}</h1>
       <p class="lead">{% blocktrans with title=experience_title %}Your booking for <strong>{{ title }}</strong> has been registered.{% endblocktrans %}</p>
+      {% if round_trip %}<p class="mb-3"><span class="trip-badge"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> {% trans "Round trip: special discount applied when we confirm the details." %}</span></p>{% endif %}
       <p class="mb-2 text-muted-tp">{% trans "Your booking code" %}</p>
       <p class="ref-code mb-4">{{ reference }}</p>
       <div class="notice text-start mb-4">
         <i class="bi bi-calendar-check" aria-hidden="true"></i>
-        <div><strong>{% trans "Next step:" %}</strong> {% trans "our team will contact you shortly by WhatsApp or e-mail with the meeting point, time and payment details. Keep your booking code handy." %}</div>
+        <div><strong>{% trans "Next step:" %}</strong> {% trans "our team will contact you shortly by WhatsApp or e-mail with the meeting point, time and the 10% deposit that secures your booking. Keep your booking code handy." %}</div>
       </div>
       <div class="d-flex flex-wrap gap-2 justify-content-center">
         {% if whatsapp_url %}<a class="btn btn-whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> {% trans "Send a WhatsApp message" %}</a>{% endif %}
