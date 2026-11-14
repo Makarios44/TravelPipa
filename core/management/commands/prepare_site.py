@@ -9,24 +9,53 @@ it never overwrites what the team changed in the panel.
   DJANGO_SUPERUSER_PASSWORD / DJANGO_SUPERUSER_EMAIL when no admin user exists yet.
 * Prints a launch checklist in the deploy log.
 """
+import logging
 import os
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.management import call_command
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
+from core.media_repair import repair_missing_media
 from core.models import SiteSettings
 from tours.models import Experience
 
+logger = logging.getLogger(__name__)
+
 DEFAULT_CONTACT_EMAIL = "suporte@travelpipa.com.br"
+
+
+def _on_volume(path):
+    """True when ``path`` lives on a mounted disk (e.g. a Railway Volume at /data)."""
+    current = os.path.abspath(path)
+    while current not in ("/", ""):
+        if os.path.ismount(current):
+            return True
+        current = os.path.dirname(current)
+    return False
 
 
 class Command(BaseCommand):
     help = "Prepara o site no primeiro deploy e mostra o que ainda falta configurar."
 
     def handle(self, *args, **options):
+        # Each step is independent: one failing (e.g. a content problem) must not
+        # stop the others (media repair, first user) nor the site from starting.
+        failures = 0
+        for step in (self.load_content, self.repair_media, self.fill_settings, self.create_first_user):
+            try:
+                step()
+            except Exception:  # noqa: BLE001 - reported in the deploy log, site still starts
+                failures += 1
+                logger.exception("prepare_site: a etapa %s falhou", step.__name__)
+                self.stdout.write(self.style.ERROR(f"ERRO na etapa {step.__name__} (detalhes acima)."))
+        self.checklist(SiteSettings.load())
+        if failures:
+            raise CommandError(f"{failures} etapa(s) do prepare_site falharam; veja o log.")
+
+    def load_content(self):
         if not Experience.objects.exists():
             self.stdout.write("Banco vazio: carregando os passeios reais (load_tours)...")
             call_command("load_tours", stdout=self.stdout)
@@ -35,6 +64,17 @@ class Command(BaseCommand):
             # the ones already on the site (and edited in the panel) are left alone.
             call_command("load_tours", only_new=True, stdout=self.stdout)
 
+    def repair_media(self):
+        restored, missing = repair_missing_media()
+        if restored:
+            self.stdout.write(self.style.WARNING(
+                f"{len(restored)} foto(s)/vídeo(s) estavam faltando e foram restaurados a partir de content/."))
+        if missing:
+            self.stdout.write(self.style.WARNING(
+                f"{len(missing)} arquivo(s) de mídia sumiram e não têm cópia em content/ "
+                "(fotos enviadas pelo painel): reenvie pelo painel. Ex.: " + ", ".join(missing[:5])))
+
+    def fill_settings(self):
         site = SiteSettings.load()
         changed = []
         if not site.email:
@@ -46,9 +86,6 @@ class Command(BaseCommand):
         if changed:
             site.save()
             self.stdout.write(f"Configurações preenchidas: {', '.join(changed)}")
-
-        self.create_first_user()
-        self.checklist(SiteSettings.load())
 
     def create_first_user(self):
         User = get_user_model()
@@ -83,6 +120,9 @@ class Command(BaseCommand):
         if not os.environ.get("MEDIA_ROOT"):
             warnings.append("MEDIA_ROOT vazio: monte um Volume em /data e use MEDIA_ROOT=/data/media, "
                             "senão as fotos somem a cada deploy.")
+        elif not settings.DEBUG and not _on_volume(settings.MEDIA_ROOT):
+            warnings.append(f"MEDIA_ROOT ({settings.MEDIA_ROOT}) não está num Volume: as fotos enviadas pelo "
+                            "painel somem a cada deploy. No Railway: serviço do site > Attach Volume > /data.")
         if not settings.EMAIL_ENABLED:
             warnings.append("E-mail desligado: defina RESEND_API_KEY para receber avisos de reservas.")
         if not get_user_model().objects.filter(is_staff=True, is_active=True).exists():

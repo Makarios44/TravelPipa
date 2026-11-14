@@ -24,6 +24,9 @@ def forwards(apps, schema_editor):
                 name = f"{base}_{suffix}"
                 old = getattr(exp, name, "") or ""
                 new = apply(old)
+                limit = Experience._meta.get_field(name).max_length
+                if limit:
+                    new = new[:limit]
                 if new != old:
                     setattr(exp, name, new)
                     changed.append(name)

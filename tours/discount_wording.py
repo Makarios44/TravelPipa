@@ -6,7 +6,7 @@ REPLACEMENTS = [
     ("Fechando ida e volta, você ganha um desconto especial.", "Negociamos desconto fechando ida e volta."),
     ("Desconto especial fechando ida e volta", "Negociamos desconto fechando ida e volta"),
     ("Desconto na ida e volta e carros de 7 lugares para grupos.",
-     "Carros de 7 lugares para grupos e desconto negociado na ida e volta."),
+     "Carros de 7 lugares e desconto negociado na ida e volta."),
     ("(até 3 pessoas). Desconto na ida e volta.", "(até 3 pessoas). Negociamos desconto na ida e volta."),
     # English
     (", with a round-trip discount.", "."),

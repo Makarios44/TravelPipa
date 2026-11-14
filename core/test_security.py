@@ -166,3 +166,52 @@ class PrepareSiteNewToursTests(TestCase):
         call_command("prepare_site", stdout=io.StringIO())
         self.assertTrue(Experience.objects.filter(slug="pipa-ponta-negra-natal-transfer").exists())
         self.assertEqual(Experience.objects.get(slug="natal-airport-pipa-transfer").title_pt, "Editado no painel")
+
+
+class ContentFitsDatabaseTests(TestCase):
+    """Postgres rejects text longer than the column (SQLite does not): check every built-in text."""
+
+    def test_all_tour_texts_fit_their_columns(self):
+        from tours.management.commands.load_tours import TOURS
+        from tours.models import Experience, ExperienceImage
+        problems = []
+        for tour in TOURS:
+            for lang in ("pt", "en", "es"):
+                for key, value in tour[lang].items():
+                    limit = Experience._meta.get_field(f"{key}_{lang}").max_length
+                    if limit and len(value) > limit:
+                        problems.append(f"{tour['slug']} {key}_{lang}: {len(value)} > {limit}")
+            for photo in tour.get("media", {}).get("photos", []):
+                for index, lang in enumerate(("pt", "en", "es"), start=1):
+                    limit = ExperienceImage._meta.get_field(f"alt_{lang}").max_length
+                    if limit and len(photo[index]) > limit:
+                        problems.append(f"{tour['slug']} alt_{lang}: {len(photo[index])} > {limit}")
+        self.assertEqual(problems, [])
+
+    def test_wording_update_never_exceeds_columns(self):
+        from tours.discount_wording import REPLACEMENTS
+        from tours.models import Experience
+        limit = Experience._meta.get_field("meta_description_pt").max_length
+        old = ("Transfer com motorista entre o Aeroporto de Natal e Pipa a partir de R$ 240 por carro "
+               "(até 3 pessoas). Desconto na ida e volta e carros de 7 lugares para grupos.")
+        from tours.discount_wording import apply
+        self.assertLessEqual(len(apply(old)), limit)
+        self.assertTrue(REPLACEMENTS)
+
+
+class MediaRepairTests(TestCase):
+    def test_missing_photo_is_restored_from_content(self):
+        import io
+        import shutil
+        import tempfile
+        from django.core.management import call_command
+        from tours.models import ExperienceImage
+        media = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, media, ignore_errors=True)
+        with self.settings(MEDIA_ROOT=media):
+            call_command("load_tours", stdout=io.StringIO())
+            image = ExperienceImage.objects.filter(experience__slug="southern-coast-4x4-jeep-tour").first()
+            image.image.storage.delete(image.image.name)
+            self.assertFalse(image.image.storage.exists(image.image.name))
+            call_command("prepare_site", stdout=io.StringIO())
+            self.assertTrue(image.image.storage.exists(image.image.name))

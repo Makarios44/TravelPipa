@@ -140,7 +140,7 @@ TOURS = [
                 "Informe a quantidade de malas para indicarmos o carro certo"
             ),
             "meta_title": "Transfer Aeroporto de Natal para Pipa",
-            "meta_description": "Transfer com motorista entre o Aeroporto de Natal e Pipa a partir de R$ 240 por carro (até 3 pessoas). Carros de 7 lugares para grupos e desconto negociado na ida e volta.",
+            "meta_description": "Transfer com motorista entre o Aeroporto de Natal e Pipa a partir de R$ 240 por carro (até 3 pessoas). Carros de 7 lugares e desconto negociado na ida e volta.",
         },
         "en": {
             "title": "Natal Airport ↔ Pipa Transfer",
@@ -1178,6 +1178,11 @@ class Command(BaseCommand):
                 for field in ("origin", "destination"):  # transfers only
                     if field in tour[lang]:
                         values[f"{field}_{suffix}"] = tour[lang][field]
+            for name, value in values.items():
+                limit = getattr(Experience._meta.get_field(name), "max_length", None)
+                if limit and isinstance(value, str) and len(value) > limit:
+                    self.stdout.write(self.style.WARNING(f"  Texto cortado em {limit} caracteres: {name}"))
+                    values[name] = value[:limit]
             obj, created = Experience.objects.update_or_create(slug=tour["slug"], defaults=values)
             self.stdout.write(self.style.SUCCESS(f"{'Criada' if created else 'Atualizada'}: {obj.title_pt}"))
             if tour.get("media"):
