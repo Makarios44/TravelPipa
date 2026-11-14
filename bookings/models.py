@@ -36,7 +36,7 @@ class BookingRequest(TimeStampedModel):
                                         help_text="Guardado para manter o histórico se a experiência for excluída.")
     preferred_date = models.DateField("data do passeio / da ida")
     round_trip = models.BooleanField("ida e volta", default=False,
-                                     help_text="Só para transfers: o cliente quer ida e volta (tem desconto).")
+                                     help_text="Só para transfers: o cliente quer ida e volta (desconto negociado no contato).")
     return_date = models.DateField("data da volta", null=True, blank=True)
     people = models.PositiveSmallIntegerField("quantidade de pessoas",
                                               validators=[MinValueValidator(1), MaxValueValidator(60)])

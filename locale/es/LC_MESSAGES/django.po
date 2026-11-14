@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 21:31-0300\n"
+"POT-Creation-Date: 2026-11-13 21:36-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,8 +43,8 @@ msgid "One way"
 msgstr "Solo ida"
 
 #: bookings/forms.py:45
-msgid "Round trip (special discount)"
-msgstr "Ida y vuelta (descuento especial)"
+msgid "Round trip"
+msgstr "Ida y vuelta"
 
 #: bookings/forms.py:46
 msgid "Return date"
@@ -382,31 +382,35 @@ msgstr ""
 msgid "Your trip"
 msgstr "Tu viaje"
 
-#: templates/bookings/booking_form.html:60
+#: templates/bookings/booking_form.html:55
+msgid "We negotiate a discount for round trips."
+msgstr "Negociamos un descuento si cierras ida y vuelta."
+
+#: templates/bookings/booking_form.html:61
 msgid "Your details"
 msgstr "Tus datos"
 
-#: templates/bookings/booking_form.html:73
+#: templates/bookings/booking_form.html:74
 msgid "Confirm booking"
 msgstr "Confirmar reserva"
 
-#: templates/bookings/booking_form.html:74
+#: templates/bookings/booking_form.html:75
 msgid "Required fields"
 msgstr "Campos obligatorios"
 
-#: templates/bookings/booking_form.html:82
+#: templates/bookings/booking_form.html:83
 msgid "How it works"
 msgstr "Cómo funciona"
 
-#: templates/bookings/booking_form.html:84
+#: templates/bookings/booking_form.html:85
 msgid "Choose the date and the number of people."
 msgstr "Elige la fecha y el número de personas."
 
-#: templates/bookings/booking_form.html:85
+#: templates/bookings/booking_form.html:86
 msgid "Your booking is registered right away."
 msgstr "Tu reserva queda registrada al instante."
 
-#: templates/bookings/booking_form.html:86
+#: templates/bookings/booking_form.html:87
 #, python-format
 msgid ""
 "We contact you with the meeting point, time and the 10%% deposit that "
@@ -415,11 +419,11 @@ msgstr ""
 "Te contactamos con el punto de encuentro, el horario y la seña del 10%% que "
 "garantiza tu fecha."
 
-#: templates/bookings/booking_form.html:91
+#: templates/bookings/booking_form.html:92
 msgid "Prefer to chat?"
 msgstr "¿Prefieres conversar?"
 
-#: templates/bookings/booking_form.html:92
+#: templates/bookings/booking_form.html:93
 msgid "Send us a message on WhatsApp and we will help you choose."
 msgstr "Envíanos un mensaje por WhatsApp y te ayudamos a elegir."
 
@@ -437,9 +441,8 @@ msgid "Your booking for <strong>%(title)s</strong> has been registered."
 msgstr "Tu reserva para <strong>%(title)s</strong> ha sido registrada."
 
 #: templates/bookings/booking_thanks.html:14
-msgid "Round trip: special discount applied when we confirm the details."
-msgstr ""
-"Ida y vuelta: el descuento especial se aplica cuando acordemos los detalles."
+msgid "Round trip: we negotiate your discount when we confirm the details."
+msgstr "Ida y vuelta: negociamos tu descuento cuando acordemos los detalles."
 
 #: templates/bookings/booking_thanks.html:15
 msgid "Your booking code"
@@ -1597,11 +1600,12 @@ msgstr "Traslado del aeropuerto de Natal a Pipa"
 #: templates/tours/transfers.html:5
 msgid ""
 "Transfers from Natal Airport to Pipa and to Ponta Negra (Natal), priced per "
-"car, with a round-trip discount. Book online with a local agency."
+"car. We negotiate a discount for round trips. Book online with a local "
+"agency."
 msgstr ""
 "Traslados del Aeropuerto de Natal a Pipa y a Ponta Negra (Natal), con precio"
-" por coche y descuento en ida y vuelta. Reserva online con una agencia "
-"local."
+" por coche. Negociamos un descuento si cierras ida y vuelta. Reserva online "
+"con una agencia local."
 
 #: templates/tours/transfers.html:15
 msgid "Getting to Pipa, made simple"
@@ -1610,19 +1614,19 @@ msgstr "Llegar a Pipa, de forma sencilla"
 #: templates/tours/transfers.html:16
 msgid ""
 "Natal International Airport (NAT) is the usual arrival point for Pipa. Book "
-"one way or round trip — round trips get a special discount."
+"one way or round trip — we negotiate a discount for round trips."
 msgstr ""
 "El Aeropuerto Internacional de Natal (NAT) es la llegada más habitual para "
-"ir a Pipa. Reserva solo ida o ida y vuelta: en ida y vuelta tienes un "
-"descuento especial."
+"ir a Pipa. Reserva solo ida o ida y vuelta: si cierras ida y vuelta, "
+"negociamos un descuento."
 
 #: templates/tours/transfers.html:29
 msgid "Main route"
 msgstr "Ruta principal"
 
 #: templates/tours/transfers.html:29 templates/tours/transfers.html:68
-msgid "Round-trip discount"
-msgstr "Descuento en ida y vuelta"
+msgid "We negotiate a discount for round trips"
+msgstr "Negociamos descuento en ida y vuelta"
 
 #: templates/tours/transfers.html:45
 msgid "Details"

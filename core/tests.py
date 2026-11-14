@@ -636,7 +636,7 @@ class RoundTripBookingTests(BaseTestCase):
         self.assertTrue(booking.round_trip)
         self.assertEqual(booking.return_date.isoformat(), self.day(15))
         thanks = self.client.get(reverse("bookings:thanks"))
-        self.assertContains(thanks, "Round trip: special discount")
+        self.assertContains(thanks, "we negotiate your discount")
 
     def test_round_trip_needs_a_valid_return_date(self):
         url = reverse("bookings:request")

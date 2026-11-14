@@ -42,7 +42,7 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
     preferred_date = forms.DateField(label=_("Date"), widget=forms.DateInput(attrs={"type": "date"}))
     trip_type = forms.ChoiceField(
         label=_("Trip"), required=False, initial=TRIP_ONE_WAY, widget=forms.RadioSelect,
-        choices=[(TRIP_ONE_WAY, _("One way")), (TRIP_ROUND, _("Round trip (special discount)"))])
+        choices=[(TRIP_ONE_WAY, _("One way")), (TRIP_ROUND, _("Round trip"))])
     return_date = forms.DateField(label=_("Return date"), required=False,
                                   widget=forms.DateInput(attrs={"type": "date"}))
     people = forms.IntegerField(label=_("Number of people"), min_value=1, max_value=60, initial=2,

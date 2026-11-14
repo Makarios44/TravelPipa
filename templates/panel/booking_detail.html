@@ -17,7 +17,7 @@
       <dl class="dl">
         <dt>Passeio</dt><dd>{% if booking.experience %}<a href="{% url 'panel:experience_edit' booking.experience.pk %}">{{ booking.experience.title_pt|default:booking.experience.title_en }}</a>{% else %}{{ booking.experience_title }} <small class="muted">(passeio excluído)</small>{% endif %}</dd>
         <dt>{% if booking.round_trip %}Ida{% else %}Data do passeio{% endif %}</dt><dd>{{ booking.preferred_date|date:"l, d/m/Y" }}</dd>
-        {% if booking.round_trip %}<dt>Volta</dt><dd>{{ booking.return_date|date:"l, d/m/Y" }} <span class="badge text-bg-warning">Ida e volta — aplicar desconto</span></dd>{% endif %}
+        {% if booking.round_trip %}<dt>Volta</dt><dd>{{ booking.return_date|date:"l, d/m/Y" }} <span class="badge text-bg-warning">Ida e volta — negociar desconto</span></dd>{% endif %}
         <dt>Pessoas</dt><dd>{{ booking.people }}</dd>
         <dt>Nome</dt><dd>{{ booking.full_name }}</dd>
         <dt>E-mail</dt><dd><a href="mailto:{{ booking.email }}">{{ booking.email }}</a></dd>

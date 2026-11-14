@@ -52,7 +52,7 @@ def notify_new_booking(request, booking):
         f"Código: {booking.reference}",
         f"Experiência: {booking.experience_title}",
         f"Data do passeio / ida: {booking.preferred_date:%d/%m/%Y}",
-        *([f"IDA E VOLTA — volta em {booking.return_date:%d/%m/%Y} (aplicar desconto)"] if booking.round_trip else []),
+        *([f"IDA E VOLTA — volta em {booking.return_date:%d/%m/%Y} (negociar desconto)"] if booking.round_trip else []),
         f"Pessoas: {booking.people}",
         f"Cliente: {booking.full_name}",
         f"E-mail: {booking.email}",
