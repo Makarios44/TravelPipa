@@ -690,3 +690,7 @@ img { max-width: 100%; height: auto; }
 .trust-list strong { display: block; font-family: var(--tp-font-head); color: var(--tp-ocean); font-size: .98rem; line-height: 1.25; }
 .trust-list small { color: var(--tp-muted); font-size: .84rem; }
 .trust-note .bi { color: var(--tp-teal); }
+
+/* Test environment (STAGING=True) */
+.staging-banner { position: relative; z-index: 2000; background: #F47745; color: #fff; text-align: center; font: 700 .85rem/1.3 system-ui, sans-serif; padding: .45rem 1rem; }
+.staging-banner a { color: #fff; text-decoration: underline; }

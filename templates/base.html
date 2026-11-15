@@ -35,6 +35,7 @@
   {% block schema %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
+{% if is_staging %}<div class="staging-banner" role="note">AMBIENTE DE TESTES (branch model) — não é o site oficial · <a href="https://travelpipa.com.br">travelpipa.com.br</a></div>{% endif %}
   <a class="skip-link" href="#main">{% trans "Skip to content" %}</a>
 
   {% include "includes/header.html" %}

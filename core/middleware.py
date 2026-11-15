@@ -63,6 +63,8 @@ class SecurityHeadersMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
         response.setdefault("Permissions-Policy", PERMISSIONS_POLICY)
+        if settings.STAGING:
+            response["X-Robots-Tag"] = "noindex, nofollow"
         content_type = response.get("Content-Type", "")
         # Django's technical admin ships a few inline scripts, so it keeps the default policy.
         if content_type.startswith("text/html") and not request.path.startswith(self.admin_prefix):

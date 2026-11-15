@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="{% static 'css/panel.css' %}">
 </head>
 <body class="panel">
+{% if is_staging %}<div class="staging-banner" role="note">AMBIENTE DE TESTES (branch model) — alterações aqui não vão para o site oficial</div>{% endif %}
 {% url 'panel:dashboard' as u_dash %}{% url 'panel:experiences' as u_exp %}{% url 'panel:bookings' as u_book %}
 {% url 'panel:messages' as u_msg %}{% url 'panel:categories' as u_cat %}{% url 'panel:testimonials' as u_test %}{% url 'panel:settings' as u_set %}
 <div class="panel-shell">

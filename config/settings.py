@@ -61,6 +61,10 @@ if _railway_domain:
     ALLOWED_HOSTS.append(_railway_domain)
     CSRF_TRUSTED_ORIGINS.append(f"https://{_railway_domain}")
 
+# Test/staging copy of the site (branch "model"): hidden from search engines,
+# with a visible banner, so it never competes with travelpipa.com.br.
+STAGING = env_bool("STAGING", False)
+
 # Number of reverse proxies in front of the app that append to X-Forwarded-For
 # (Railway = 1; Railway behind Cloudflare's orange cloud = 2). Used to find the
 # visitor's real IP for rate limiting without trusting values the visitor can forge.

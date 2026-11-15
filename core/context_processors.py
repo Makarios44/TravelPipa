@@ -45,5 +45,6 @@ def site_context(request):
         "canonical_url": absolute_url(request, request.path),
         "x_default_url": absolute_url(request, default_path),
         "whatsapp_general_url": whatsapp_link(site, _("Hello! I'd like some information about TravelPipa experiences.")),
+        "is_staging": settings.STAGING,
         "og_locale": {"en": "en_US", "pt-br": "pt_BR", "es": "es_ES"}.get(lang, "en_US"),
     }

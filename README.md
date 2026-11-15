@@ -304,6 +304,21 @@ O Railway bloqueia o envio por SMTP nos planos Free, Trial e Hobby. Por isso, o 
 
 > **Observação:** o Railway marcou o antigo arquivo `railway.json` como obsoleto. Este projeto usa `railpack.json` e `Procfile`.
 
+
+### 9.6 Ambiente de testes (branch `model`)
+Fluxo: as mudanças vão primeiro para a branch **`model`**, são testadas num site de testes e só depois entram na **`main`** (site oficial).
+
+1. No Railway, no topo do projeto: **Environments → New Environment** → nome `teste` (pode duplicar o `production`).
+2. No ambiente `teste`, abra o serviço do site → **Settings → Source → Branch**: `model`.
+3. O ambiente `teste` deve ter **banco e volume próprios** (o Railway cria cópias ao duplicar; confira que não aponta para o Postgres do `production`).
+4. Variáveis do ambiente `teste`, diferentes do oficial:
+   - `STAGING=True` → faixa laranja "AMBIENTE DE TESTES", Google bloqueado (robots + noindex)
+   - `SITE_URL=https://<endereço-do-teste>.up.railway.app`
+   - `NOTIFICATION_EMAILS=` com o seu e-mail pessoal (para reservas de teste não caírem em `vendas@`)
+   - `SECRET_KEY` diferente da oficial
+   - Não adicione os domínios `travelpipa.com.br` neste ambiente.
+5. Testou e está tudo certo? No GitHub: **Pull requests → New → base: `main` ← compare: `model` → Merge**. O site oficial atualiza sozinho.
+
 ---
 
 ## 10. Deploy em servidor Linux (alternativa)

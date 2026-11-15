@@ -95,6 +95,8 @@ def switch_language(request, lang_code):
 @require_GET
 @cache_control(max_age=60 * 60 * 24)
 def robots_txt(request):
+    if settings.STAGING:
+        return HttpResponse("User-agent: *\nDisallow: /\n", content_type="text/plain")
     sitemap_url = (settings.SITE_URL or request.build_absolute_uri("/").rstrip("/")) + "/sitemap.xml"
     lines = [
         "User-agent: *",
