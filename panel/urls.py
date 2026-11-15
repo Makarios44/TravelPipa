@@ -34,6 +34,7 @@ urlpatterns = [
     path("depoimentos/novo/", views.testimonial_edit, name="testimonial_new"),
     path("depoimentos/<int:pk>/", views.testimonial_edit, name="testimonial_edit"),
     path("depoimentos/<int:pk>/excluir/", views.testimonial_delete, name="testimonial_delete"),
+    path("depoimentos/<int:pk>/publicar/", views.testimonial_toggle, name="testimonial_toggle"),
 
     path("configuracoes/", views.site_settings, name="settings"),
 ]

@@ -61,6 +61,9 @@ if _railway_domain:
     ALLOWED_HOSTS.append(_railway_domain)
     CSRF_TRUSTED_ORIGINS.append(f"https://{_railway_domain}")
 
+# Google reviews shown on the site (Places API key, restricted to the Places API).
+GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY", "")
+
 # Test/staging copy of the site (branch "model"): hidden from search engines,
 # with a visible banner, so it never competes with travelpipa.com.br.
 STAGING = env_bool("STAGING", False)

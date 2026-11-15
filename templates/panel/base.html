@@ -26,7 +26,7 @@
       <a href="{{ u_exp }}" class="{% if section == 'experiences' %}active{% endif %}"><i class="bi bi-compass"></i>Passeios</a>
       <a href="{{ u_cat }}" class="{% if section == 'categories' %}active{% endif %}"><i class="bi bi-tags"></i>Categorias</a>
       <a href="{{ u_msg }}" class="{% if section == 'messages' %}active{% endif %}"><i class="bi bi-envelope"></i>Mensagens{% if nav_counts.messages %}<span class="count">{{ nav_counts.messages }}</span>{% endif %}</a>
-      <a href="{{ u_test }}" class="{% if section == 'testimonials' %}active{% endif %}"><i class="bi bi-chat-quote"></i>Depoimentos</a>
+      <a href="{{ u_test }}" class="{% if section == 'testimonials' %}active{% endif %}"><i class="bi bi-star"></i>Avaliações{% if nav_counts.reviews %}<span class="count">{{ nav_counts.reviews }}</span>{% endif %}</a>
       <a href="{{ u_set }}" class="{% if section == 'settings' %}active{% endif %}"><i class="bi bi-gear"></i>Configurações do site</a>
     </nav>
     <div class="panel-nav panel-nav-foot">

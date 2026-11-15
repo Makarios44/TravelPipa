@@ -5,7 +5,6 @@ from django.utils.translation import gettext as _
 
 from core.context_processors import whatsapp_link
 from core.models import SiteSettings, Testimonial
-from core.i18n import current_suffix
 from core.seo import breadcrumb_schema, experience_schema, json_ld
 
 from .models import Category, Experience
@@ -37,7 +36,7 @@ def experience_detail(request, slug):
     }
     related = (Experience.objects.published().filter(category=experience.category)
                .exclude(pk=experience.pk)[:3])
-    testimonials = Testimonial.objects.for_language(current_suffix()).filter(experience=experience)[:3]
+    testimonials = Testimonial.objects.published().filter(experience=experience).order_by("-review_date", "-created_at")[:3]
     list_url = reverse("tours:transfers") if experience.is_transfer else reverse("tours:experience_list")
     list_name = _("Transfers") if experience.is_transfer else _("Experiences")
     breadcrumbs = [(_("Home"), reverse("core:home")), (list_name, list_url),

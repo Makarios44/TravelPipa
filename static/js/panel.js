@@ -15,6 +15,22 @@
     bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 2500 }).show();
   }
 
+  // Copy-to-clipboard buttons
+  document.querySelectorAll("[data-copy]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var input = document.querySelector(button.getAttribute("data-copy"));
+      if (!input) return;
+      var done = function () {
+        var original = button.innerHTML;
+        button.innerHTML = '<i class="bi bi-check-lg"></i> Copiado';
+        setTimeout(function () { button.innerHTML = original; }, 1800);
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(input.value).then(done, function () { input.select(); document.execCommand("copy"); done(); });
+      } else { input.select(); document.execCommand("copy"); done(); }
+    });
+  });
+
   // Filters that apply as soon as an option is picked (no inline handlers: CSP)
   document.querySelectorAll("select[data-autosubmit]").forEach(function (select) {
     select.addEventListener("change", function () { select.form.submit(); });

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-13 21:36-0300\n"
+"POT-Creation-Date: 2026-11-15 16:54-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,7 +114,11 @@ msgstr "reservar/"
 msgid "book/thanks/"
 msgstr "reservar/obrigado/"
 
-#: bookings/views.py:27
+#: bookings/urls.py:11
+msgid "review/<uuid:token>/"
+msgstr "avaliar/<uuid:token>/"
+
+#: bookings/views.py:32
 msgid ""
 "Too many requests from this connection. Please try again later or contact us"
 " on WhatsApp."
@@ -122,10 +126,14 @@ msgstr ""
 "Muitas solicitações desta conexão. Tente novamente mais tarde ou fale "
 "conosco pelo WhatsApp."
 
-#: bookings/views.py:51
+#: bookings/views.py:56
 #, python-format
 msgid "Hello! I just made booking %(ref)s for \"%(title)s\"."
 msgstr "Olá! Acabei de fazer a reserva %(ref)s para \"%(title)s\"."
+
+#: bookings/views.py:84
+msgid "Too many requests from this connection. Please try again later."
+msgstr "Muitas tentativas a partir desta conexão. Tente novamente mais tarde."
 
 #: core/antispam.py:25
 msgid ""
@@ -225,6 +233,46 @@ msgstr "Assunto"
 msgid "Message"
 msgstr "Mensagem"
 
+#: core/forms.py:77
+msgid "Your rating"
+msgstr "Sua nota"
+
+#: core/forms.py:79
+msgid "Please choose from 1 to 5 stars."
+msgstr "Escolha de 1 a 5 estrelas."
+
+#: core/forms.py:81
+msgid "Your review"
+msgstr "Sua avaliação"
+
+#: core/forms.py:83
+msgid "Tell other travellers what the experience was like."
+msgstr "Conte para outros viajantes como foi a experiência."
+
+#: core/forms.py:85
+msgid "Name shown with the review"
+msgstr "Nome que aparece na avaliação"
+
+#: core/forms.py:86
+msgid "For example, your first name and the initial of your surname."
+msgstr "Por exemplo, seu primeiro nome e a inicial do sobrenome."
+
+#: core/forms.py:87
+msgid "City / country"
+msgstr "Cidade / país"
+
+#: core/forms.py:90
+msgid ""
+"I agree that TravelPipa may publish this name, my rating and my review on "
+"its website."
+msgstr ""
+"Concordo que a TravelPipa publique este nome, minha nota e minha avaliação "
+"no site."
+
+#: core/forms.py:91
+msgid "Please confirm so we can publish your review."
+msgstr "Confirme para podermos publicar a sua avaliação."
+
 #: core/templatetags/travelpipa.py:31 tours/models.py:83
 msgid "per person"
 msgstr "por pessoa"
@@ -257,7 +305,11 @@ msgstr "termos-e-condicoes/"
 msgid "tides-and-weather/"
 msgstr "mare-e-tempo/"
 
-#: core/views.py:50
+#: core/urls.py:15
+msgid "reviews/"
+msgstr "avaliacoes/"
+
+#: core/views.py:52
 msgid ""
 "Too many messages from this connection. Please try again later or use "
 "WhatsApp."
@@ -265,7 +317,7 @@ msgstr ""
 "Muitas mensagens desta conexão. Tente novamente mais tarde ou use o "
 "WhatsApp."
 
-#: core/views.py:54
+#: core/views.py:56
 msgid "Thank you! Your message was sent. We will reply as soon as possible."
 msgstr "Obrigado! Sua mensagem foi enviada. Responderemos o quanto antes."
 
@@ -315,11 +367,11 @@ msgstr ""
 "Passeios selecionados, experiências locais e transfers sem complicação em "
 "Pipa, Brasil."
 
-#: templates/base.html:38
+#: templates/base.html:39
 msgid "Skip to content"
 msgstr "Pular para o conteúdo"
 
-#: templates/base.html:60
+#: templates/base.html:61
 msgid "Chat with us on WhatsApp"
 msgstr "Fale conosco pelo WhatsApp"
 
@@ -347,10 +399,10 @@ msgstr "Navegação estrutural"
 
 #: templates/bookings/booking_form.html:12 templates/core/about.html:10
 #: templates/core/contact.html:10 templates/core/legal.html:10
-#: templates/core/tides_weather.html:12 templates/includes/brand.html:1
-#: templates/includes/header.html:8 templates/includes/header.html:44
-#: templates/tours/experience_list.html:12 templates/tours/transfers.html:11
-#: tours/views.py:43
+#: templates/core/reviews.html:10 templates/core/tides_weather.html:12
+#: templates/includes/brand.html:1 templates/includes/header.html:8
+#: templates/includes/header.html:44 templates/tours/experience_list.html:12
+#: templates/tours/transfers.html:11 tours/views.py:42
 msgid "Home"
 msgstr "Início"
 
@@ -473,6 +525,71 @@ msgstr "Enviar mensagem no WhatsApp"
 msgid "Back to experiences"
 msgstr "Voltar para experiências"
 
+#: templates/bookings/review.html:3
+msgid "Rate your experience"
+msgstr "Avalie sua experiência"
+
+#: templates/bookings/review.html:14
+msgid "Thank you for your review!"
+msgstr "Obrigado pela sua avaliação!"
+
+#: templates/bookings/review.html:14
+msgid "You have already reviewed this experience"
+msgstr "Você já avaliou esta experiência"
+
+#: templates/bookings/review.html:15
+#, python-format
+msgid ""
+"Your opinion about <strong>%(title)s</strong> helps other travellers and "
+"helps us improve."
+msgstr ""
+"Sua opinião sobre <strong>%(title)s</strong> ajuda outros viajantes e nos "
+"ajuda a melhorar."
+
+#: templates/bookings/review.html:18
+msgid "Your opinion"
+msgstr "Sua opinião"
+
+#: templates/bookings/review.html:19
+msgid "How was your experience?"
+msgstr "Como foi a sua experiência?"
+
+#: templates/bookings/review.html:20
+#, python-format
+msgid "Tell us about <strong>%(title)s</strong>. It takes less than a minute."
+msgstr "Conte como foi <strong>%(title)s</strong>. Leva menos de 1 minuto."
+
+#: templates/bookings/review.html:30
+#, python-format
+msgid "%(n)s of 5 stars"
+msgstr "%(n)s de 5 estrelas"
+
+#: templates/bookings/review.html:41
+msgid "Send my review"
+msgstr "Enviar minha avaliação"
+
+#: templates/bookings/review.html:47
+msgid "Could you also leave your review on Google?"
+msgstr "Pode deixar sua avaliação também no Google?"
+
+#: templates/bookings/review.html:47
+msgid "Prefer to review on Google?"
+msgstr "Prefere avaliar no Google?"
+
+#: templates/bookings/review.html:48
+msgid ""
+"It helps other travellers find us. Google reviews are written on Google "
+"itself."
+msgstr ""
+"Isso ajuda outros viajantes a nos encontrar. As avaliações do Google são "
+"feitas no próprio Google."
+
+#: templates/bookings/review.html:49 templates/core/reviews.html:26
+#: templates/includes/google_reviews_block.html:11
+#: templates/includes/google_reviews_block.html:37
+msgid "Review us on Google"
+msgstr "Avaliar no Google"
+
 #: templates/core/about.html:3
 msgid "About TravelPipa — Local Boutique Travel Agency in Pipa"
 msgstr "Sobre a TravelPipa — agência boutique local em Pipa"
@@ -571,7 +688,7 @@ msgstr ""
 
 #: templates/core/contact.html:11 templates/core/contact.html:13
 #: templates/core/legal_terms_default.html:12
-#: templates/includes/footer.html:30 templates/includes/footer.html:37
+#: templates/includes/footer.html:31 templates/includes/footer.html:38
 #: templates/includes/header.html:12 templates/includes/header.html:48
 msgid "Contact"
 msgstr "Contato"
@@ -604,7 +721,7 @@ msgstr "Horário de atendimento"
 msgid "Chat on WhatsApp"
 msgstr "Conversar no WhatsApp"
 
-#: templates/core/contact.html:37 templates/includes/footer.html:44
+#: templates/core/contact.html:37 templates/includes/footer.html:45
 msgid "Send us a message"
 msgstr "Envie uma mensagem"
 
@@ -634,7 +751,7 @@ msgstr "Vista panorâmica da Praia da Pipa, RN"
 msgid "Demo image — replace in the admin panel"
 msgstr "Imagem de demonstração — substitua no painel"
 
-#: templates/core/home.html:22 templates/includes/footer.html:54
+#: templates/core/home.html:22 templates/includes/footer.html:55
 msgid "Brazil"
 msgstr "Brasil"
 
@@ -695,7 +812,7 @@ msgstr "Nossas experiências serão publicadas aqui em breve."
 #: templates/core/home.html:83 templates/includes/footer.html:20
 #: templates/includes/header.html:10 templates/includes/header.html:46
 #: templates/tours/transfers.html:12 templates/tours/transfers.html:14
-#: tours/views.py:42
+#: tours/views.py:41
 msgid "Transfers"
 msgstr "Transfers"
 
@@ -849,24 +966,24 @@ msgstr ""
 msgid "About TravelPipa"
 msgstr "Sobre a TravelPipa"
 
-#: templates/core/home.html:188 templates/tours/experience_detail.html:124
+#: templates/core/home.html:189 templates/core/reviews.html:14
+#: templates/tours/experience_detail.html:124
 msgid "Guest reviews"
 msgstr "Avaliações de clientes"
 
-#: templates/core/home.html:189
+#: templates/core/home.html:190 templates/core/reviews.html:15
 msgid "What our guests say"
 msgstr "O que nossos clientes dizem"
 
-#: templates/core/home.html:197
-#, python-format
-msgid "%(r)s out of 5"
-msgstr "%(r)s de 5"
+#: templates/core/home.html:192 templates/tours/experience_detail.html:128
+msgid "See all reviews"
+msgstr "Ver todas as avaliações"
 
-#: templates/core/home.html:219
+#: templates/core/home.html:211
 msgid "Tell us your dates. We'll plan the rest with you."
 msgstr "Conte suas datas. Planejamos o resto com você."
 
-#: templates/core/home.html:220
+#: templates/core/home.html:212
 msgid ""
 "Book online in a few minutes, with no payment now. We contact you shortly "
 "with all the details."
@@ -874,21 +991,21 @@ msgstr ""
 "Reserve online em poucos minutos, sem pagar nada agora. Em breve entramos em"
 " contato com todos os detalhes."
 
-#: templates/core/home.html:223 templates/includes/footer.html:21
+#: templates/core/home.html:215 templates/includes/footer.html:21
 #: templates/includes/header.html:27 templates/includes/header.html:51
-#: templates/tours/experience_detail.html:141
-#: templates/tours/experience_detail.html:177
+#: templates/tours/experience_detail.html:139
+#: templates/tours/experience_detail.html:175
 #: templates/tours/transfers.html:44
 msgid "Book Now"
 msgstr "Reservar agora"
 
 #: templates/core/legal.html:3 templates/core/legal.html:11
-#: templates/core/legal.html:13 templates/includes/footer.html:31
+#: templates/core/legal.html:13 templates/includes/footer.html:32
 msgid "Privacy Policy"
 msgstr "Política de Privacidade"
 
 #: templates/core/legal.html:3 templates/core/legal.html:11
-#: templates/core/legal.html:13 templates/includes/footer.html:32
+#: templates/core/legal.html:13 templates/includes/footer.html:33
 msgid "Terms & Conditions"
 msgstr "Termos e Condições"
 
@@ -1100,6 +1217,42 @@ msgstr ""
 msgid "For any question about these terms, please use our contact page."
 msgstr "Para dúvidas sobre estes termos, use nossa página de contato."
 
+#: templates/core/reviews.html:3 templates/core/reviews.html:11
+#: templates/includes/footer.html:30
+msgid "Reviews"
+msgstr "Avaliações"
+
+#: templates/core/reviews.html:4
+msgid ""
+"What travellers say about TravelPipa tours and transfers in Pipa: reviews "
+"from our customers and from Google."
+msgstr ""
+"O que os viajantes dizem dos passeios e transfers da TravelPipa em Pipa: "
+"avaliações dos nossos clientes e do Google."
+
+#: templates/core/reviews.html:19
+#, python-format
+msgid "%(n)s review from customers who booked with us"
+msgid_plural "%(n)s reviews from customers who booked with us"
+msgstr[0] "%(n)s avaliação de clientes que reservaram com a gente"
+msgstr[1] "%(n)s avaliações de clientes que reservaram com a gente"
+
+#: templates/core/reviews.html:31
+msgid "Reviews from our customers"
+msgstr "Avaliações dos nossos clientes"
+
+#: templates/core/reviews.html:35
+msgid ""
+"Reviews from customers who booked with TravelPipa, shown in the language "
+"they were written, newest first."
+msgstr ""
+"Avaliações de clientes que reservaram com a TravelPipa, no idioma em que "
+"foram escritas, das mais recentes para as mais antigas."
+
+#: templates/core/reviews.html:37
+msgid "Reviews from our guests will appear here soon."
+msgstr "As avaliações dos nossos clientes vão aparecer aqui em breve."
+
 #: templates/core/tides_weather.html:4
 msgid "Tide Table & Weather in Pipa Today"
 msgstr "Tábua de marés e previsão do tempo em Pipa hoje"
@@ -1300,7 +1453,7 @@ msgstr ""
 "horário."
 
 #: templates/includes/conditions_tide_box.html:13
-#: templates/tours/experience_detail.html:156
+#: templates/tours/experience_detail.html:154
 msgid "Full tide table"
 msgstr "Tábua de marés completa"
 
@@ -1327,7 +1480,7 @@ msgstr "Explore"
 
 #: templates/includes/footer.html:19 templates/includes/header.html:9
 #: templates/includes/header.html:45 templates/tours/experience_list.html:13
-#: tours/views.py:42
+#: tours/views.py:41
 msgid "Experiences"
 msgstr "Experiências"
 
@@ -1335,9 +1488,52 @@ msgstr "Experiências"
 msgid "Company"
 msgstr "Empresa"
 
-#: templates/includes/footer.html:46
+#: templates/includes/footer.html:47
 msgid "Language"
 msgstr "Idioma"
+
+#: templates/includes/google_reviews_block.html:5
+msgid "Google reviews"
+msgstr "Avaliações do Google"
+
+#: templates/includes/google_reviews_block.html:7
+#, python-format
+msgid "%(n)s review on Google"
+msgid_plural "%(n)s reviews on Google"
+msgstr[0] "%(n)s avaliação no Google"
+msgstr[1] "%(n)s avaliações no Google"
+
+#: templates/includes/google_reviews_block.html:10
+msgid "See all on Google"
+msgstr "Ver todas no Google"
+
+#: templates/includes/google_reviews_block.html:23
+#: templates/includes/review_card.html:3
+#, python-format
+msgid "%(n)s out of 5"
+msgstr "%(n)s de 5"
+
+#: templates/includes/google_reviews_block.html:26
+msgid "Translated by Google"
+msgstr "Traduzida pelo Google"
+
+#: templates/includes/google_reviews_block.html:26
+msgid "View on Google Maps"
+msgstr "Ver no Google Maps"
+
+#: templates/includes/google_reviews_block.html:32
+msgid ""
+"Reviews from Google, sorted by relevance. Google does not verify reviews but"
+" removes content reported as false."
+msgstr ""
+"Avaliações do Google, ordenadas por relevância. O Google não verifica as "
+"avaliações, mas remove conteúdo denunciado como falso."
+
+#: templates/includes/google_reviews_block.html:36
+msgid ""
+"Have you travelled with us? Your review on Google helps other travellers."
+msgstr ""
+"Já viajou com a gente? Sua avaliação no Google ajuda outros viajantes."
 
 #: templates/includes/header.html:3
 msgid "Main navigation"
@@ -1374,6 +1570,10 @@ msgstr "valor de demonstração"
 #: templates/includes/price.html:1
 msgid "Price on request"
 msgstr "Preço sob consulta"
+
+#: templates/includes/review_card.html:4
+msgid "Verified booking"
+msgstr "Reserva verificada"
 
 #: templates/includes/trust_strip.html:1
 msgid "Why you can book with confidence"
@@ -1477,15 +1677,15 @@ msgstr ""
 "As condições de cancelamento são enviadas junto com a confirmação da "
 "reserva."
 
-#: templates/tours/experience_detail.html:135
+#: templates/tours/experience_detail.html:133
 msgid "Booking"
 msgstr "Reserva"
 
-#: templates/tours/experience_detail.html:142
+#: templates/tours/experience_detail.html:140
 msgid "Ask on WhatsApp"
 msgstr "Perguntar no WhatsApp"
 
-#: templates/tours/experience_detail.html:145
+#: templates/tours/experience_detail.html:143
 msgid ""
 "Book in a few minutes. We contact you shortly with the meeting point and "
 "details."
@@ -1493,38 +1693,38 @@ msgstr ""
 "Reserve em poucos minutos. Em breve entramos em contato com o ponto de "
 "encontro e os detalhes."
 
-#: templates/tours/experience_detail.html:146
+#: templates/tours/experience_detail.html:144
 #, python-format
 msgid "No payment now: a 10%% deposit secures your date after we talk."
 msgstr ""
 "Sem pagamento agora: um sinal de 10%% garante a sua data depois que "
 "conversarmos."
 
-#: templates/tours/experience_detail.html:148
+#: templates/tours/experience_detail.html:146
 msgid "Tour guide registered in Cadastur (Ministry of Tourism)."
 msgstr "Guia de turismo com cadastro no Cadastur (Ministério do Turismo)."
 
-#: templates/tours/experience_detail.html:151
+#: templates/tours/experience_detail.html:149
 msgid "Vehicles registered for tourist transport with DER/RN."
 msgstr "Veículos cadastrados para transporte turístico no DER/RN."
 
-#: templates/tours/experience_detail.html:167
+#: templates/tours/experience_detail.html:165
 msgid "You may also like"
 msgstr "Você também pode gostar"
 
-#: templates/tours/experience_detail.html:180
+#: templates/tours/experience_detail.html:178
 msgid "Photo gallery"
 msgstr "Galeria de fotos"
 
-#: templates/tours/experience_detail.html:185
+#: templates/tours/experience_detail.html:183
 msgid "Close"
 msgstr "Fechar"
 
-#: templates/tours/experience_detail.html:189
+#: templates/tours/experience_detail.html:187
 msgid "Previous photo"
 msgstr "Foto anterior"
 
-#: templates/tours/experience_detail.html:190
+#: templates/tours/experience_detail.html:188
 msgid "Next photo"
 msgstr "Próxima foto"
 
@@ -1693,7 +1893,7 @@ msgstr "passeios/<slug:slug>/"
 msgid "transfers/"
 msgstr "transfers/"
 
-#: tours/views.py:34
+#: tours/views.py:33
 #, python-format
 msgid "Hello! I'm interested in \"%(title)s\" (%(url)s)."
 msgstr "Olá! Tenho interesse em \"%(title)s\" (%(url)s)."

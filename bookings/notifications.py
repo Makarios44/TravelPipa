@@ -93,3 +93,28 @@ def notify_new_contact(request, message):
     except Exception:
         logger.exception("Could not send contact notification")
         return False
+
+
+def notify_new_review(request, review):
+    """Tells the team a customer left a review (it waits for approval in the panel)."""
+    recipients = notification_recipients()
+    if not email_configured() or not recipients:
+        return False
+    stars = "★" * (review.rating or 0) + "☆" * (5 - (review.rating or 0))
+    body = "\n".join([
+        "Nova avaliação de cliente, aguardando aprovação no painel.",
+        "",
+        f"Nota: {stars} ({review.rating}/5)",
+        f"Nome: {review.author_name}" + (f" — {review.author_country}" if review.author_country else ""),
+        f"Reserva: {review.booking.reference if review.booking else '-'}",
+        "",
+        review.any_text,
+        "",
+        f"Aprovar no painel: {absolute(request, reverse('panel:testimonial_edit', args=[review.pk]))}",
+    ])
+    try:
+        send(f"[TravelPipa] Nova avaliação {stars} — {review.author_name}", body, recipients)
+        return True
+    except Exception:  # pragma: no cover - logged, never breaks the page
+        logger.exception("Could not send review notification")
+        return False
