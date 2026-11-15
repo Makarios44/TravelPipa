@@ -68,3 +68,28 @@ class ContactForm(StyledFormMixin, AntiSpamFormMixin):
             subject=data.get("subject", ""), message=data["message"], language=language,
             consent_at=timezone.now(),
         )
+
+
+class ReviewForm(StyledFormMixin, AntiSpamFormMixin):
+    """Review written by a customer through the personal link of their booking."""
+
+    rating = forms.TypedChoiceField(
+        label=_("Your rating"), coerce=int, widget=forms.RadioSelect,
+        choices=[(5, "5"), (4, "4"), (3, "3"), (2, "2"), (1, "1")],
+        error_messages={"required": _("Please choose from 1 to 5 stars.")})
+    text = forms.CharField(
+        label=_("Your review"), min_length=10, max_length=1500,
+        widget=forms.Textarea(attrs={"rows": 5}),
+        help_text=_("Tell other travellers what the experience was like."))
+    author_name = forms.CharField(
+        label=_("Name shown with the review"), max_length=60,
+        help_text=_("For example, your first name and the initial of your surname."))
+    author_country = forms.CharField(label=_("City / country"), max_length=80, required=False)
+    consent = forms.BooleanField(
+        required=True,
+        label=_("I agree that TravelPipa may publish this name, my rating and my review on its website."),
+        error_messages={"required": _("Please confirm so we can publish your review.")})
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_styles()

@@ -64,6 +64,10 @@ class SiteSettings(TimeStampedModel):
     google_maps_url = models.URLField("link do Google Maps", blank=True)
     company_legal_name = models.CharField("razão social", max_length=150, blank=True)
     company_document = models.CharField("CNPJ", max_length=30, blank=True)
+    google_place_id = models.CharField(
+        "Google Place ID", max_length=200, blank=True,
+        help_text="Identificador do Perfil da Empresa no Google (começa com ChIJ...). Usado no botão "
+                  "\"Avaliar no Google\" e para mostrar as avaliações do Google no site.")
     trust_cadastur_guides = models.BooleanField(
         "selo: guias de turismo com Cadastur", default=True,
         help_text="Exibe no site que os guias de turismo são cadastrados no Cadastur (Ministério do Turismo).")
@@ -171,6 +175,9 @@ class TestimonialQuerySet(models.QuerySet):
     def published(self):
         return self.filter(active=True, confirmed_real=True)
 
+    def awaiting_approval(self):
+        return self.filter(from_customer=True, active=False)
+
     def for_language(self, suffix):
         return self.published().exclude(**{f"text_{suffix}": ""})
 
@@ -195,6 +202,12 @@ class Testimonial(TimeStampedModel):
     confirmed_real = models.BooleanField(
         "confirmo que é uma avaliação real", default=False,
         help_text="Somente avaliações reais confirmadas são exibidas no site.")
+    booking = models.OneToOneField("bookings.BookingRequest", verbose_name="reserva", on_delete=models.SET_NULL,
+                                   null=True, blank=True, related_name="review")
+    from_customer = models.BooleanField(
+        "enviada pelo cliente", default=False,
+        help_text="Escrita pelo próprio cliente no link de avaliação (texto não pode ser alterado pela equipe).")
+    language = models.CharField("idioma", max_length=8, blank=True)
 
     objects = TestimonialQuerySet.as_manager()
 
@@ -208,6 +221,16 @@ class Testimonial(TimeStampedModel):
 
     def __str__(self):
         return self.author_name
+
+    @property
+    def any_text(self):
+        """The review in the language it was written (reviews are never machine-translated)."""
+        preferred = {"pt-br": self.text_pt, "en": self.text_en, "es": self.text_es}.get(self.language)
+        return preferred or self.text_pt or self.text_en or self.text_es
+
+    @property
+    def stars(self):
+        return range(self.rating or 0)
 
     def clean(self):
         if not (self.text_en or self.text_pt or self.text_es):

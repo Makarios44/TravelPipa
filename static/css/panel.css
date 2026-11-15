@@ -151,3 +151,6 @@ a { text-underline-offset: .2em; }
 /* Test environment (STAGING=True) */
 .staging-banner { position: relative; z-index: 2000; background: #F47745; color: #fff; text-align: center; font: 700 .85rem/1.3 system-ui, sans-serif; padding: .45rem 1rem; }
 .staging-banner a { color: #fff; text-decoration: underline; }
+
+/* Customer review waiting for approval: highlight instead of fading */
+.row-item.pending { border-left: 4px solid #F2B135; background: #FFFBF0; }

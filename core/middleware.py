@@ -41,7 +41,7 @@ CONTENT_SECURITY_POLICY = "; ".join([
     "default-src 'self'",
     "script-src 'self'",
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
+    "img-src 'self' data: blob: https://lh3.googleusercontent.com",  # Google reviewers' photos
     "media-src 'self' blob:",
     "font-src 'self'",
     "connect-src 'self'",

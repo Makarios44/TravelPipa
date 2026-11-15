@@ -1,0 +1,39 @@
+{% load i18n %}{% if google and google.reviews %}
+<div class="google-block">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+    <div class="rating-summary">
+      <span class="review-source google"><i class="bi bi-google" aria-hidden="true"></i> {% trans "Google reviews" %}</span>
+      {% if google.rating %}<span><span class="big">{{ google.rating|floatformat:1 }}</span> <span class="review-stars ms-1" aria-hidden="true"><i class="bi bi-star-fill"></i></span>
+        <span class="review-meta d-block">{% blocktrans count n=google.count %}{{ n }} review on Google{% plural %}{{ n }} reviews on Google{% endblocktrans %}</span></span>{% endif %}
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      {% if google.maps_url %}<a class="btn btn-outline-ocean btn-sm" href="{{ google.maps_url }}" target="_blank" rel="noopener">{% trans "See all on Google" %}</a>{% endif %}
+      {% if google_review_url %}<a class="btn btn-primary btn-sm" href="{{ google_review_url }}" target="_blank" rel="noopener"><i class="bi bi-pencil" aria-hidden="true"></i> {% trans "Review us on Google" %}</a>{% endif %}
+    </div>
+  </div>
+  <div class="row g-3">
+    {% for g in google.reviews|slice:limit_slice %}
+      <div class="col-md-6{% if limit > 2 %} col-lg-4{% endif %}">
+        <figure class="review-card m-0">
+          <div class="review-author">
+            {% if g.author_photo %}<img src="{{ g.author_photo }}" alt="" width="36" height="36" loading="lazy" referrerpolicy="no-referrer">{% endif %}
+            <div>{% if g.author_url %}<a href="{{ g.author_url }}" target="_blank" rel="noopener nofollow">{{ g.author }}</a>{% else %}<strong>{{ g.author }}</strong>{% endif %}
+              <span class="review-meta d-block">{{ g.when }}</span></div>
+          </div>
+          {% if g.rating %}<span class="review-stars" aria-label="{% blocktrans with n=g.rating %}{{ n }} out of 5{% endblocktrans %}">{% for i in "12345" %}{% if forloop.counter <= g.rating %}<i class="bi bi-star-fill" aria-hidden="true"></i>{% else %}<i class="bi bi-star-fill off" aria-hidden="true"></i>{% endif %}{% endfor %}</span>{% endif %}
+          <blockquote>{{ g.text|truncatewords:90 }}</blockquote>
+          <div class="review-meta mt-auto">
+            {% if g.translated %}{% trans "Translated by Google" %} · {% endif %}{% if g.url %}<a href="{{ g.url }}" target="_blank" rel="noopener nofollow">{% trans "View on Google Maps" %}</a>{% endif %}
+          </div>
+        </figure>
+      </div>
+    {% endfor %}
+  </div>
+  <p class="review-meta mt-3 mb-0">{% trans "Reviews from Google, sorted by relevance. Google does not verify reviews but removes content reported as false." %}</p>
+</div>
+{% elif google_review_url %}
+<div class="google-block text-center">
+  <p class="mb-2">{% trans "Have you travelled with us? Your review on Google helps other travellers." %}</p>
+  <a class="btn btn-primary" href="{{ google_review_url }}" target="_blank" rel="noopener"><i class="bi bi-google" aria-hidden="true"></i> {% trans "Review us on Google" %}</a>
+</div>
+{% endif %}

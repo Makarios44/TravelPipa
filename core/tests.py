@@ -219,12 +219,14 @@ class PublicPagesTests(BaseTestCase):
     def test_testimonials_hidden_when_none(self):
         self.assertNotContains(self.client.get("/en/"), "What our guests say")
 
-    def test_only_confirmed_testimonials_in_matching_language(self):
+    def test_only_confirmed_testimonials_in_their_original_language(self):
         Testimonial.objects.create(author_name="John", text_en="Great day!", confirmed_real=False)
         self.assertNotContains(self.client.get("/en/"), "What our guests say")
         Testimonial.objects.create(author_name="Ana", text_pt="Dia incrível!", confirmed_real=True)
-        self.assertNotContains(self.client.get("/en/"), "Dia incrível!")
+        # Reviews are never translated: shown as written, on every language version.
         self.assertContains(self.client.get("/pt-br/"), "Dia incrível!")
+        self.assertContains(self.client.get("/en/"), "Dia incrível!")
+        self.assertNotContains(self.client.get("/en/"), "Great day!")
 
     def test_whatsapp_button_uses_configured_number(self):
         self.assertNotContains(self.client.get("/en/"), "wa.me/")
@@ -658,3 +660,140 @@ class RoundTripBookingTests(BaseTestCase):
         page = self.client.get(reverse("bookings:request"))
         self.assertContains(page, 'data-transfer="1"', count=1)
         self.assertContains(page, "10% deposit")
+
+
+class CustomerReviewTests(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+        cache.clear()
+        self.booking = BookingRequest.objects.create(
+            experience=self.boat, experience_title="Boat", preferred_date=timezone.localdate(),
+            people=2, full_name="Ana Maria Souza", email="ana@example.com", phone="+55 84 99999-0000",
+            service_language="pt-br")
+
+    def url(self, lang="pt-br"):
+        from django.utils import translation
+        with translation.override(lang):
+            return reverse("bookings:review", args=[self.booking.uuid])
+
+    def payload(self, **extra):
+        page = self.client.get(self.url())
+        data = {"form_ts": page.context["form"].initial["form_ts"], "website": "", "rating": "5",
+                "text": "Passeio maravilhoso, equipe atenciosa!", "author_name": "Ana S.",
+                "author_country": "Recife", "consent": "on"}
+        data.update(extra)
+        return data
+
+    def test_link_is_translated_and_suggests_display_name(self):
+        self.assertTrue(self.url().startswith("/pt-br/avaliar/"), self.url())
+        self.assertTrue(self.url("es").startswith("/es/valorar/"), self.url("es"))
+        page = self.client.get(self.url())
+        self.assertEqual(page.status_code, 200)
+        self.assertEqual(page.context["form"].initial["author_name"], "Ana S.")
+        self.assertEqual(page["X-Robots-Tag"], "noindex, nofollow")
+
+    @override_settings(FORM_MIN_FILL_SECONDS=0)
+    def test_review_is_saved_unpublished_and_only_once(self):
+        response = self.client.post(self.url(), self.payload())
+        self.assertRedirects(response, self.url() + "?ok=1")
+        review = Testimonial.objects.get()
+        self.assertEqual((review.rating, review.text_pt, review.language), (5, "Passeio maravilhoso, equipe atenciosa!", "pt-br"))
+        self.assertTrue(review.from_customer and review.confirmed_real)
+        self.assertFalse(review.active)  # waits for the team
+        self.assertEqual(review.booking, self.booking)
+        self.assertNotContains(self.client.get("/pt-br/"), "Passeio maravilhoso")
+        again = self.client.get(self.url())
+        self.assertContains(again, "Você já avaliou esta experiência")
+        self.assertIsNone(again.context["form"])
+        second = {"rating": "1", "text": "Outra avaliação qualquer aqui", "author_name": "X", "consent": "on"}
+        self.client.post(self.url(), second)
+        self.assertEqual(Testimonial.objects.count(), 1)
+
+    @override_settings(FORM_MIN_FILL_SECONDS=0)
+    def test_google_button_is_shown_to_every_rating(self):
+        site = SiteSettings.load()
+        site.google_place_id = "ChIJtest123"
+        site.save()
+        self.client.post(self.url(), self.payload(rating="2", text="Achei o passeio fraco, pouco tempo."))
+        done = self.client.get(self.url() + "?ok=1")
+        self.assertContains(done, "search.google.com/local/writereview?placeid=ChIJtest123")
+
+    def test_unknown_token_is_404(self):
+        import uuid
+        self.assertEqual(self.client.get(reverse("bookings:review", args=[uuid.uuid4()])).status_code, 404)
+
+    @override_settings(FORM_MIN_FILL_SECONDS=0)
+    def test_consent_and_rating_are_required(self):
+        response = self.client.post(self.url(), self.payload(consent="", rating=""))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Testimonial.objects.exists())
+
+    @override_settings(FORM_MIN_FILL_SECONDS=0)
+    def test_published_review_appears_on_reviews_page_and_experience(self):
+        self.client.post(self.url(), self.payload())
+        Testimonial.objects.update(active=True)
+        with translation.override("en"):
+            page = self.client.get(reverse("core:reviews"))
+        self.assertContains(page, "Passeio maravilhoso")
+        self.assertContains(page, "Verified booking")
+        self.assertContains(self.client.get("/en/"), "Passeio maravilhoso")
+
+
+class GoogleReviewsTests(BaseTestCase):
+    def setUp(self):
+        super().setUp()
+        cache.clear()
+        site = SiteSettings.load()
+        site.google_place_id = "ChIJabc"
+        site.save()
+
+    def test_without_api_key_only_the_review_button_shows(self):
+        widget = self.client.get(reverse("core:google_reviews_widget"))
+        self.assertContains(widget, "writereview?placeid=ChIJabc")
+        self.assertNotContains(widget, "Google does not verify")
+
+    @override_settings(GOOGLE_PLACES_API_KEY="k")
+    def test_reviews_come_from_places_api_with_attribution(self):
+        import json
+        from unittest import mock
+
+        payload = {"rating": 4.9, "userRatingCount": 37, "googleMapsUri": "https://maps.google.com/?cid=1",
+                   "reviews": [{"rating": 5, "relativePublishTimeDescription": "há 2 semanas",
+                                "text": {"text": "Excelente!", "languageCode": "pt"},
+                                "originalText": {"text": "Excellent!", "languageCode": "en"},
+                                "authorAttribution": {"displayName": "Maria G", "uri": "https://www.google.com/maps/contrib/1",
+                                                      "photoUri": "https://lh3.googleusercontent.com/a/x"},
+                                "googleMapsUri": "https://www.google.com/maps/reviews/1"}]}
+
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+            def read(self):
+                return json.dumps(payload).encode()
+
+        with mock.patch("urllib.request.urlopen", return_value=Response()) as opener:
+            widget = self.client.get(reverse("core:google_reviews_widget"))
+            self.client.get(reverse("core:google_reviews_widget"))  # cached: no second call
+        self.assertEqual(opener.call_count, 1)
+        request = opener.call_args[0][0]
+        self.assertEqual(request.headers["X-goog-fieldmask"], "rating,userRatingCount,reviews,googleMapsUri")
+        for text in ("Maria G", "https://www.google.com/maps/contrib/1", "Excelente!", "37",
+                     "https://www.google.com/maps/reviews/1", "Translated by Google", "Google does not verify"):
+            self.assertContains(widget, text)
+        self.assertFalse(Testimonial.objects.exists())  # nothing from Google is stored
+
+    @override_settings(GOOGLE_PLACES_API_KEY="k")
+    def test_google_failure_never_breaks_the_page(self):
+        import urllib.error
+        from unittest import mock
+        with mock.patch("urllib.request.urlopen", side_effect=urllib.error.URLError("down")):
+            widget = self.client.get(reverse("core:google_reviews_widget"))
+        self.assertEqual(widget.status_code, 200)
+        self.assertContains(widget, "writereview?placeid=ChIJabc")
+
+    def test_csp_allows_google_profile_photos(self):
+        self.assertIn("https://lh3.googleusercontent.com", self.client.get("/en/")["Content-Security-Policy"])

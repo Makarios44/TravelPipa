@@ -1,15 +1,20 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.utils.translation import get_language
 from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
 
 from core.antispam import rate_limited
 from core.context_processors import whatsapp_link
-from core.models import SiteSettings
+from core.forms import ReviewForm
+from core.google_reviews import write_review_url
+from core.i18n import current_suffix
+from core.models import SiteSettings, Testimonial
 from tours.models import Experience
 
 from .forms import BookingRequestForm
 from .models import BookingRequest
-from .notifications import notify_new_booking
+from .notifications import notify_new_booking, notify_new_review
 
 SESSION_KEY = "last_booking_reference"
 
@@ -56,3 +61,48 @@ def booking_thanks(request):
         "round_trip": booking.round_trip,
         "whatsapp_url": whatsapp_link(site, message),
     })
+
+
+def suggested_display_name(full_name):
+    parts = [p for p in (full_name or "").split() if p]
+    if not parts:
+        return ""
+    return parts[0] if len(parts) == 1 else f"{parts[0]} {parts[-1][0]}."
+
+
+@never_cache
+def review(request, token):
+    """Personal review page of a booking: one review per booking, then the Google button."""
+    booking = get_object_or_404(BookingRequest.objects.select_related("experience"), uuid=token)
+    site = SiteSettings.load()
+    existing = Testimonial.objects.filter(booking=booking).first()
+    form = None
+    if existing is None:
+        if request.method == "POST":
+            form = ReviewForm(request.POST)
+            if rate_limited(request, "review"):
+                form.add_error(None, _("Too many requests from this connection. Please try again later."))
+            elif form.is_valid():
+                data = form.cleaned_data
+                lang = get_language() or "en"
+                existing = Testimonial.objects.create(
+                    author_name=data["author_name"].strip(), author_country=data["author_country"].strip(),
+                    experience=booking.experience, rating=data["rating"],
+                    **{f"text_{current_suffix(lang)}": data["text"].strip()},
+                    source="TravelPipa", review_date=timezone.localdate(), language=lang,
+                    booking=booking, from_customer=True, confirmed_real=True, active=False,
+                )
+                notify_new_review(request, existing)
+                return redirect(request.path + "?ok=1")
+        else:
+            form = ReviewForm(initial={"author_name": suggested_display_name(booking.full_name), "rating": None})
+    response = render(request, "bookings/review.html", {
+        "form": form,
+        "booking": booking,
+        "experience_title": booking.experience.title if booking.experience else booking.experience_title,
+        "review": existing,
+        "just_sent": existing is not None and request.GET.get("ok") == "1",
+        "google_review_url": write_review_url(site.google_place_id),
+    })
+    response["X-Robots-Tag"] = "noindex, nofollow"
+    return response
