@@ -28,7 +28,7 @@ def env_list(name, default=""):
 # --------------------------------------------------------------------------
 # Core
 # --------------------------------------------------------------------------
-DEBUG = env_bool("DEBUG", False)
+DEBUG = env_bool("DEBUG", True)
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "")
 if not SECRET_KEY:
