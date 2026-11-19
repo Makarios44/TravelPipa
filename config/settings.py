@@ -68,6 +68,13 @@ GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY", "")
 # with a visible banner, so it never competes with travelpipa.com.br.
 STAGING = env_bool("STAGING", False)
 
+# Google Ads: the Google tag plus the "WhatsApp click" conversion. These IDs are not
+# secret (they end up in the page source). Off in DEBUG and on the staging copy, so
+# local tests and clicks on the test site never count as conversions.
+GOOGLE_ADS_ID = os.environ.get("GOOGLE_ADS_ID", "AW-18574116875").strip()
+GOOGLE_ADS_WHATSAPP_LABEL = os.environ.get("GOOGLE_ADS_WHATSAPP_LABEL", "MEUuCILAhrsdEIuQ6phF").strip()
+GOOGLE_ADS_ENABLED = env_bool("GOOGLE_ADS_ENABLED", not DEBUG and not STAGING) and bool(GOOGLE_ADS_ID)
+
 # Number of reverse proxies in front of the app that append to X-Forwarded-For
 # (Railway = 1; Railway behind Cloudflare's orange cloud = 2). Used to find the
 # visitor's real IP for rate limiting without trusting values the visitor can forge.

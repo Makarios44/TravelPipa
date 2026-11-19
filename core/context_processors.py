@@ -38,7 +38,16 @@ def site_context(request):
         for (code, name), (_code, path) in zip(settings.LANGUAGES, alternates)
     ]
     default_path = next(p for c, p in alternates if c == settings.LANGUAGE_CODE)
+    # Never on the team panel: staff clicking WhatsApp there must not count as leads.
+    on_panel = request.path.startswith("/" + settings.PANEL_URL)
+    google_ads_id = settings.GOOGLE_ADS_ID if settings.GOOGLE_ADS_ENABLED and not on_panel else ""
+    google_ads_whatsapp = (
+        f"{google_ads_id}/{settings.GOOGLE_ADS_WHATSAPP_LABEL}"
+        if google_ads_id and settings.GOOGLE_ADS_WHATSAPP_LABEL else ""
+    )
     return {
+        "google_ads_id": google_ads_id,
+        "google_ads_whatsapp_send_to": google_ads_whatsapp,
         "site": site,
         "lang_suffix": current_suffix(lang),
         "site_languages": languages,
