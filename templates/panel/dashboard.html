@@ -6,6 +6,10 @@
   <a class="btn btn-accent" href="{% url 'panel:experience_new' %}"><i class="bi bi-plus-lg"></i> Novo passeio</a>
 </div>
 
+{% if stats.reviews %}
+  <div class="alert alert-warning d-flex gap-2 align-items-start"><i class="bi bi-star"></i>
+    <div>{{ stats.reviews }} avaliação(ões) de cliente aguardando publicação. <a href="{% url 'panel:testimonials' %}">Ver avaliações</a></div></div>
+{% endif %}
 {% if demo_count %}
   <div class="alert alert-warning d-flex gap-2 align-items-start"><i class="bi bi-info-circle mt-1"></i>
     <div>Há {{ demo_count }} passeio(s) de <strong>demonstração</strong> visíveis no site. <a href="{% url 'panel:experiences' %}?show=active">Revise e desative</a> os que não são reais.</div></div>

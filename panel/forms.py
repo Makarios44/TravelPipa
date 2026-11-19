@@ -180,6 +180,12 @@ class TestimonialForm(PanelFormMixin, forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["experience"].queryset = Experience.objects.order_by("title_pt", "title_en")
         self.fields["experience"].label_from_instance = lambda e: e.title_pt or e.title_en
+        if self.instance.pk and self.instance.from_customer:
+            # The customer's own words, rating and name are never edited by the team.
+            for name in ("author_name", "rating", "text_pt", "text_en", "text_es", "source", "review_date",
+                         "confirmed_real"):
+                self.fields[name].disabled = True
+                self.fields[name].help_text = "Escrito pelo cliente: não pode ser alterado."
 
 
 class BookingUpdateForm(PanelFormMixin, forms.ModelForm):
@@ -198,6 +204,7 @@ SETTINGS_GROUPS = [
     ("Contato", ["whatsapp", "phone", "email", "address", "google_maps_url"]),
     ("Redes sociais", ["instagram", "facebook", "tiktok", "youtube", "tripadvisor"]),
     ("Imagens do site", ["hero_image", "about_image", "logo", "og_image"]),
+    ("Google (avaliações)", ["google_place_id"]),
     ("Selos de confiança", ["trust_cadastur_guides", "trust_der_vehicles"]),
     ("Dados da empresa (aparecem no rodapé)", ["site_name", "company_legal_name", "company_document", "cadastur"]),
 ]

@@ -31,10 +31,15 @@
   <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/travelpipa.css' %}">
+  {% if google_ads_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_ads_id|urlencode }}"></script>
+  <script src="{% static 'js/google-ads.js' %}" data-id="{{ google_ads_id }}" data-whatsapp="{{ google_ads_whatsapp_send_to }}"></script>
+  {% endif %}
   {% block head_extra %}{% endblock %}
   {% block schema %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
+{% if is_staging %}<div class="staging-banner" role="note">AMBIENTE DE TESTES (branch model) — não é o site oficial · <a href="https://travelpipa.com.br">travelpipa.com.br</a></div>{% endif %}
   <a class="skip-link" href="#main">{% trans "Skip to content" %}</a>
 
   {% include "includes/header.html" %}

@@ -215,3 +215,20 @@ class MediaRepairTests(TestCase):
             self.assertFalse(image.image.storage.exists(image.image.name))
             call_command("prepare_site", stdout=io.StringIO())
             self.assertTrue(image.image.storage.exists(image.image.name))
+
+
+class StagingModeTests(TestCase):
+    @override_settings(STAGING=True)
+    def test_staging_is_hidden_from_search_engines_and_marked(self):
+        robots = self.client.get("/robots.txt")
+        self.assertIn("Disallow: /", robots.content.decode())
+        self.assertNotIn("Sitemap", robots.content.decode())
+        page = self.client.get("/en/")
+        self.assertEqual(page["X-Robots-Tag"], "noindex, nofollow")
+        self.assertContains(page, "AMBIENTE DE TESTES")
+
+    def test_production_is_indexable(self):
+        page = self.client.get("/en/")
+        self.assertNotIn("X-Robots-Tag", page)
+        self.assertNotContains(page, "AMBIENTE DE TESTES")
+        self.assertIn("Sitemap", self.client.get("/robots.txt").content.decode())

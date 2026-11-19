@@ -19,7 +19,7 @@ from django.db.models import Count, Max, Q
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
@@ -60,6 +60,7 @@ def panel_render(request, template, context=None, status=200):
     context["nav_counts"] = {
         "bookings": BookingRequest.objects.filter(status=BookingRequest.Status.PENDING).count(),
         "messages": ContactMessage.objects.filter(handled=False).count(),
+        "reviews": Testimonial.objects.awaiting_approval().count(),
     }
     context["section"] = context.get("section", "")
     return render(request, template, context, status=status)
@@ -162,6 +163,7 @@ def dashboard(request):
             "active_tours": Experience.objects.filter(active=True).count(),
             "inactive_tours": Experience.objects.filter(active=False).count(),
             "messages": ContactMessage.objects.filter(handled=False).count(),
+            "reviews": Testimonial.objects.awaiting_approval().count(),
         },
         "upcoming": upcoming,
         "latest": latest,
@@ -403,11 +405,37 @@ def whatsapp_for(booking):
     first_name = booking.full_name.split()[0] if booking.full_name else ""
     title = booking.experience.title_pt if booking.experience else booking.experience_title
     body = {
-        "pt-br": f"{greeting}, {first_name}! Aqui é da TravelPipa, sobre a sua solicitação {booking.reference} ({title}).",
-        "es": f"{greeting}, {first_name}! Te escribimos de TravelPipa sobre tu solicitud {booking.reference} ({title}).",
+        "pt-br": f"{greeting}, {first_name}! Aqui é da TravelPipa, sobre a sua reserva {booking.reference} ({title}).",
+        "es": f"{greeting}, {first_name}! Te escribimos de TravelPipa sobre tu reserva {booking.reference} ({title}).",
     }.get(booking.service_language,
-          f"{greeting}, {first_name}! This is TravelPipa about your request {booking.reference} ({title}).")
+          f"{greeting}, {first_name}! This is TravelPipa about your booking {booking.reference} ({title}).")
     return f"https://wa.me/{booking.phone_digits}?text={quote(body)}"
+
+
+def review_link(request, booking):
+    """Personal review link of a booking, in the customer's language."""
+    lang = booking.service_language if booking.service_language in dict(settings.LANGUAGES) else settings.LANGUAGE_CODE
+    with translation.override(lang):
+        path = reverse("bookings:review", args=[booking.uuid])
+    return (settings.SITE_URL + path) if settings.SITE_URL else request.build_absolute_uri(path)
+
+
+REVIEW_MESSAGES = {
+    "pt-br": "Olá, {name}! Obrigado por passear com a TravelPipa. Pode nos contar como foi? "
+             "Leva menos de 1 minuto: {url}",
+    "es": "¡Hola, {name}! Gracias por viajar con TravelPipa. ¿Nos cuentas cómo fue? "
+          "Te lleva menos de un minuto: {url}",
+    "en": "Hi {name}! Thank you for travelling with TravelPipa. Could you tell us how it went? "
+          "It takes less than a minute: {url}",
+}
+
+
+def review_whatsapp_for(booking, url):
+    if not booking.phone_digits:
+        return ""
+    first_name = booking.full_name.split()[0] if booking.full_name else ""
+    template = REVIEW_MESSAGES.get(booking.service_language, REVIEW_MESSAGES["en"])
+    return f"https://wa.me/{booking.phone_digits}?text={quote(template.format(name=first_name, url=url))}"
 
 
 @staff_required
@@ -418,8 +446,11 @@ def booking_detail(request, pk):
         form.save()
         messages.success(request, f"Solicitação {booking.reference} atualizada.")
         return redirect("panel:booking_detail", pk=pk)
+    url = review_link(request, booking)
     return panel_render(request, "panel/booking_detail.html", {
-        "section": "bookings", "booking": booking, "form": form, "whatsapp_url": whatsapp_for(booking)})
+        "section": "bookings", "booking": booking, "form": form, "whatsapp_url": whatsapp_for(booking),
+        "review": Testimonial.objects.filter(booking=booking).first(),
+        "review_url": url, "review_whatsapp_url": review_whatsapp_for(booking, url)})
 
 
 # --------------------------------------------------------------------------
@@ -450,8 +481,29 @@ def message_toggle(request, pk):
 # --------------------------------------------------------------------------
 @staff_required
 def testimonial_list(request):
+    items = Testimonial.objects.select_related("experience", "booking").order_by(
+        "active", "-from_customer", "-created_at")
     return panel_render(request, "panel/testimonial_list.html", {
-        "section": "testimonials", "items": Testimonial.objects.select_related("experience").all()})
+        "section": "testimonials", "items": items,
+        "pending": Testimonial.objects.awaiting_approval().count(),
+        "google_place_id": SiteSettings.load().google_place_id})
+
+
+@staff_required
+@require_POST
+def testimonial_toggle(request, pk):
+    item = get_object_or_404(Testimonial, pk=pk)
+    item.active = not item.active
+    if item.active and not item.confirmed_real:
+        item.active = False
+        text = "Marque “confirmo que é uma avaliação real” antes de publicar."
+    else:
+        item.save(update_fields=["active", "updated_at"])
+        text = f"Avaliação de {item.author_name} {'publicada' if item.active else 'retirada do site'}."
+    if wants_json(request):
+        return JsonResponse({"ok": True, "value": item.active, "message": text})
+    messages.success(request, text)
+    return back(request, "panel:testimonials")
 
 
 @staff_required

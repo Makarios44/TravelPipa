@@ -15,6 +15,7 @@ from .antispam import rate_limited
 from .conditions import get_conditions
 from .forms import ContactForm
 from .i18n import current_suffix
+from .google_reviews import fetch_google_reviews, write_review_url
 from .models import SiteSettings, Testimonial
 from .seo import agency_schema, json_ld
 
@@ -24,7 +25,7 @@ def home(request):
     tours = Experience.objects.tours()
     featured = list(tours.filter(featured=True)[:6]) or list(tours[:6])
     transfers = list(Experience.objects.transfers().order_by("-featured", "order")[:3])
-    testimonials = list(Testimonial.objects.for_language(current_suffix())[:6])
+    testimonials = list(published_site_reviews()[:3])
     categories = Category.objects.active().filter(is_transfer=False)
     rest = len(featured) - 1
     rest_col = "col-md-6" if rest in (2, 4) else "col-md-6 col-lg-4"
@@ -34,6 +35,7 @@ def home(request):
         "transfers": transfers,
         "main_transfer": transfers[0] if transfers else None,
         "testimonials": testimonials,
+        "google_place_configured": bool(site.google_place_id),
         "categories": categories,
         "schema": json_ld(agency_schema(request, site)),
     })
@@ -95,6 +97,8 @@ def switch_language(request, lang_code):
 @require_GET
 @cache_control(max_age=60 * 60 * 24)
 def robots_txt(request):
+    if settings.STAGING:
+        return HttpResponse("User-agent: *\nDisallow: /\n", content_type="text/plain")
     sitemap_url = (settings.SITE_URL or request.build_absolute_uri("/").rstrip("/")) + "/sitemap.xml"
     lines = [
         "User-agent: *",
@@ -102,6 +106,9 @@ def robots_txt(request):
         "Disallow: /*/reservar/obrigado/",
         "Disallow: /*/reservar/gracias/",
         "Disallow: /i18n/",
+        "Disallow: /*/review/",
+        "Disallow: /*/avaliar/",
+        "Disallow: /*/valorar/",
         "Disallow: /*/widgets/",
         "Allow: /",
         "",
@@ -125,6 +132,42 @@ def conditions_widget(request):
     variant = request.GET.get("v", "compact")
     template = "includes/conditions_tide_box.html" if variant == "tide" else "includes/conditions_compact.html"
     response = render(request, template, {"conditions": get_conditions()})
+    response["Cache-Control"] = "public, max-age=600"
+    response["X-Robots-Tag"] = "noindex"
+    return response
+
+
+def published_site_reviews():
+    """All published customer reviews, in the language they were written."""
+    return Testimonial.objects.published().select_related("experience").order_by("-review_date", "-created_at")
+
+
+def reviews(request):
+    site = SiteSettings.load()
+    items = list(published_site_reviews())
+    rated = [r.rating for r in items if r.rating]
+    return render(request, "core/reviews.html", {
+        "site_reviews": items,
+        "site_count": len(rated),
+        "site_average": (sum(rated) / len(rated)) if rated else None,
+        "place_configured": bool(site.google_place_id),
+        "google_review_url": write_review_url(site.google_place_id),
+    })
+
+
+def google_reviews_widget(request):
+    """Google block loaded asynchronously: the page never waits for Google."""
+    site = SiteSettings.load()
+    try:
+        limit = max(1, min(int(request.GET.get("limit", 3)), 5))
+    except ValueError:
+        limit = 3
+    response = render(request, "includes/google_reviews_block.html", {
+        "google": fetch_google_reviews(site.google_place_id, get_language() or "en"),
+        "google_review_url": write_review_url(site.google_place_id),
+        "limit": limit,
+        "limit_slice": f":{limit}",
+    })
     response["Cache-Control"] = "public, max-age=600"
     response["X-Robots-Tag"] = "noindex"
     return response

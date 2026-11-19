@@ -304,6 +304,31 @@ O Railway bloqueia o envio por SMTP nos planos Free, Trial e Hobby. Por isso, o 
 
 > **Observação:** o Railway marcou o antigo arquivo `railway.json` como obsoleto. Este projeto usa `railpack.json` e `Procfile`.
 
+
+### 9.6 Ambiente de testes (branch `model`)
+Fluxo: as mudanças vão primeiro para a branch **`model`**, são testadas num site de testes e só depois entram na **`main`** (site oficial).
+
+1. No Railway, no topo do projeto: **Environments → New Environment** → nome `teste` (pode duplicar o `production`).
+2. No ambiente `teste`, abra o serviço do site → **Settings → Source → Branch**: `model`.
+3. O ambiente `teste` deve ter **banco e volume próprios** (o Railway cria cópias ao duplicar; confira que não aponta para o Postgres do `production`).
+4. Variáveis do ambiente `teste`, diferentes do oficial:
+   - `STAGING=True` → faixa laranja "AMBIENTE DE TESTES", Google bloqueado (robots + noindex)
+   - `SITE_URL=https://<endereço-do-teste>.up.railway.app`
+   - `NOTIFICATION_EMAILS=` com o seu e-mail pessoal (para reservas de teste não caírem em `vendas@`)
+   - `SECRET_KEY` diferente da oficial
+   - Não adicione os domínios `travelpipa.com.br` neste ambiente.
+5. Testou e está tudo certo? No GitHub: **Pull requests → New → base: `main` ← compare: `model` → Merge**. O site oficial atualiza sozinho.
+
+
+### 9.7 Avaliações (site + Google)
+- **Pedir avaliação:** painel → Reservas → abrir a reserva → card **Avaliação** → **Enviar link de avaliação** (WhatsApp, no idioma do cliente) ou **Copiar**. Cada reserva tem um link próprio e aceita uma avaliação.
+- O cliente dá a nota e escreve no site. Em seguida, vê o botão **Avaliar no Google**, mostrado para todos, qualquer que seja a nota, como o Google exige.
+- **Moderação:** painel → **Avaliações** → **Publicar**. O texto escrito pelo cliente não pode ser editado pela equipe.
+- **Avaliações do Google no site:**
+  1. Em **Configurações → Google (avaliações)**, preencha o **Google Place ID** do Perfil da Empresa (começa com `ChIJ`; encontre no "Place ID Finder" do Google). Só com isso já aparece o botão "Avaliar no Google".
+  2. Para mostrar as notas e até 5 avaliações do Google, crie no Google Cloud uma chave da **Places API (New)**, restrita a essa API, e coloque em `GOOGLE_PLACES_API_KEY` no Railway. As avaliações são buscadas ao vivo, com cache de 1 hora, e não ficam salvas no banco, conforme as regras do Google.
+  3. Defina um alerta de orçamento no Google Cloud. Com o cache de 1 hora, o uso fica baixo.
+
 ---
 
 ## 10. Deploy em servidor Linux (alternativa)

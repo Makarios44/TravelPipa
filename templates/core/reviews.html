@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Reviews" %}{% endblock %}
+{% block meta_description %}{% trans "What travellers say about TravelPipa tours and transfers in Pipa: reviews from our customers and from Google." %}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <nav aria-label="breadcrumb"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "Reviews" %}</li>
+    </ol></nav>
+    <div class="section-head">
+      <p class="eyebrow">{% trans "Guest reviews" %}</p>
+      <h1>{% trans "What our guests say" %}</h1>
+      {% if site_count %}
+        <div class="rating-summary mt-3">
+          <span><span class="big">{{ site_average|floatformat:1 }}</span> <span class="review-stars ms-1" aria-hidden="true"><i class="bi bi-star-fill"></i></span></span>
+          <span class="review-meta">{% blocktrans count n=site_count %}{{ n }} review from customers who booked with us{% plural %}{{ n }} reviews from customers who booked with us{% endblocktrans %}</span>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if place_configured %}
+      <div class="mb-5" data-fragment="{% url 'core:google_reviews_widget' %}?limit=6">
+        {% if google_review_url %}<div class="google-block text-center"><a class="btn btn-primary" href="{{ google_review_url }}" target="_blank" rel="noopener"><i class="bi bi-google" aria-hidden="true"></i> {% trans "Review us on Google" %}</a></div>{% endif %}
+      </div>
+    {% endif %}
+
+    {% if site_reviews %}
+      <h2 class="h4 mb-3">{% trans "Reviews from our customers" %}</h2>
+      <div class="row g-4">
+        {% for r in site_reviews %}<div class="col-md-6 col-lg-4">{% include "includes/review_card.html" %}</div>{% endfor %}
+      </div>
+      <p class="review-meta mt-3">{% trans "Reviews from customers who booked with TravelPipa, shown in the language they were written, newest first." %}</p>
+    {% elif not place_configured %}
+      <p class="lead">{% trans "Reviews from our guests will appear here soon." %}</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

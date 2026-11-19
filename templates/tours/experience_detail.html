@@ -123,11 +123,9 @@
         <section class="detail-section" aria-labelledby="h-reviews">
           <h2 id="h-reviews">{% trans "Guest reviews" %}</h2>
           <div class="d-grid gap-3">
-            {% for t in testimonials %}
-              <figure class="quote-card m-0"><blockquote class="m-0 mb-3">{{ t.text|linebreaksbr }}</blockquote>
-                <figcaption><strong>{{ t.author_name }}</strong>{% if t.author_country %} · <span class="text-muted-tp">{{ t.author_country }}</span>{% endif %}</figcaption></figure>
-            {% endfor %}
+            {% for r in testimonials %}{% include "includes/review_card.html" %}{% endfor %}
           </div>
+          <p class="mt-3 mb-0"><a href="{% url 'core:reviews' %}">{% trans "See all reviews" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a></p>
         </section>
       {% endif %}
     </article>

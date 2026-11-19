@@ -180,37 +180,29 @@
   </div>
 </section>
 
-{# ---------- 7. Testimonials (only real, published reviews) ---------- #}
-{% if testimonials %}
+{# ---------- 7. Reviews: customers who booked with us + Google (only real reviews) ---------- #}
+{% if testimonials or google_place_configured %}
 <section class="section" aria-labelledby="reviews-title">
   <div class="container">
-    <div class="section-head reveal">
-      <p class="eyebrow">{% trans "Guest reviews" %}</p>
-      <h2 id="reviews-title">{% trans "What our guests say" %}</h2>
+    <div class="section-head reveal d-flex flex-wrap justify-content-between align-items-end gap-3">
+      <div>
+        <p class="eyebrow">{% trans "Guest reviews" %}</p>
+        <h2 id="reviews-title">{% trans "What our guests say" %}</h2>
+      </div>
+      <a class="btn btn-outline-ocean" href="{% url 'core:reviews' %}">{% trans "See all reviews" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
     </div>
-    <div class="row g-4">
-      {% for t in testimonials %}
-        <div class="col-md-6 col-lg-4 reveal">
-          <figure class="quote-card m-0">
-            <div class="d-flex justify-content-between align-items-center">
-              <span class="quote-mark" aria-hidden="true">“</span>
-              {% if t.rating %}<span class="stars" aria-label="{% blocktrans with r=t.rating %}{{ r }} out of 5{% endblocktrans %}">{% for i in "12345" %}{% if forloop.counter <= t.rating %}<i class="bi bi-star-fill" aria-hidden="true"></i>{% else %}<i class="bi bi-star" aria-hidden="true"></i>{% endif %}{% endfor %}</span>{% endif %}
-            </div>
-            <blockquote class="mb-0">{{ t.text|linebreaksbr }}</blockquote>
-            <figcaption class="quote-author">
-              <span class="avatar" aria-hidden="true">{{ t.author_name|initials }}</span>
-              <span><strong>{{ t.author_name }}</strong>{% if t.author_country or t.source %}<br><small class="text-muted-tp">{{ t.author_country }}{% if t.author_country and t.source %} · {% endif %}{{ t.source }}</small>{% endif %}</span>
-            </figcaption>
-          </figure>
-        </div>
-      {% endfor %}
-    </div>
+    {% if testimonials %}
+      <div class="row g-4 mb-4">
+        {% for r in testimonials %}<div class="col-md-6 col-lg-4 reveal">{% include "includes/review_card.html" %}</div>{% endfor %}
+      </div>
+    {% endif %}
+    {% if google_place_configured %}<div data-fragment="{% url 'core:google_reviews_widget' %}?limit=3"></div>{% endif %}
   </div>
 </section>
 {% endif %}
 
 {# ---------- 8. Final call to action ---------- #}
-<section class="section{% if not testimonials %} pt-0{% endif %}" aria-labelledby="cta-title">
+<section class="section{% if not testimonials and not google_place_configured %} pt-0{% endif %}" aria-labelledby="cta-title">
   <div class="container">
     <div class="cta-band reveal">
       <span class="sun" aria-hidden="true"></span><span class="sun-ring" aria-hidden="true"></span>

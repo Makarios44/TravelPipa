@@ -1,0 +1,11 @@
+{% load i18n %}<figure class="review-card m-0">
+  <div class="d-flex justify-content-between align-items-center gap-2">
+    {% if r.rating %}<span class="review-stars" aria-label="{% blocktrans with n=r.rating %}{{ n }} out of 5{% endblocktrans %}">{% for i in "12345" %}{% if forloop.counter <= r.rating %}<i class="bi bi-star-fill" aria-hidden="true"></i>{% else %}<i class="bi bi-star-fill off" aria-hidden="true"></i>{% endif %}{% endfor %}</span>{% endif %}
+    <span class="review-source site"><i class="bi bi-patch-check" aria-hidden="true"></i> {% if r.from_customer %}{% trans "Verified booking" %}{% else %}{{ r.source|default:"TravelPipa" }}{% endif %}</span>
+  </div>
+  <blockquote>{{ r.any_text }}</blockquote>
+  <figcaption class="review-meta mt-auto">
+    <strong class="text-body">{{ r.author_name }}</strong>{% if r.author_country %} · {{ r.author_country }}{% endif %}
+    {% if r.experience %}<br>{{ r.experience.title }}{% endif %}{% if r.review_date %} · {{ r.review_date|date:"M Y" }}{% endif %}
+  </figcaption>
+</figure>

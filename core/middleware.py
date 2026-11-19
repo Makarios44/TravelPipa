@@ -37,19 +37,41 @@ class CanonicalHostMiddleware:
 
 # Everything (CSS, JS, fonts, images, video) is served by the site itself, so the
 # browser can be told to refuse anything injected from elsewhere.
-CONTENT_SECURITY_POLICY = "; ".join([
-    "default-src 'self'",
-    "script-src 'self'",
-    "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
-    "media-src 'self' blob:",
-    "font-src 'self'",
-    "connect-src 'self'",
-    "object-src 'none'",
-    "base-uri 'self'",
-    "form-action 'self'",
-    "frame-ancestors 'none'",
-])
+_CSP_DIRECTIVES = [
+    ("default-src", ["'self'"]),
+    ("script-src", ["'self'"]),
+    ("style-src", ["'self'", "'unsafe-inline'"]),
+    ("img-src", ["'self'", "data:", "blob:", "https://lh3.googleusercontent.com"]),  # Google reviewers' photos
+    ("media-src", ["'self'", "blob:"]),
+    ("font-src", ["'self'"]),
+    ("connect-src", ["'self'"]),
+    ("frame-src", ["'self'"]),
+    ("object-src", ["'none'"]),
+    ("base-uri", ["'self'"]),
+    ("form-action", ["'self'"]),
+    ("frame-ancestors", ["'none'"]),
+]
+
+# The only outside code the public site may run: the Google tag used by Google Ads
+# (settings.GOOGLE_ADS_ENABLED). These are the hosts Google documents for it.
+GOOGLE_ADS_CSP = {
+    "script-src": ["https://www.googletagmanager.com", "https://www.googleadservices.com",
+                   "https://googleads.g.doubleclick.net"],
+    "img-src": ["https://www.googletagmanager.com", "https://googleads.g.doubleclick.net",
+                "https://www.google.com", "https://www.google.com.br"],
+    "connect-src": ["https://www.googletagmanager.com", "https://www.google.com",
+                    "https://googleads.g.doubleclick.net", "https://www.googleadservices.com"],
+    "frame-src": ["https://td.doubleclick.net", "https://www.googletagmanager.com"],
+}
+
+
+def build_csp(extra=None):
+    extra = extra or {}
+    return "; ".join(f"{name} {' '.join(values + extra.get(name, []))}" for name, values in _CSP_DIRECTIVES)
+
+
+CONTENT_SECURITY_POLICY = build_csp()
+CONTENT_SECURITY_POLICY_WITH_GOOGLE_ADS = build_csp(GOOGLE_ADS_CSP)
 PERMISSIONS_POLICY = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
 
 
@@ -59,12 +81,21 @@ class SecurityHeadersMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         self.admin_prefix = "/" + settings.ADMIN_URL
+        self.panel_prefix = "/" + settings.PANEL_URL
+
+    def policy_for(self, request):
+        # The Google tag only runs on the public site, never on the team panel.
+        if settings.GOOGLE_ADS_ENABLED and not request.path.startswith(self.panel_prefix):
+            return CONTENT_SECURITY_POLICY_WITH_GOOGLE_ADS
+        return CONTENT_SECURITY_POLICY
 
     def __call__(self, request):
         response = self.get_response(request)
         response.setdefault("Permissions-Policy", PERMISSIONS_POLICY)
+        if settings.STAGING:
+            response["X-Robots-Tag"] = "noindex, nofollow"
         content_type = response.get("Content-Type", "")
         # Django's technical admin ships a few inline scripts, so it keeps the default policy.
         if content_type.startswith("text/html") and not request.path.startswith(self.admin_prefix):
-            response.setdefault("Content-Security-Policy", CONTENT_SECURITY_POLICY)
+            response.setdefault("Content-Security-Policy", self.policy_for(request))
         return response
