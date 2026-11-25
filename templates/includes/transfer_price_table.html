@@ -1,0 +1,15 @@
+{% load i18n travelpipa %}{% with rows=t.price_rows %}{% if rows %}
+<table class="price-table">
+  <caption class="visually-hidden">{% trans "Prices per number of people" %}</caption>
+  <thead><tr><th scope="col">{% trans "People" %}</th><th scope="col" class="num">{% trans "One way" %}</th><th scope="col" class="num">{% trans "Round trip" %}<span class="d-block fw-normal text-lowercase">{% trans "per leg" %}</span></th></tr></thead>
+  <tbody>
+    {% for r in rows %}<tr>
+      <td>{% if r.from == r.to %}{{ r.to }}{% elif r.from == 1 %}{% blocktrans with n=r.to %}Up to {{ n }}{% endblocktrans %}{% else %}{% blocktrans with a=r.from b=r.to %}{{ a }} to {{ b }}{% endblocktrans %}{% endif %}{% if r.cars == 2 %} · {% trans "2 cars" %}{% endif %}</td>
+      <td class="num">{{ r.one_way|money:t.currency }}</td>
+      <td class="num rt">{{ r.round_leg|money:t.currency }}</td>
+    </tr>{% endfor %}
+    {% if t.group_from %}<tr><td>{% blocktrans with n=t.group_from %}{{ n }} or more{% endblocktrans %}</td><td class="num" colspan="2">{% trans "Price on request" %}</td></tr>{% endif %}
+  </tbody>
+</table>
+<p class="price-table-note">{% trans "Price per car, for each leg. Booking the round trip makes each leg cheaper." %}{% for r in rows %}{% if r.cars == 2 and forloop.last %} {% trans "2 cars work out cheaper than renting a van." %}{% endif %}{% endfor %}</p>
+{% endif %}{% endwith %}

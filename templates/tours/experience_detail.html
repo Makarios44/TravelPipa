@@ -52,7 +52,7 @@
       <div class="detail-facts">
         {% if experience.duration %}<span><i class="bi bi-clock" aria-hidden="true"></i>{{ experience.duration }}</span>{% endif %}
         {% if experience.is_transfer and experience.transfer_type %}<span><i class="bi bi-car-front" aria-hidden="true"></i>{{ experience.get_transfer_type_display }}</span>{% endif %}
-        {% if experience.max_passengers %}<span><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans count n=experience.max_passengers %}Up to {{ n }} passenger{% plural %}Up to {{ n }} passengers{% endblocktrans %}</span>{% endif %}
+        {% if experience.max_passengers and not experience.rates %}<span><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans count n=experience.max_passengers %}Up to {{ n }} passenger{% plural %}Up to {{ n }} passengers{% endblocktrans %}</span>{% endif %}
         <span><i class="bi bi-translate" aria-hidden="true"></i>{% trans "Assistance in English, Portuguese and Spanish" %}</span>
       </div>
 
@@ -134,6 +134,7 @@
       <div class="booking-aside">
         <div class="booking-box" id="book">
           {% price_block experience %}
+          {% if experience.rates %}<div class="mt-3">{% include "includes/transfer_price_table.html" with t=experience %}</div>{% endif %}
           <hr>
           <div class="d-grid gap-2">
             <a class="btn btn-accent btn-lg" href="{{ booking_url }}?experience={{ experience.slug }}">{% trans "Book Now" %}</a>

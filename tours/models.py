@@ -148,6 +148,14 @@ class Experience(TimeStampedModel):
     destination_es = char_field("Destino", "ES", 120)
     transfer_type = models.CharField("modalidade", max_length=10, choices=TransferType.choices, blank=True)
     max_passengers = models.PositiveSmallIntegerField("capacidade de passageiros", null=True, blank=True)
+    transfer_rates = models.TextField(
+        "tabela de preços por pessoas", blank=True,
+        help_text="Uma linha por tamanho de carro — pessoas: só ida / ida e volta (por trecho). "
+                  "Ex.: “3: 240 / 230” = até 3 pessoas, R$ 240 só ida ou R$ 230 cada trecho na ida e volta. "
+                  "Acima do maior carro o site sugere 2 carros. Vazio = usa só o preço acima.")
+    group_from = models.PositiveSmallIntegerField(
+        "grupo a partir de (pessoas)", null=True, blank=True, validators=[MinValueValidator(2)],
+        help_text="A partir desta quantidade o site não mostra preço: a equipe entra em contato. Ex.: 7")
 
     # --- Video (optional) ------------------------------------------------
     video = models.FileField(
@@ -204,6 +212,14 @@ class Experience(TimeStampedModel):
         if self.category_id and self.category.is_transfer:
             if not (self.origin_en and self.destination_en):
                 raise ValidationError("Para transfers, informe a origem e o destino (pelo menos em inglês).")
+        if self.transfer_rates.strip():
+            from .transfer_pricing import parse_rates
+            try:
+                rates = parse_rates(self.transfer_rates)
+            except ValidationError as exc:
+                raise ValidationError({"transfer_rates": exc.messages})
+            if self.group_from and rates and self.group_from <= rates[0].max_people:
+                raise ValidationError({"group_from": "O grupo precisa começar acima da menor faixa da tabela."})
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -222,6 +238,38 @@ class Experience(TimeStampedModel):
     @property
     def is_transfer(self):
         return self.category.is_transfer
+
+    @property
+    def rates(self):
+        """Parsed price table (empty when unset or, defensively, when the text is invalid)."""
+        if not hasattr(self, "_rates_cache"):
+            from .transfer_pricing import parse_rates
+            try:
+                self._rates_cache = parse_rates(self.transfer_rates) if self.is_transfer else []
+            except ValidationError:
+                self._rates_cache = []
+        return self._rates_cache
+
+    @property
+    def price_rows(self):
+        """Rows for the public price table: one per car size, then 2 cars, then group."""
+        from .transfer_pricing import quote
+        rates = self.rates
+        if not rates:
+            return []
+        rows, start = [], 1
+        for rate in rates:
+            rows.append({"from": start, "to": rate.max_people, "cars": 1,
+                         "one_way": rate.one_way, "round_leg": rate.round_leg})
+            start = rate.max_people + 1
+        last = (self.group_from - 1) if self.group_from else start - 1
+        for people in range(start, last + 1):
+            two = quote(self, people, False)
+            if two and two.kind == "two_cars":
+                rt = quote(self, people, True)
+                rows.append({"from": people, "to": people, "cars": 2, "split": two.cars,
+                             "one_way": two.per_leg, "round_leg": rt.per_leg})
+        return rows
 
     @property
     def description_paragraphs(self):

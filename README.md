@@ -31,8 +31,8 @@ Pré-requisitos: Python 3.12 ou 3.13.
 
 ```bash
 # 1. Ambiente virtual
-python -m venv .venv
-source .venv/bin/activate            # Windows: .venv\Scripts\activate
+python -m venv venv
+source venv/bin/activate            # Windows: .venv\Scripts\activate
 
 # 2. Dependências
 pip install -r requirements.txt
@@ -46,7 +46,6 @@ python manage.py migrate
 # 5. Passeios reais (lancha, jeep, Guaraíras e quadriciclo), com fotos e vídeo da pasta content/
 python manage.py load_tours
 #    (use --replace-media para substituir fotos/vídeo desses passeios pelos arquivos da pasta content/)
-
 #    Conteúdo de demonstração (opcional, marcado como "Demo" no site)
 python manage.py seed_demo
 #   --with-demo-contact  preenche um WhatsApp fictício só para visualizar os botões

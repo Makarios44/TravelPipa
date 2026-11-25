@@ -52,8 +52,21 @@
                   <label class="trip-option" for="{{ radio.id_for_label }}">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
                 {% endfor %}
               </div>
-              <div class="form-text"><i class="bi bi-tag" aria-hidden="true"></i> {% trans "We negotiate a discount for round trips." %}</div>
+              <div class="form-text" data-negotiable><i class="bi bi-tag" aria-hidden="true"></i> {% trans "We negotiate a discount for round trips." %}</div>
               <div class="mt-3" data-return-date>{% include "includes/form_field.html" with field=form.return_date wrapper_class="mb-0" %}</div>
+            </div>
+            <div class="quote-box mb-3" data-quote-box hidden aria-live="polite"
+                 data-t-label-ow="{% trans 'One way · {price}' %}"
+                 data-t-label-rt="{% trans 'Round trip · {price} per leg' %}"
+                 data-t-ow="{% trans 'one way' %}"
+                 data-t-rt="{% trans '{leg} per leg × 2 (round trip)' %}"
+                 data-t-save="{% trans 'Round-trip discount: you save {save}.' %}"
+                 data-t-upsell="{% trans 'Coming back with us too? On a round trip each leg costs {leg}.' %}"
+                 data-t-two="{% trans 'For {people} people we recommend 2 cars ({split} people): it works out cheaper than renting a van.' %}"
+                 data-t-group="{% trans 'Groups of {group} or more people: complete the booking and our team will contact you with the best price.' %}">
+              <div class="quote-total"><span class="quote-label">{% trans "Total" %}</span> <strong data-quote-amount></strong> <span class="quote-detail" data-quote-detail></span></div>
+              <p class="quote-note mb-0" data-quote-note></p>
+              <p class="quote-note mb-0" data-quote-extra></p>
             </div>
           </fieldset>
 

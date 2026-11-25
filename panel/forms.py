@@ -92,12 +92,14 @@ class ExperienceForm(PanelFormMixin, forms.ModelForm):
             + ["price", "currency", "price_unit", "price_is_starting"]
             + [f"{b}_{s}" for b in EXPERIENCE_TEXT_BASES + EXPERIENCE_SEO_BASES for s in SUFFIXES]
             + [f"{b}_{s}" for b in ("origin", "destination") for s in SUFFIXES]
-            + ["transfer_type", "max_passengers", "video", "video_poster"]
+            + ["transfer_type", "max_passengers", "transfer_rates", "group_from", "video", "video_poster"]
         )
         widgets = {
             **{f"{b}_{s}": forms.Textarea(attrs={"rows": 6 if b == "description" else 4})
                for b in ("description", "itinerary", "included", "not_included", "important_info",
                          "cancellation_policy") for s in SUFFIXES},
+            "transfer_rates": forms.Textarea(attrs={"rows": 4, "placeholder": "3: 240 / 230\n4: 280 / 270\n5: 300 / 290",
+                                                    "class": "font-monospace"}),
         }
 
     def __init__(self, *args, **kwargs):

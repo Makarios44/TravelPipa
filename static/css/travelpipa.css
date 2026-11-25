@@ -728,3 +728,30 @@ img { max-width: 100%; height: auto; }
 /* Test environment (STAGING=True) */
 .staging-banner { position: relative; z-index: 2000; background: #F47745; color: #fff; text-align: center; font: 700 .85rem/1.3 system-ui, sans-serif; padding: .45rem 1rem; }
 .staging-banner a { color: #fff; text-decoration: underline; }
+
+/* Booking form: live transfer price (people × one way / round trip) */
+.quote-box {
+  border: 1px solid rgba(0, 127, 134, .28);
+  background: rgba(0, 127, 134, .06);
+  border-radius: var(--tp-radius-sm);
+  padding: .9rem 1rem;
+}
+.quote-box[hidden] { display: none; }
+.quote-total { font-family: var(--tp-font-head); color: var(--tp-ocean); line-height: 1.3; }
+.quote-total strong { font-size: 1.45rem; font-weight: 800; color: var(--tp-teal-dark); }
+.quote-label, .quote-detail { font-size: .9rem; color: var(--tp-muted); }
+.quote-note { font-size: .9rem; color: var(--tp-ink); margin-top: .35rem; }
+.quote-note:empty { display: none; }
+.quote-box.is-group .quote-total { display: none; }
+
+/* Transfer price table (transfer page and transfer detail) */
+.price-table { width: 100%; font-size: .92rem; border-collapse: collapse; }
+.price-table th, .price-table td { padding: .45rem .35rem; border-bottom: 1px solid var(--tp-line); text-align: left; }
+.price-table th { font-weight: 600; color: var(--tp-muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+.price-table td.num, .price-table th.num { text-align: right; white-space: nowrap; }
+.price-table tr:last-child td { border-bottom: 0; }
+.price-table .rt { color: var(--tp-teal-dark); font-weight: 600; }
+.price-table-note { font-size: .85rem; color: var(--tp-muted); margin: .5rem 0 0; }
+.on-dark .price-table th, .on-dark .price-table-note { color: rgba(255, 255, 255, .72); }
+.on-dark .price-table td { border-color: rgba(255, 255, 255, .18); }
+.on-dark .price-table .rt { color: var(--tp-sun); }
