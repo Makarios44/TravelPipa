@@ -60,13 +60,58 @@
     });
   }
 
-  // Booking form: one-way / round-trip choice only for transfers
+  // Booking form: one-way / round-trip choice only for transfers, with the live
+  // price of transfers that have a price table (data-quotes on the <option>).
   var tripBox = document.querySelector("[data-trip-options]");
   if (tripBox) {
     var select = document.getElementById("id_experience");
+    var peopleInput = document.getElementById("id_people");
     var returnBox = tripBox.querySelector("[data-return-date]");
     var returnInput = returnBox ? returnBox.querySelector("input") : null;
     var radios = tripBox.querySelectorAll("input[type=radio]");
+    var negotiable = tripBox.querySelector("[data-negotiable]");
+    var quoteBox = document.querySelector("[data-quote-box]");
+    var fill = function (template, values) {
+      return (template || "").replace(/\{(\w+)\}/g, function (m, key) {
+        return Object.prototype.hasOwnProperty.call(values, key) ? values[key] : m;
+      });
+    };
+    var labelSpans = [];
+    radios.forEach(function (r) {
+      var span = r.parentNode.querySelector("span");
+      if (span) { span.setAttribute("data-base", span.textContent); labelSpans.push({ radio: r, span: span }); }
+    });
+    var setText = function (sel, text) {
+      var el = quoteBox && quoteBox.querySelector(sel);
+      if (el) el.textContent = text || "";
+    };
+    var showQuote = function (quotes, people, round) {
+      var t = quoteBox ? quoteBox.dataset : {};
+      var row = quotes && quotes.rows[String(people)];
+      labelSpans.forEach(function (item) {
+        var base = item.span.getAttribute("data-base");
+        if (!row) { item.span.textContent = base; return; }
+        item.span.textContent = item.radio.value === "round_trip"
+          ? fill(t.tLabelRt, { price: row.leg }) : fill(t.tLabelOw, { price: row.ow });
+      });
+      if (!quoteBox) return;
+      if (!quotes || !people || people < 1) { quoteBox.hidden = true; return; }
+      quoteBox.hidden = false;
+      var isGroup = people >= quotes.group || !row;
+      quoteBox.classList.toggle("is-group", isGroup);
+      if (isGroup) {
+        setText("[data-quote-amount]", "");
+        setText("[data-quote-detail]", "");
+        setText("[data-quote-note]", fill(t.tGroup, { group: quotes.group }));
+        setText("[data-quote-extra]", "");
+        return;
+      }
+      setText("[data-quote-amount]", round ? row.rt : row.ow);
+      setText("[data-quote-detail]", round ? fill(t.tRt, { leg: row.leg }) : t.tOw);
+      var two = row.cars.length > 1 ? fill(t.tTwo, { people: people, split: row.cars.join(" + ") }) : "";
+      setText("[data-quote-note]", round ? fill(t.tSave, { save: row.save }) : fill(t.tUpsell, { leg: row.leg }));
+      setText("[data-quote-extra]", two);
+    };
     var syncTrip = function () {
       var option = select && select.options[select.selectedIndex];
       var isTransfer = !!(option && option.getAttribute("data-transfer"));
@@ -76,8 +121,16 @@
       var showReturn = isTransfer && round;
       if (returnBox) returnBox.hidden = !showReturn;
       if (returnInput) returnInput.required = showReturn;
+      var quotes = null;
+      if (isTransfer && option.getAttribute("data-quotes")) {
+        try { quotes = JSON.parse(option.getAttribute("data-quotes")); } catch (e) { quotes = null; }
+      }
+      if (negotiable) negotiable.hidden = !!quotes;
+      var people = peopleInput ? parseInt(peopleInput.value, 10) : 0;
+      showQuote(quotes, isNaN(people) ? 0 : people, round);
     };
     if (select) select.addEventListener("change", syncTrip);
+    if (peopleInput) peopleInput.addEventListener("input", syncTrip);
     radios.forEach(function (r) { r.addEventListener("change", syncTrip); });
     syncTrip();
   }

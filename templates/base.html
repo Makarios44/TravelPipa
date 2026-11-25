@@ -31,6 +31,10 @@
   <link rel="stylesheet" href="{% static 'vendor/bootstrap/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/travelpipa.css' %}">
+  {% if google_ads_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_ads_id|urlencode }}"></script>
+  <script src="{% static 'js/google-ads.js' %}" data-id="{{ google_ads_id }}" data-whatsapp="{{ google_ads_whatsapp_send_to }}"></script>
+  {% endif %}
   {% block head_extra %}{% endblock %}
   {% block schema %}{% endblock %}
 </head>

@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from django import forms
 from django.utils import timezone
@@ -7,6 +8,7 @@ from django.utils.translation import get_language, gettext_lazy as _
 from core.antispam import AntiSpamFormMixin
 from core.forms import ConsentField, StyledFormMixin
 from tours.models import Experience
+from tours.transfer_pricing import client_payload, quote, summary_pt
 
 from .models import BookingRequest
 
@@ -19,6 +21,9 @@ class ExperienceSelect(forms.Select):
         instance = getattr(value, "instance", None)
         if instance is not None and instance.is_transfer:
             option["attrs"]["data-transfer"] = "1"
+            payload = client_payload(instance)
+            if payload:
+                option["attrs"]["data-quotes"] = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
         return option
 
 
@@ -95,6 +100,8 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
                 self.add_error("return_date", _("Please choose the date of the return trip."))
             elif going and back < going:
                 self.add_error("return_date", _("The return date must be on or after the outbound date."))
+        people = cleaned.get("people")
+        cleaned["quote"] = quote(experience, people, is_round) if experience is not None and people else None
         return cleaned
 
     def clean_phone(self):
@@ -112,6 +119,8 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
             preferred_date=data["preferred_date"],
             round_trip=data.get("round_trip", False),
             return_date=data.get("return_date"),
+            quoted_total=(q.total if (q := data.get("quote")) and not q.is_group else None),
+            quote_summary=summary_pt(data.get("quote"), data["experience"].currency),
             people=data["people"],
             full_name=data["full_name"].strip(),
             email=data["email"],

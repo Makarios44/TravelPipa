@@ -11,7 +11,8 @@
       <div class="success-mark"><i class="bi bi-check2" aria-hidden="true"></i></div>
       <h1 class="h2">{% trans "Your booking is done!" %}</h1>
       <p class="lead">{% blocktrans with title=experience_title %}Your booking for <strong>{{ title }}</strong> has been registered.{% endblocktrans %}</p>
-      {% if round_trip %}<p class="mb-3"><span class="trip-badge"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> {% trans "Round trip: we negotiate your discount when we confirm the details." %}</span></p>{% endif %}
+      {% if quoted_total %}<p class="mb-3"><span class="trip-badge"><i class="bi bi-{% if round_trip %}arrow-left-right{% else %}tag{% endif %}" aria-hidden="true"></i> {% if round_trip %}{% blocktrans with total=quoted_total %}Round trip, with discount: total {{ total }}{% endblocktrans %}{% else %}{% blocktrans with total=quoted_total %}Total: {{ total }}{% endblocktrans %}{% endif %}</span></p>
+      {% elif round_trip %}<p class="mb-3"><span class="trip-badge"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> {% trans "Round trip: we negotiate your discount when we confirm the details." %}</span></p>{% endif %}
       <p class="mb-2 text-muted-tp">{% trans "Your booking code" %}</p>
       <p class="ref-code mb-4">{{ reference }}</p>
       <div class="notice text-start mb-4">
