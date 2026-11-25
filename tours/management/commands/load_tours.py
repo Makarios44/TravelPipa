@@ -16,6 +16,7 @@ from django.db import transaction
 
 from core.models import SiteSettings
 from tours.models import Category, Experience, ExperienceImage
+from tours import price_table_wording
 
 # Photos and videos supplied by TravelPipa live in this folder (kept in the repository).
 CONTENT_DIR = Path(settings.BASE_DIR) / "content"
@@ -1178,6 +1179,12 @@ class Command(BaseCommand):
                 for field in ("origin", "destination"):  # transfers only
                     if field in tour[lang]:
                         values[f"{field}_{suffix}"] = tour[lang][field]
+            if tour["slug"] == price_table_wording.SLUG:
+                values["transfer_rates"] = price_table_wording.RATES
+                values["group_from"] = price_table_wording.GROUP_FROM
+                for name, value in list(values.items()):
+                    if isinstance(value, str):
+                        values[name] = price_table_wording.apply(value)
             for name, value in values.items():
                 limit = getattr(Experience._meta.get_field(name), "max_length", None)
                 if limit and isinstance(value, str) and len(value) > limit:

@@ -10,6 +10,7 @@ from core.forms import ReviewForm
 from core.google_reviews import write_review_url
 from core.i18n import current_suffix
 from core.models import SiteSettings, Testimonial
+from core.templatetags.travelpipa import money
 from tours.models import Experience
 
 from .forms import BookingRequestForm
@@ -59,6 +60,8 @@ def booking_thanks(request):
         "reference": reference,
         "experience_title": title,
         "round_trip": booking.round_trip,
+        "quoted_total": money(booking.quoted_total, booking.experience.currency if booking.experience else "BRL")
+        if booking.quoted_total is not None else "",
         "whatsapp_url": whatsapp_link(site, message),
     })
 

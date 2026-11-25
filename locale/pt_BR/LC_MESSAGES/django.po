@@ -1897,3 +1897,91 @@ msgstr "transfers/"
 #, python-format
 msgid "Hello! I'm interested in \"%(title)s\" (%(url)s)."
 msgstr "Olá! Tenho interesse em \"%(title)s\" (%(url)s)."
+
+msgid "One way · {price}"
+msgstr "Só ida · {price}"
+
+msgid "Round trip · {price} per leg"
+msgstr "Ida e volta · {price} por trecho"
+
+msgid "one way"
+msgstr "só ida"
+
+msgid "{leg} per leg × 2 (round trip)"
+msgstr "{leg} por trecho × 2 (ida e volta)"
+
+msgid "Round-trip discount: you save {save}."
+msgstr "Desconto de ida e volta: você economiza {save}."
+
+msgid "Coming back with us too? On a round trip each leg costs {leg}."
+msgstr ""
+"Vai voltar com a gente também? Na ida e volta, cada trecho sai por {leg}."
+
+msgid ""
+"For {people} people we recommend 2 cars ({split} people): it works out "
+"cheaper than renting a van."
+msgstr ""
+"Para {people} pessoas, recomendamos 2 carros ({split} pessoas): sai mais "
+"barato que alugar uma van."
+
+msgid ""
+"Groups of {group} or more people: complete the booking and our team will "
+"contact you with the best price."
+msgstr ""
+"Grupos a partir de {group} pessoas: conclua a reserva e nossa equipe entra "
+"em contato com o melhor valor."
+
+msgid "Total"
+msgstr "Total"
+
+#, python-format
+msgid "Round trip, with discount: total %(total)s"
+msgstr "Ida e volta, com desconto: total %(total)s"
+
+#, python-format
+msgid "Total: %(total)s"
+msgstr "Total: %(total)s"
+
+msgid "Prices per number of people"
+msgstr "Preços por número de pessoas"
+
+msgid "People"
+msgstr "Pessoas"
+
+msgid "per leg"
+msgstr "por trecho"
+
+#, python-format
+msgid "Up to %(n)s"
+msgstr "Até %(n)s"
+
+#, python-format
+msgid "%(a)s to %(b)s"
+msgstr "%(a)s a %(b)s"
+
+msgid "2 cars"
+msgstr "2 carros"
+
+#, python-format
+msgid "%(n)s or more"
+msgstr "%(n)s ou mais"
+
+msgid ""
+"Price per car, for each leg. Booking the round trip makes each leg cheaper."
+msgstr ""
+"Valor por carro, em cada trecho. Fechando ida e volta, cada trecho sai mais "
+"barato."
+
+msgid "2 cars work out cheaper than renting a van."
+msgstr "2 carros saem mais barato que alugar uma van."
+
+msgid "Round trip: each leg costs less"
+msgstr "Ida e volta: cada trecho sai mais barato"
+
+msgid ""
+"Transfers from Natal Airport to Pipa and to Ponta Negra (Natal), priced per "
+"car, with a round-trip discount. Book online with a local agency."
+msgstr ""
+"Transfers do Aeroporto de Natal para Pipa e para Ponta Negra (Natal), com "
+"valor por carro e desconto na ida e volta. Reserve online com uma agência "
+"local."

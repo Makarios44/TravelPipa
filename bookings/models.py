@@ -36,8 +36,13 @@ class BookingRequest(TimeStampedModel):
                                         help_text="Guardado para manter o histórico se a experiência for excluída.")
     preferred_date = models.DateField("data do passeio / da ida")
     round_trip = models.BooleanField("ida e volta", default=False,
-                                     help_text="Só para transfers: o cliente quer ida e volta (desconto negociado no contato).")
+                                     help_text="Só para transfers: o cliente quer ida e volta.")
     return_date = models.DateField("data da volta", null=True, blank=True)
+    quoted_total = models.DecimalField(
+        "valor mostrado ao cliente", max_digits=10, decimal_places=2, null=True, blank=True,
+        help_text="Total calculado pelo site no momento da reserva (transfers com tabela de preços).")
+    quote_summary = models.CharField("resumo do valor", max_length=200, blank=True,
+                                     help_text="Ex.: 2 carros (3 + 3) · ida e volta · R$ 460 por trecho")
     people = models.PositiveSmallIntegerField("quantidade de pessoas",
                                               validators=[MinValueValidator(1), MaxValueValidator(60)])
     full_name = models.CharField("nome completo", max_length=150)
