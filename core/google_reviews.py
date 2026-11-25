@@ -27,7 +27,11 @@ logger = logging.getLogger(__name__)
 
 PLACES_URL = "https://places.googleapis.com/v1/places/{place_id}"
 FIELD_MASK = "rating,userRatingCount,reviews,googleMapsUri"
-CACHE_SECONDS = 60 * 60  # 1 hour: keeps API usage low without storing reviews
+# Reviews change slowly. 6 hours x 3 languages = at most 12 calls a day (~360 a month),
+# well inside the 1,000 free monthly calls of Google's Enterprise SKUs. The cache is
+# the shared database cache, so all Gunicorn workers reuse the same answer.
+CACHE_SECONDS = 6 * 60 * 60
+ERROR_RETRY_SECONDS = 60 * 60  # after an error, wait an hour before asking Google again
 GOOGLE_LANG = {"pt-br": "pt-BR", "en": "en", "es": "es"}
 
 
@@ -76,11 +80,11 @@ def fetch_google_reviews(place_id, lang="pt-br"):
             data = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         logger.error("Google Places error %s: %s", exc.code, exc.read()[:300])
-        cache.set(key, {}, 10 * 60)  # do not hammer the API while misconfigured
+        cache.set(key, {}, ERROR_RETRY_SECONDS)  # do not hammer the API while misconfigured
         return None
     except (urllib.error.URLError, TimeoutError, OSError, ValueError):
         logger.exception("Could not reach Google Places")
-        cache.set(key, {}, 5 * 60)
+        cache.set(key, {}, 15 * 60)
         return None
     reviews = [r for r in (_clean_review(raw, lang) for raw in data.get("reviews") or []) if r]
     result = {
