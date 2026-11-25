@@ -193,13 +193,37 @@ class TestimonialForm(PanelFormMixin, forms.ModelForm):
 class BookingUpdateForm(PanelFormMixin, forms.ModelForm):
     class Meta:
         model = BookingRequest
-        fields = ["status", "internal_notes"]
+        fields = ["status", "deposit_amount", "internal_notes"]
         widgets = {"internal_notes": forms.Textarea(attrs={"rows": 5})}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["status"].choices = [(value, label.split(" (")[0])
                                          for value, label in BookingRequest.Status.choices]
+        self.fields["deposit_amount"].label = "Valor do sinal (R$)"
+        self.fields["deposit_amount"].help_text = (
+            "O cliente paga este valor pelo Mercado Pago (Pix ou cartão). Vazio = sem cobrança online.")
+        if self.instance.payment_status == BookingRequest.PaymentStatus.PAID:
+            self.fields["deposit_amount"].disabled = True
+            self.fields["deposit_amount"].help_text = "Sinal já pago: não pode ser alterado."
+
+    def clean_deposit_amount(self):
+        value = self.cleaned_data.get("deposit_amount")
+        if value is not None and value < 1:
+            raise forms.ValidationError("Use pelo menos R$ 1,00 ou deixe vazio.")
+        return value
+
+    def save(self, commit=True):
+        booking = super().save(commit=False)
+        if "deposit_amount" in self.changed_data:
+            # The old Mercado Pago link carries the old amount: a new one is created on the next visit.
+            booking.mp_preference_id = ""
+            booking.mp_init_point = ""
+            if booking.payment_status == BookingRequest.PaymentStatus.WAITING:
+                booking.payment_status = BookingRequest.PaymentStatus.NONE
+        if commit:
+            booking.save()
+        return booking
 
 
 SETTINGS_GROUPS = [

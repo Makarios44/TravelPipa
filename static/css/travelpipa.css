@@ -755,3 +755,10 @@ img { max-width: 100%; height: auto; }
 .on-dark .price-table th, .on-dark .price-table-note { color: rgba(255, 255, 255, .72); }
 .on-dark .price-table td { border-color: rgba(255, 255, 255, .18); }
 .on-dark .price-table .rt { color: var(--tp-sun); }
+
+/* Deposit page */
+.deposit-summary { display: grid; grid-template-columns: max-content 1fr; gap: .45rem 1.25rem; margin: 1.25rem 0 0; }
+.deposit-summary dt { font-weight: 500; color: var(--tp-muted); }
+.deposit-summary dd { margin: 0; }
+.deposit-amount { font-family: var(--tp-font-head); font-size: 1.35rem; color: var(--tp-teal-dark); }
+.deposit-cta { border: 1px solid rgba(244, 119, 69, .35); background: rgba(244, 119, 69, .07); border-radius: var(--tp-radius-sm); padding: 1rem; }

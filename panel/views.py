@@ -24,6 +24,7 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
+from bookings import mercadopago
 from bookings.models import BookingRequest
 from core.antispam import client_ip_hash
 from core.models import ContactMessage, SiteSettings, Testimonial
@@ -420,6 +421,36 @@ def review_link(request, booking):
     return (settings.SITE_URL + path) if settings.SITE_URL else request.build_absolute_uri(path)
 
 
+def deposit_link(request, booking):
+    """Customer page to pay the deposit, in the customer's language."""
+    if not (mercadopago.configured() and booking.deposit_amount):
+        return ""
+    lang = booking.service_language if booking.service_language in dict(settings.LANGUAGES) else settings.LANGUAGE_CODE
+    with translation.override(lang):
+        path = reverse("bookings:deposit", args=[booking.uuid])
+    return (settings.SITE_URL + path) if settings.SITE_URL else request.build_absolute_uri(path)
+
+
+DEPOSIT_MESSAGES = {
+    "pt-br": "Olá, {name}! Para garantir a sua reserva {ref}, o sinal é de R$ {amount}. "
+             "Você pode pagar com Pix ou cartão por este link seguro do Mercado Pago: {url}",
+    "es": "¡Hola, {name}! Para asegurar tu reserva {ref}, la seña es de R$ {amount}. "
+          "Puedes pagar con Pix o tarjeta en este enlace seguro de Mercado Pago: {url}",
+    "en": "Hi {name}! To secure your booking {ref}, the deposit is R$ {amount}. "
+          "You can pay with Pix or card on this secure Mercado Pago link: {url}",
+}
+
+
+def deposit_whatsapp_for(booking, url):
+    if not (url and booking.phone_digits) or booking.payment_status == BookingRequest.PaymentStatus.PAID:
+        return ""
+    first_name = booking.full_name.split()[0] if booking.full_name else ""
+    amount = f"{booking.deposit_amount:.2f}".replace(".", ",")
+    template = DEPOSIT_MESSAGES.get(booking.service_language, DEPOSIT_MESSAGES["en"])
+    text = template.format(name=first_name, ref=booking.reference, amount=amount, url=url)
+    return f"https://wa.me/{booking.phone_digits}?text={quote(text)}"
+
+
 REVIEW_MESSAGES = {
     "pt-br": "Olá, {name}! Obrigado por passear com a TravelPipa. Pode nos contar como foi? "
              "Leva menos de 1 minuto: {url}",
@@ -447,10 +478,13 @@ def booking_detail(request, pk):
         messages.success(request, f"Solicitação {booking.reference} atualizada.")
         return redirect("panel:booking_detail", pk=pk)
     url = review_link(request, booking)
+    pay_url = deposit_link(request, booking)
     return panel_render(request, "panel/booking_detail.html", {
         "section": "bookings", "booking": booking, "form": form, "whatsapp_url": whatsapp_for(booking),
         "review": Testimonial.objects.filter(booking=booking).first(),
-        "review_url": url, "review_whatsapp_url": review_whatsapp_for(booking, url)})
+        "review_url": url, "review_whatsapp_url": review_whatsapp_for(booking, url),
+        "mercadopago_ready": mercadopago.configured(),
+        "deposit_url": pay_url, "deposit_whatsapp_url": deposit_whatsapp_for(booking, pay_url)})
 
 
 # --------------------------------------------------------------------------

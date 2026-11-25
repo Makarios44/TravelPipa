@@ -10,6 +10,7 @@ from core.forms import ConsentField, StyledFormMixin
 from tours.models import Experience
 from tours.transfer_pricing import client_payload, quote, summary_pt
 
+from .mercadopago import deposit_for
 from .models import BookingRequest
 
 
@@ -102,7 +103,20 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
                 self.add_error("return_date", _("The return date must be on or after the outbound date."))
         people = cleaned.get("people")
         cleaned["quote"] = quote(experience, people, is_round) if experience is not None and people else None
+        cleaned["exact_total"] = self._exact_total(experience, people, cleaned["quote"])
         return cleaned
+
+    @staticmethod
+    def _exact_total(experience, people, q):
+        """Total only when the site knows it for sure (no "from" prices, no group quotes)."""
+        if experience is None or not people:
+            return None
+        if q is not None:
+            return None if q.is_group else q.total
+        if experience.price is None or experience.price_is_starting or experience.is_transfer:
+            return None
+        per_person = experience.price_unit == Experience.PriceUnit.PERSON
+        return experience.price * people if per_person else experience.price
 
     def clean_phone(self):
         value = self.cleaned_data["phone"].strip()
@@ -119,7 +133,8 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
             preferred_date=data["preferred_date"],
             round_trip=data.get("round_trip", False),
             return_date=data.get("return_date"),
-            quoted_total=(q.total if (q := data.get("quote")) and not q.is_group else None),
+            quoted_total=data.get("exact_total"),
+            deposit_amount=deposit_for(data.get("exact_total")),
             quote_summary=summary_pt(data.get("quote"), data["experience"].currency),
             people=data["people"],
             full_name=data["full_name"].strip(),

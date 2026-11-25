@@ -1985,3 +1985,98 @@ msgstr ""
 "Transfers do Aeroporto de Natal para Pipa e para Ponta Negra (Natal), com "
 "valor por carro e desconto na ida e volta. Reserve online com uma agência "
 "local."
+
+msgid "book/deposit/<uuid:token>/"
+msgstr "reservar/sinal/<uuid:token>/"
+
+msgid "Booking deposit"
+msgstr "Sinal da reserva"
+
+msgid "Deposit paid. Your date is secured!"
+msgstr "Sinal pago. Sua data está garantida!"
+
+#, python-format
+msgid "Thank you! We received the deposit for <strong>%(title)s</strong>."
+msgstr "Obrigado! Recebemos o sinal de <strong>%(title)s</strong>."
+
+msgid ""
+"Our team will contact you by WhatsApp or e-mail with the meeting point and "
+"time. The rest is paid on the day."
+msgstr ""
+"Nossa equipe vai entrar em contato pelo WhatsApp ou e-mail com o ponto de "
+"encontro e o horário. O restante é pago no dia."
+
+#, python-format
+msgid "Secure your date — booking %(ref)s"
+msgstr "Garanta sua data — reserva %(ref)s"
+
+msgid "Experience"
+msgstr "Experiência"
+
+msgid ""
+"This booking is no longer active. Please contact us if you have any "
+"questions."
+msgstr ""
+"Esta reserva não está mais ativa. Fale com a gente se tiver alguma dúvida."
+
+msgid ""
+"Your payment is being processed by Mercado Pago. As soon as it is approved, "
+"this page will show it as paid."
+msgstr ""
+"Seu pagamento está em análise no Mercado Pago. Assim que for aprovado, esta "
+"página vai mostrar como pago."
+
+msgid ""
+"The payment was not approved. You can try again with another card or with "
+"Pix."
+msgstr ""
+"O pagamento não foi aprovado. Você pode tentar de novo com outro cartão ou "
+"com Pix."
+
+#, python-format
+msgid "Pay %(amount)s with Pix or card"
+msgstr "Pagar %(amount)s com Pix ou cartão"
+
+msgid ""
+"You pay on Mercado Pago's secure page. We never see your card details. The "
+"rest of the amount is paid on the day."
+msgstr ""
+"Você paga na página segura do Mercado Pago. Nós nunca vemos os dados do seu "
+"cartão. O restante do valor é pago no dia."
+
+msgid ""
+"We could not open the payment page right now. Please try again in a few "
+"minutes or talk to us on WhatsApp."
+msgstr ""
+"Não conseguimos abrir a página de pagamento agora. Tente de novo em alguns "
+"minutos ou fale com a gente no WhatsApp."
+
+msgid "Our team will send you the deposit details by WhatsApp or e-mail."
+msgstr "Nossa equipe vai enviar os dados do sinal pelo WhatsApp ou e-mail."
+
+msgid "Talk to us on WhatsApp"
+msgstr "Fale com a gente no WhatsApp"
+
+msgid "Secure your date now"
+msgstr "Garanta sua data agora"
+
+#, python-format
+msgid "the 10%% deposit is %(amount)s, with Pix or card."
+msgstr "o sinal de 10%% é de %(amount)s, com Pix ou cartão."
+
+#, python-format
+msgid "Pay the deposit (%(amount)s)"
+msgstr "Pagar o sinal (%(amount)s)"
+
+msgid ""
+"Optional: your booking is already registered, and you can also pay later."
+msgstr ""
+"Opcional: sua reserva já está registrada, e você também pode pagar depois."
+
+#, python-format
+msgid "Hello! I have a question about the deposit of booking %(ref)s."
+msgstr "Olá! Tenho uma dúvida sobre o sinal da reserva %(ref)s."
+
+#, python-format
+msgid "Deposit (10%%)"
+msgstr "Sinal (10%%)"

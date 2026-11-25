@@ -61,6 +61,12 @@ if _railway_domain:
     ALLOWED_HOSTS.append(_railway_domain)
     CSRF_TRUSTED_ORIGINS.append(f"https://{_railway_domain}")
 
+# Mercado Pago Checkout Pro: online payment of the booking deposit (Pix, card, boleto).
+# Test credentials on the staging copy, production credentials on the live site.
+MERCADOPAGO_ACCESS_TOKEN = os.environ.get("MERCADOPAGO_ACCESS_TOKEN", "").strip()
+MERCADOPAGO_WEBHOOK_SECRET = os.environ.get("MERCADOPAGO_WEBHOOK_SECRET", "").strip()  # optional extra check
+DEPOSIT_PERCENT = int(os.environ.get("DEPOSIT_PERCENT", "10"))
+
 # Google reviews shown on the site (Places API key, restricted to the Places API).
 GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY", "")
 

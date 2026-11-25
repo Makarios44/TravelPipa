@@ -43,6 +43,28 @@ class BookingRequest(TimeStampedModel):
         help_text="Total calculado pelo site no momento da reserva (transfers com tabela de preços).")
     quote_summary = models.CharField("resumo do valor", max_length=200, blank=True,
                                      help_text="Ex.: 2 carros (3 + 3) · ida e volta · R$ 460 por trecho")
+
+    # --- Deposit paid online (Mercado Pago Checkout Pro) --------------------------
+    class PaymentStatus(models.TextChoices):
+        NONE = "", "Sem cobrança online"
+        WAITING = "waiting", "Link gerado — aguardando pagamento"
+        IN_PROCESS = "in_process", "Pagamento em análise"
+        PAID = "paid", "Sinal pago"
+        REJECTED = "rejected", "Pagamento recusado"
+        CANCELLED = "cancelled", "Pagamento cancelado"
+        REFUNDED = "refunded", "Pagamento devolvido"
+
+    deposit_amount = models.DecimalField(
+        "valor do sinal", max_digits=10, decimal_places=2, null=True, blank=True,
+        help_text="Calculado como 10% do valor mostrado ao cliente. Pode ser ajustado antes de enviar o link.")
+    payment_status = models.CharField("pagamento do sinal", max_length=12, choices=PaymentStatus.choices,
+                                      blank=True, default=PaymentStatus.NONE, db_index=True)
+    mp_preference_id = models.CharField("Mercado Pago — preferência", max_length=80, blank=True, editable=False)
+    mp_init_point = models.URLField("Mercado Pago — link de pagamento", max_length=500, blank=True, editable=False)
+    mp_payment_id = models.CharField("Mercado Pago — pagamento", max_length=40, blank=True, editable=False)
+    paid_amount = models.DecimalField("valor pago", max_digits=10, decimal_places=2, null=True, blank=True,
+                                      editable=False)
+    paid_at = models.DateTimeField("sinal pago em", null=True, blank=True, editable=False)
     people = models.PositiveSmallIntegerField("quantidade de pessoas",
                                               validators=[MinValueValidator(1), MaxValueValidator(60)])
     full_name = models.CharField("nome completo", max_length=150)

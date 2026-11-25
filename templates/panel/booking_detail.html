@@ -34,10 +34,38 @@
       {% csrf_token %}
       <h2><i class="bi bi-clipboard-check"></i> Atendimento</h2>
       {% include "panel/_field.html" with field=form.status %}
+      {% include "panel/_field.html" with field=form.deposit_amount %}
       {% include "panel/_field.html" with field=form.internal_notes %}
       <p class="small muted">Mudar o status não avisa o cliente automaticamente. Use o WhatsApp ou o e-mail.</p>
       <button class="btn btn-primary w-100" type="submit"><i class="bi bi-check-lg"></i> Salvar atendimento</button>
     </form>
+
+    <div class="card-p mt-3">
+      <h2><i class="bi bi-credit-card"></i> Sinal (Mercado Pago)</h2>
+      <p class="mb-2">
+        {% if booking.payment_status == "paid" %}<span class="badge text-bg-success">Sinal pago</span>
+        {% elif booking.payment_status == "in_process" %}<span class="badge text-bg-warning">Pagamento em análise</span>
+        {% elif booking.payment_status == "rejected" %}<span class="badge text-bg-danger">Pagamento recusado</span>
+        {% elif booking.payment_status == "refunded" %}<span class="badge text-bg-secondary">Pagamento devolvido</span>
+        {% elif booking.payment_status == "cancelled" %}<span class="badge text-bg-secondary">Pagamento cancelado</span>
+        {% elif booking.payment_status == "waiting" %}<span class="badge text-bg-info">Link aberto — aguardando pagamento</span>
+        {% else %}<span class="badge text-bg-light">Sem pagamento online</span>{% endif %}
+      </p>
+      {% if booking.payment_status == "paid" %}
+        <p class="small mb-0">Pago <strong>R$ {{ booking.paid_amount }}</strong> em {{ booking.paid_at|date:"d/m/Y H:i" }} · pagamento nº {{ booking.mp_payment_id }}.</p>
+      {% elif not mercadopago_ready %}
+        <p class="small muted mb-0">Mercado Pago ainda não configurado no servidor (variável MERCADOPAGO_ACCESS_TOKEN).</p>
+      {% elif not booking.deposit_amount %}
+        <p class="small muted mb-0">Defina o <strong>valor do sinal</strong> no atendimento e salve para gerar o link de pagamento.</p>
+      {% else %}
+        <p class="small muted">Sinal de <strong>R$ {{ booking.deposit_amount }}</strong>. Envie o link: o cliente paga com Pix ou cartão e a reserva fica marcada como paga sozinha.</p>
+        <div class="input-group mb-2">
+          <input class="form-control form-control-sm" type="text" value="{{ deposit_url }}" readonly id="deposit-url" aria-label="Link do sinal">
+          <button class="btn btn-outline-secondary btn-sm" type="button" data-copy="#deposit-url"><i class="bi bi-clipboard"></i> Copiar</button>
+        </div>
+        {% if deposit_whatsapp_url %}<a class="btn btn-whatsapp w-100" href="{{ deposit_whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> Enviar link do sinal</a>{% endif %}
+      {% endif %}
+    </div>
 
     <div class="card-p mt-3">
       <h2><i class="bi bi-star"></i> Avaliação</h2>
