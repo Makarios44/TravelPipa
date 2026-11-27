@@ -50,3 +50,22 @@ class BydMigrationTests(TestCase):
         self.assertEqual(exp.important_info_en, "Edited by the team")
         spin = next(i for i in exp.images.all() if "07-spin" in i.image.name)
         self.assertNotIn("DER", spin.alt_pt)
+
+
+class AccreditedDriversMigrationTests(TestCase):
+    def test_replaces_only_untouched_lines(self):
+        m = import_module("tours.migrations.0013_accredited_drivers_wording")
+        cat = Category.objects.create(name_en="Transfers", slug="transfers", is_transfer=True)
+        exp = Experience.objects.create(
+            category=cat, slug="t", title_en="T",
+            important_info_pt="Bagagem incluída\nTransporte feito por parceiros cadastrados no DER/RN para "
+                              "transporte turístico\nCadeirinha sob consulta",
+            important_info_en="Edited by the team")
+        m.forwards(apps, None)
+        exp.refresh_from_db()
+        self.assertEqual(exp.important_info_pt.split("\n"), [
+            "Bagagem incluída",
+            "Transporte feito pela nossa rede de motoristas parceiros credenciados no DER/RN para transporte turístico",
+            "Carro e motorista confirmados até 12 horas antes da viagem, com foto do carro e do motorista",
+            "Cadeirinha sob consulta"])
+        self.assertEqual(exp.important_info_en, "Edited by the team")

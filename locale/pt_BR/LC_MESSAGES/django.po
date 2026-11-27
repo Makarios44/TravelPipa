@@ -2099,3 +2099,43 @@ msgstr ""
 
 msgid "Inside the car"
 msgstr "Conheça o carro por dentro"
+
+msgid "Accredited partner drivers"
+msgstr "Motoristas parceiros credenciados"
+
+msgid ""
+"Registered with DER/RN. Car and driver confirmed up to 12 h before, with "
+"photos"
+msgstr ""
+"Cadastrados no DER/RN. Carro e motorista confirmados até 12 h antes, com "
+"fotos"
+
+msgid "Accredited drivers registered with DER/RN"
+msgstr "Motoristas credenciados no DER/RN"
+
+msgid "Car and driver confirmed 12 h before, with photos"
+msgstr "Carro e motorista confirmados 12 h antes, com fotos"
+
+msgid ""
+"Our network of accredited partner drivers is registered with DER/RN for "
+"tourist transport."
+msgstr ""
+"Nossa rede de motoristas parceiros é credenciada no DER/RN para transporte "
+"turístico."
+
+msgid ""
+"Your car and driver are confirmed up to 12 hours before the trip, and we "
+"send you a photo of both."
+msgstr ""
+"O carro e o motorista são confirmados até 12 horas antes da viagem, e "
+"enviamos para você a foto dos dois."
+
+msgid "Your driver:"
+msgstr "Seu motorista:"
+
+msgid ""
+"up to 12 hours before the trip we confirm your car and driver and send you a"
+" photo of both, with the car's plate and the driver's name."
+msgstr ""
+"até 12 horas antes da viagem confirmamos o carro e o motorista e enviamos a "
+"foto dos dois, com a placa do carro e o nome do motorista."

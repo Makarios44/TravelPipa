@@ -138,7 +138,8 @@ TOURS = [
                 "Valor por carro, para até 3 pessoas\n"
                 "Carros de 7 lugares e grupos grandes: valor sob consulta\n"
                 "Negociamos desconto fechando ida e volta\n"
-                "Transporte feito por parceiros cadastrados no DER/RN para transporte turístico\n"
+                "Transporte feito pela nossa rede de motoristas parceiros credenciados no DER/RN para transporte turístico\n"
+                "Carro e motorista confirmados até 12 horas antes da viagem, com foto do carro e do motorista\n"
                 "Informe o número do voo e o horário de chegada na reserva\n"
                 "Informe a quantidade de malas para indicarmos o carro certo"
             ),
@@ -166,7 +167,8 @@ TOURS = [
                 "Price per car, for up to 3 people\n"
                 "7-seat cars and large groups: price on request\n"
                 "We negotiate a discount for round trips\n"
-                "Transport by partners registered with DER/RN (Rio Grande do Norte transport authority) for tourist transport\n"
+                "Transport by our network of accredited partner drivers, registered with DER/RN (Rio Grande do Norte transport authority) for tourist transport\n"
+                "Car and driver confirmed up to 12 hours before the trip, with a photo of the car and the driver\n"
                 "Include your flight number and arrival time when you book\n"
                 "Tell us how many bags you have so we can suggest the right car"
             ),
@@ -194,7 +196,8 @@ TOURS = [
                 "Precio por coche, para hasta 3 personas\n"
                 "Coches de 7 plazas y grupos grandes: precio a consultar\n"
                 "Negociamos un descuento si cierras ida y vuelta\n"
-                "Transporte a cargo de socios registrados en el DER/RN (órgano de transporte de Rio Grande do Norte) para transporte turístico\n"
+                "Transporte a cargo de nuestra red de conductores asociados acreditados en el DER/RN (órgano de transporte de Rio Grande do Norte) para transporte turístico\n"
+                "Coche y conductor confirmados hasta 12 horas antes del viaje, con foto del coche y del conductor\n"
                 "Indica tu número de vuelo y la hora de llegada al reservar\n"
                 "Indícanos cuántas maletas llevas para sugerir el coche adecuado"
             ),
@@ -255,7 +258,8 @@ TOURS = [
                 "Valor por carro, para até 3 pessoas\n"
                 "Carros de 7 lugares e grupos grandes: valor sob consulta\n"
                 "Negociamos desconto fechando ida e volta\n"
-                "Transporte feito por parceiros cadastrados no DER/RN para transporte turístico\n"
+                "Transporte feito pela nossa rede de motoristas parceiros credenciados no DER/RN para transporte turístico\n"
+                "Carro e motorista confirmados até 12 horas antes da viagem, com foto do carro e do motorista\n"
                 "Informe os endereços de saída e de chegada na reserva\n"
                 "Informe a quantidade de malas para indicarmos o carro certo"
             ),
@@ -284,7 +288,8 @@ TOURS = [
                 "Price per car, for up to 3 people\n"
                 "7-seat cars and large groups: price on request\n"
                 "We negotiate a discount for round trips\n"
-                "Transport by partners registered with DER/RN (Rio Grande do Norte transport authority) for tourist transport\n"
+                "Transport by our network of accredited partner drivers, registered with DER/RN (Rio Grande do Norte transport authority) for tourist transport\n"
+                "Car and driver confirmed up to 12 hours before the trip, with a photo of the car and the driver\n"
                 "Include the pickup and drop-off addresses when you book\n"
                 "Tell us how many bags you have so we can suggest the right car"
             ),
@@ -313,7 +318,8 @@ TOURS = [
                 "Precio por coche, para hasta 3 personas\n"
                 "Coches de 7 plazas y grupos grandes: precio a consultar\n"
                 "Negociamos un descuento si cierras ida y vuelta\n"
-                "Transporte a cargo de socios registrados en el DER/RN (órgano de transporte de Rio Grande do Norte) para transporte turístico\n"
+                "Transporte a cargo de nuestra red de conductores asociados acreditados en el DER/RN (órgano de transporte de Rio Grande do Norte) para transporte turístico\n"
+                "Coche y conductor confirmados hasta 12 horas antes del viaje, con foto del coche y del conductor\n"
                 "Indica las direcciones de salida y de llegada al reservar\n"
                 "Indícanos cuántas maletas llevas para sugerir el coche adecuado"
             ),
