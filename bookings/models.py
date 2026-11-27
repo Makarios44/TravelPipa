@@ -4,9 +4,15 @@ import uuid
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-from core.models import TimeStampedModel
+from core.models import IMAGE_VALIDATORS, TimeStampedModel
 
 REFERENCE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"  # no 0/O/1/I to avoid confusion
+
+
+def driver_upload_to(instance, filename):
+    """Random names: these photos are only shared with the customer of the booking."""
+    ext = (filename.rsplit(".", 1)[-1] if "." in filename else "jpg").lower()[:5]
+    return f"drivers/{uuid.uuid4().hex}.{ext}"
 
 
 def generate_reference():
@@ -65,6 +71,22 @@ class BookingRequest(TimeStampedModel):
     paid_amount = models.DecimalField("valor pago", max_digits=10, decimal_places=2, null=True, blank=True,
                                       editable=False)
     paid_at = models.DateTimeField("sinal pago em", null=True, blank=True, editable=False)
+    # Driver and car, sent to the customer up to 12 hours before the trip.
+    driver_name = models.CharField("nome do motorista", max_length=80, blank=True)
+    driver_phone = models.CharField("WhatsApp do motorista", max_length=30, blank=True,
+                                    help_text="Opcional. Só envie se o motorista concordar.")
+    vehicle_model = models.CharField("carro (modelo e cor)", max_length=60, blank=True,
+                                     help_text="Ex.: BYD Song Pro branco")
+    vehicle_plate = models.CharField("placa", max_length=10, blank=True)
+    vehicle_der = models.BooleanField("veículo cadastrado no DER/RN", default=False,
+                                      help_text="Marque só se este carro tem o certificado do DER/RN. "
+                                                "A mensagem ao cliente cita o DER/RN apenas quando marcado.")
+    driver_photo = models.ImageField("foto do motorista", upload_to=driver_upload_to, blank=True,
+                                     validators=IMAGE_VALIDATORS)
+    vehicle_photo = models.ImageField("foto do carro", upload_to=driver_upload_to, blank=True,
+                                      validators=IMAGE_VALIDATORS)
+    driver_sent_at = models.DateTimeField("motorista enviado ao cliente em", null=True, blank=True,
+                                          editable=False)
     people = models.PositiveSmallIntegerField("quantidade de pessoas",
                                               validators=[MinValueValidator(1), MaxValueValidator(60)])
     full_name = models.CharField("nome completo", max_length=150)
@@ -107,6 +129,10 @@ class BookingRequest(TimeStampedModel):
     def status_label(self):
         """Portuguese status name only, e.g. "Nova — falta contato"."""
         return self.get_status_display().split(" (")[0]
+
+    @property
+    def has_driver(self):
+        return bool(self.driver_name and self.vehicle_plate)
 
     @property
     def phone_digits(self):

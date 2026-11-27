@@ -24,13 +24,13 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from bookings import mercadopago
+from bookings import driver_message, mercadopago
 from bookings.models import BookingRequest
 from core.antispam import client_ip_hash
 from core.models import ContactMessage, SiteSettings, Testimonial
 from tours.models import Category, Experience, ExperienceImage
 
-from .forms import (BookingUpdateForm, CategoryForm, ExperienceForm, PanelLoginForm, PanelPasswordChangeForm,
+from .forms import (BookingUpdateForm, DriverForm, CategoryForm, ExperienceForm, PanelLoginForm, PanelPasswordChangeForm,
                     PhotoAltForm, PhotoUploadForm, SiteSettingsForm, TestimonialForm)
 
 ACTIVE_STATUSES = [BookingRequest.Status.PENDING, BookingRequest.Status.CONTACTED, BookingRequest.Status.CONFIRMED]
@@ -478,8 +478,23 @@ def review_whatsapp_for(booking, url):
 @staff_required
 def booking_detail(request, pk):
     booking = get_object_or_404(BookingRequest.objects.select_related("experience"), pk=pk)
-    form = BookingUpdateForm(request.POST or None, instance=booking)
-    if request.method == "POST" and form.is_valid():
+    is_driver_post = request.method == "POST" and request.POST.get("form") == "driver"
+    form = BookingUpdateForm(request.POST if request.method == "POST" and not is_driver_post else None,
+                             instance=booking)
+    driver_form = DriverForm(request.POST if is_driver_post else None,
+                             request.FILES if is_driver_post else None, instance=booking)
+    if is_driver_post and driver_form.is_valid():
+        booking = driver_form.save()
+        if request.POST.get("action") == "email":
+            error = driver_message.send_email(booking)
+            if error:
+                messages.error(request, error)
+            else:
+                messages.success(request, f"Dados do motorista enviados para {booking.email}.")
+        else:
+            messages.success(request, "Motorista e carro salvos.")
+        return redirect(reverse("panel:booking_detail", args=[pk]) + "#motorista")
+    if request.method == "POST" and not is_driver_post and form.is_valid():
         form.save()
         messages.success(request, f"Solicitação {booking.reference} atualizada.")
         return redirect("panel:booking_detail", pk=pk)
@@ -490,7 +505,10 @@ def booking_detail(request, pk):
         "review": Testimonial.objects.filter(booking=booking).first(),
         "review_url": url, "review_whatsapp_url": review_whatsapp_for(booking, url),
         "mercadopago_ready": mercadopago.configured(),
-        "deposit_url": pay_url, "deposit_whatsapp_url": deposit_whatsapp_for(booking, pay_url)})
+        "deposit_url": pay_url, "deposit_whatsapp_url": deposit_whatsapp_for(booking, pay_url),
+        "driver_form": driver_form, "driver_whatsapp_url": driver_message.whatsapp_url(booking),
+        "driver_preview": driver_message.message_body(booking, "email") if booking.has_driver else "",
+        "email_ready": driver_message.email_configured()})
 
 
 # --------------------------------------------------------------------------

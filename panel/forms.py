@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
 from bookings.models import BookingRequest
 from core.i18n import SUFFIXES
-from core.images import ALLOWED_EXTENSIONS, MAX_UPLOAD_MB
+from core.images import ALLOWED_EXTENSIONS, MAX_UPLOAD_MB, optimize_image_field
 from core.models import SiteSettings, Testimonial
 from tours.models import Category, Experience, ExperienceImage
 
@@ -222,6 +222,34 @@ class BookingUpdateForm(PanelFormMixin, forms.ModelForm):
             booking.mp_init_point = ""
             if booking.payment_status == BookingRequest.PaymentStatus.WAITING:
                 booking.payment_status = BookingRequest.PaymentStatus.NONE
+        if commit:
+            booking.save()
+        return booking
+
+
+class DriverForm(PanelFormMixin, forms.ModelForm):
+    """Driver and car for one booking; sent to the customer by e-mail or WhatsApp."""
+    class Meta:
+        model = BookingRequest
+        fields = ["driver_name", "vehicle_model", "vehicle_plate", "driver_phone", "vehicle_der",
+                  "driver_photo", "vehicle_photo"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, prefix="drv", **kwargs)
+        for name in ("driver_photo", "vehicle_photo"):
+            self.fields[name].widget.attrs["accept"] = "image/*"
+
+    def clean_vehicle_plate(self):
+        plate = "".join(self.cleaned_data.get("vehicle_plate", "").split()).upper()
+        if plate and not (7 <= len(plate.replace("-", "")) <= 8 and plate.replace("-", "").isalnum()):
+            raise forms.ValidationError("Placa inválida. Ex.: TOV8H80 ou ABC-1234.")
+        return plate
+
+    def save(self, commit=True):
+        booking = super().save(commit=False)
+        for name in ("driver_photo", "vehicle_photo"):
+            if name in self.changed_data:
+                optimize_image_field(getattr(booking, name))
         if commit:
             booking.save()
         return booking

@@ -308,3 +308,62 @@ class OtherSectionsTests(PanelTestCase):
         self.assertContains(home, site.hero_image.url)
         bad = self.client.post(reverse("panel:settings"), {"site_name": "TravelPipa", "whatsapp": "123"})
         self.assertContains(bad, "código do país")
+
+
+@override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend", EMAIL_ENABLED=True)
+class DriverDetailsTests(PanelTestCase):
+    def setUp(self):
+        super().setUp()
+        SiteSettings.objects.update_or_create(pk=1, defaults={"email": "contato@travelpipa.com.br"})
+        self.booking = BookingRequest.objects.create(
+            experience=self.tour, preferred_date=timezone.localdate(), people=2, full_name="Ana Souza",
+            email="ana@example.com", phone="+55 84 99999-9999", service_language="pt-br")
+        self.url = reverse("panel:booking_detail", args=[self.booking.pk])
+
+    def data(self, **extra):
+        return {"form": "driver", "drv-driver_name": "Damião", "drv-vehicle_model": "BYD Song Pro branco",
+                "drv-vehicle_plate": "tov 8h80", **extra}
+
+    def test_save_shows_whatsapp_and_preview(self):
+        from django.core import mail
+        self.client.post(self.url, self.data(action="save"))
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.vehicle_plate, "TOV8H80")
+        self.assertIsNone(self.booking.driver_sent_at)
+        self.assertEqual(len(mail.outbox), 0)
+        page = self.client.get(self.url)
+        self.assertContains(page, "Enviar pelo WhatsApp")
+        self.assertContains(page, "Placa: TOV8H80")
+        self.assertNotContains(page, "Veículo cadastrado no DER/RN para")  # not ticked
+
+    def test_email_with_photos_in_customer_language(self):
+        from django.core import mail
+        self.client.post(self.url, self.data(**{"action": "email", "drv-vehicle_der": "on",
+                                                "drv-driver_photo": image_file("d.jpg"),
+                                                "drv-vehicle_photo": image_file("c.jpg")}))
+        self.booking.refresh_from_db()
+        self.assertIsNotNone(self.booking.driver_sent_at)
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertEqual(email.to, ["ana@example.com"])
+        self.assertEqual(email.reply_to, ["contato@travelpipa.com.br"])
+        self.assertIn("Seu motorista", email.subject)
+        self.assertIn("Motorista: Damião", email.body)
+        self.assertIn("Placa: TOV8H80", email.body)
+        self.assertIn("DER/RN", email.body)
+        self.assertEqual(sorted(a[0].split(".")[0] for a in email.attachments), ["carro", "motorista"])
+        self.assertContains(self.client.get(reverse("panel:bookings")), "Motorista enviado")
+
+    def test_needs_name_and_plate_to_email(self):
+        from django.core import mail
+        self.client.post(self.url, {"form": "driver", "action": "email", "drv-driver_name": "Damião"})
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_invalid_plate(self):
+        response = self.client.post(self.url, self.data(**{"drv-vehicle_plate": "12", "action": "save"}))
+        self.assertContains(response, "Placa inválida")
+
+    def test_status_form_still_works(self):
+        self.client.post(self.url, {"status": "confirmed", "internal_notes": "ok"})
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.status, "confirmed")

@@ -5,6 +5,7 @@ Railway blocks outbound SMTP (ports 25/465/587) on its Free, Trial and Hobby
 plans, so the site sends its notifications over HTTPS instead. No extra Python
 package is needed: the request is made with the standard library.
 """
+import base64
 import json
 import logging
 import urllib.error
@@ -37,6 +38,14 @@ class ResendEmailBackend(BaseEmailBackend):
             data["bcc"] = list(message.bcc)
         if message.reply_to:
             data["reply_to"] = list(message.reply_to)
+        attachments = []
+        for item in message.attachments or []:
+            filename, content = (item.filename, item.content) if hasattr(item, "filename") else item[:2]
+            if isinstance(content, str):
+                content = content.encode()
+            attachments.append({"filename": filename, "content": base64.b64encode(content).decode()})
+        if attachments:
+            data["attachments"] = attachments
         for content, mimetype in getattr(message, "alternatives", []) or []:
             if mimetype == "text/html":
                 data["html"] = content
