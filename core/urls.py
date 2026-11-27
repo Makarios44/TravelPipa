@@ -13,6 +13,7 @@ urlpatterns = [
     path(_("terms-and-conditions/"), views.terms, name="terms"),
     path(_("tides-and-weather/"), views.tides_weather, name="tides_weather"),
     path(_("reviews/"), views.reviews, name="reviews"),
+    path(_("faq/"), views.faq, name="faq"),
     path("widgets/conditions/", views.conditions_widget, name="conditions_widget"),
     path("widgets/google-reviews/", views.google_reviews_widget, name="google_reviews_widget"),
 ]

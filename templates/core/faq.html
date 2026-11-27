@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Frequently asked questions" %}{% endblock %}
+{% block meta_description %}{% trans "Answers before you book with TravelPipa in Pipa: who drives you, licensed guides, how the 10% deposit works, cancellations, delayed flights and payment on the day." %}{% endblock %}
+{% block schema %}{{ schema }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:860px">
+    <nav aria-label="breadcrumb"><ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'core:home' %}">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{% trans "FAQ" %}</li>
+    </ol></nav>
+    <div class="section-head">
+      <p class="eyebrow">{% trans "Before you book" %}</p>
+      <h1>{% trans "Frequently asked questions" %}</h1>
+      <p class="lead mb-0">{% trans "Straight answers to what travellers usually ask us before booking." %}</p>
+    </div>
+
+    {% for title, items in groups %}
+      <h2 class="h4 faq-group">{{ title }}</h2>
+      <div class="faq-list">
+        {% for question, answer in items %}
+          <details class="faq-item"{% if forloop.parentloop.first and forloop.first %} open{% endif %}>
+            <summary>{{ question }}</summary>
+            <p>{{ answer }}</p>
+          </details>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    <div class="notice mt-5">
+      <i class="bi bi-chat-dots" aria-hidden="true"></i>
+      <div><strong>{% trans "Still have a question?" %}</strong> {% trans "Write to us and a person from our team answers you." %}
+        <a class="link-arrow" href="{% url 'core:contact' %}">{% trans "Contact us" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

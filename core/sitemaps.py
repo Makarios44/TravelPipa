@@ -30,7 +30,7 @@ class StaticPagesSitemap(I18nSitemap):
 
     def items(self):
         return ["core:home", "tours:experience_list", "tours:transfers", "core:about", "core:contact",
-                "bookings:request", "core:tides_weather", "core:reviews", "core:privacy", "core:terms"]
+                "bookings:request", "core:tides_weather", "core:reviews", "core:faq", "core:privacy", "core:terms"]
 
     def location(self, item):
         return reverse(item)

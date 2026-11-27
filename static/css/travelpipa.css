@@ -766,3 +766,13 @@ img { max-width: 100%; height: auto; }
 .deposit-summary dd { margin: 0; }
 .deposit-amount { font-family: var(--tp-font-head); font-size: 1.35rem; color: var(--tp-teal-dark); }
 .deposit-cta { border: 1px solid rgba(244, 119, 69, .35); background: rgba(244, 119, 69, .07); border-radius: var(--tp-radius-sm); padding: 1rem; }
+
+/* FAQ */
+.faq-group { margin: 2.5rem 0 1rem; }
+.faq-list { display: grid; gap: .6rem; }
+.faq-item { background: #fff; border: 1px solid rgba(18, 59, 80, .1); border-radius: var(--tp-radius); padding: 0 1.15rem; }
+.faq-item summary { cursor: pointer; list-style: none; padding: 1rem 2rem 1rem 0; font-weight: 600; position: relative; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; position: absolute; right: 0; top: .85rem; font-size: 1.3rem; line-height: 1; color: var(--tp-ocean); transition: transform .2s; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item p { margin: 0 0 1.1rem; color: var(--tp-ink-2, #3b4b55); }
