@@ -2080,3 +2080,22 @@ msgstr "Olá! Tenho uma dúvida sobre o sinal da reserva %(ref)s."
 #, python-format
 msgid "Deposit (10%%)"
 msgstr "Sinal (10%%)"
+
+msgid "Registered partner vehicles"
+msgstr "Veículos parceiros cadastrados"
+
+msgid "We work with partners registered with DER/RN for tourist transport"
+msgstr ""
+"Trabalhamos com parceiros cadastrados no DER/RN para transporte turístico"
+
+msgid "Partners registered with DER/RN"
+msgstr "Parceiros cadastrados no DER/RN"
+
+msgid ""
+"We work with partner drivers registered with DER/RN for tourist transport."
+msgstr ""
+"Trabalhamos com motoristas parceiros cadastrados no DER/RN para transporte "
+"turístico."
+
+msgid "Inside the car"
+msgstr "Conheça o carro por dentro"

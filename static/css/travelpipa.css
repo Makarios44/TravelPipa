@@ -456,6 +456,10 @@ img { max-width: 100%; height: auto; }
 .gallery { display: grid; gap: .6rem; grid-template-columns: 1fr; border-radius: var(--tp-radius-lg); overflow: hidden; }
 .gallery a { display: block; position: relative; overflow: hidden; background: var(--tp-sand-2); }
 .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--tp-ease); }
+.inside-gallery { display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.inside-gallery a { display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--tp-radius); background: var(--tp-sand-2); }
+.inside-gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--tp-ease); }
+.inside-gallery a:hover img { transform: scale(1.04); }
 .gallery a:hover img { transform: scale(1.04); }
 .gallery .g-main { aspect-ratio: 16 / 10; }
 .gallery .g-more { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(12, 43, 59, .55); color: #fff; font-family: var(--tp-font-head); font-weight: 700; }

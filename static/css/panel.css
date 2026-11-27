@@ -154,3 +154,4 @@ a { text-underline-offset: .2em; }
 
 /* Customer review waiting for approval: highlight instead of fading */
 .row-item.pending { border-left: 4px solid #F2B135; background: #FFFBF0; }
+.photo .album-badge { background: var(--p-ocean-deep, #0b3d5c); color: #fff; }

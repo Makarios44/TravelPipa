@@ -222,6 +222,27 @@ class PhotoTests(PanelTestCase):
         self.assertEqual(self.tour.images.count(), 2)
         self.assertEqual(self.tour.images.filter(is_cover=True).count(), 1)
 
+    def test_inside_album(self):
+        self.upload(image_file("byd.jpg"), image_file("painel.jpg"), image_file("banco.jpg"))
+        byd, painel, banco = self.tour.images.order_by("order")
+        url = lambda photo, action: reverse("panel:photo_action", args=[self.tour.pk, photo.pk, action])
+        for photo in (painel, banco):
+            self.client.post(url(photo, "alt"), {f"p{photo.pk}-album": "inside", f"p{photo.pk}-alt_pt": "Interior"})
+        self.tour.refresh_from_db()
+        self.assertEqual(self.tour.gallery, [byd])
+        self.assertEqual(self.tour.inside_gallery, [painel, banco])
+        self.assertEqual(self.tour.cover, byd)
+        # Moving the cover into the album hands the cover to a main-gallery photo
+        self.client.post(url(painel, "alt"), {f"p{painel.pk}-album": ""})
+        self.client.post(url(byd, "alt"), {f"p{byd.pk}-album": "inside"})
+        byd.refresh_from_db()
+        self.assertFalse(byd.is_cover)
+        self.assertEqual(self.tour.images.get(is_cover=True), painel)
+        # "Set as cover" brings a photo back to the main gallery
+        self.client.post(url(banco, "cover"))
+        banco.refresh_from_db()
+        self.assertEqual((banco.album, banco.is_cover), ("", True))
+
     def test_cannot_touch_photos_of_another_tour(self):
         other = Experience.objects.create(category=self.cat, title_en="Other")
         photo = ExperienceImage.objects.create(experience=other, image=image_file())

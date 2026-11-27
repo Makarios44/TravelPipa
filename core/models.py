@@ -72,8 +72,8 @@ class SiteSettings(TimeStampedModel):
         "selo: guias de turismo com Cadastur", default=True,
         help_text="Exibe no site que os guias de turismo são cadastrados no Cadastur (Ministério do Turismo).")
     trust_der_vehicles = models.BooleanField(
-        "selo: veículos cadastrados no DER/RN", default=True,
-        help_text="Exibe no site que os veículos são cadastrados para transporte turístico no DER/RN.")
+        "selo: parceiros cadastrados no DER/RN", default=True,
+        help_text="Exibe no site que trabalhamos com parceiros cadastrados no DER/RN para transporte turístico.")
     cadastur = models.CharField("número Cadastur", max_length=40, blank=True,
                                 help_text="Preencha apenas se a agência possuir registro.")
 

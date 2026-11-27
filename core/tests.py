@@ -558,7 +558,7 @@ class LoadToursTests(TestCase):
         self.assertContains(self.client.get("/pt-br/passeios/natal-airport-pipa-transfer/"), "7 lugares")
         # Trust badges: strip on every page, DER on the transfer, Cadastur on guided tours
         pt_transfer = self.client.get("/pt-br/passeios/natal-airport-pipa-transfer/")
-        self.assertContains(pt_transfer, "Veículos cadastrados para transporte turístico no DER/RN.")
+        self.assertContains(pt_transfer, "Trabalhamos com motoristas parceiros cadastrados no DER/RN para transporte turístico.")
         self.assertContains(pt_transfer, "Guias de turismo com Cadastur")  # strip
         self.assertNotContains(pt_transfer, "Guia de turismo com cadastro no Cadastur")  # no guide on transfers
         self.assertContains(self.client.get("/es/experiencias/quad-bike-tour-route-1/"),
@@ -569,7 +569,7 @@ class LoadToursTests(TestCase):
         site.trust_cadastur_guides = False
         site.save()
         self.assertNotContains(self.client.get("/en/"), "Licensed tour guides")
-        self.assertContains(self.client.get("/en/"), "Registered tourist vehicles")
+        self.assertContains(self.client.get("/en/"), "Registered partner vehicles")
         site.trust_cadastur_guides = True
         site.save()
         # Home page banner set from content/ (original file, no re-encoding)

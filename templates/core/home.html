@@ -92,7 +92,7 @@
           {% for t in transfers %}
             {% if t.transfer_type %}<li><i class="bi bi-{% if t.transfer_type == 'private' %}person-check{% else %}people{% endif %}" aria-hidden="true"></i>{{ t.get_transfer_type_display }}{% if t.max_passengers %} · {% blocktrans count n=t.max_passengers %}up to {{ n }} passenger{% plural %}up to {{ n }} passengers{% endblocktrans %}{% endif %}</li>{% endif %}
           {% endfor %}
-          {% if site.trust_der_vehicles %}<li><i class="bi bi-patch-check" aria-hidden="true"></i>{% trans "Registered with DER/RN" %}</li>{% endif %}
+          {% if site.trust_der_vehicles %}<li><i class="bi bi-patch-check" aria-hidden="true"></i>{% trans "Partners registered with DER/RN" %}</li>{% endif %}
           <li><i class="bi bi-people" aria-hidden="true"></i>{% trans "7-seat cars and large groups" %}</li>
         </ul>
         <div class="d-flex flex-wrap gap-2">

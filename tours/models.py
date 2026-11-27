@@ -293,8 +293,13 @@ class Experience(TimeStampedModel):
 
     @property
     def gallery(self):
+        # Main photos only (the "inside the vehicle" album has its own section).
         # Uses the prefetched relation (ordered in ExperienceImage.Meta).
-        return list(self.images.all())
+        return [img for img in self.images.all() if not img.album]
+
+    @property
+    def inside_gallery(self):
+        return [img for img in self.images.all() if img.album == ExperienceImage.Album.INSIDE]
 
     @property
     def cover(self):
@@ -318,6 +323,14 @@ class ExperienceImage(TimeStampedModel):
     is_cover = models.BooleanField("capa", default=False)
     order = models.PositiveIntegerField("ordem", default=0)
 
+    class Album(models.TextChoices):
+        MAIN = "", "Galeria principal"
+        INSIDE = "inside", "Por dentro do veículo"
+
+    album = models.CharField(
+        "álbum", max_length=20, choices=Album.choices, blank=True, default=Album.MAIN,
+        help_text="“Por dentro do veículo” aparece numa seção própria da página, abaixo da descrição.")
+
     alt = Localized()
 
     class Meta:
@@ -329,6 +342,8 @@ class ExperienceImage(TimeStampedModel):
         return self.image.name.rsplit("/", 1)[-1]
 
     def save(self, *args, **kwargs):
+        if self.album:  # the cover always comes from the main gallery
+            self.is_cover = False
         optimize_image_field(self.image)
         super().save(*args, **kwargs)
         if self.is_cover:

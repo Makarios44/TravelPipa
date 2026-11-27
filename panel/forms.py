@@ -153,8 +153,9 @@ class PhotoUploadForm(forms.Form):
 class PhotoAltForm(PanelFormMixin, forms.ModelForm):
     class Meta:
         model = ExperienceImage
-        fields = ["alt_pt", "alt_en", "alt_es"]
-        labels = {"alt_pt": "Descrição (PT)", "alt_en": "Descrição (EN)", "alt_es": "Descrição (ES)"}
+        fields = ["album", "alt_pt", "alt_en", "alt_es"]
+        labels = {"album": "Álbum", "alt_pt": "Descrição (PT)", "alt_en": "Descrição (EN)",
+                  "alt_es": "Descrição (ES)"}
 
 
 # --------------------------------------------------------------------------

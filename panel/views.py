@@ -287,6 +287,7 @@ def photo_action(request, pk, photo_pk, action):
     url = reverse("panel:experience_edit", args=[pk]) + "#fotos"
     if action == "cover":
         photo.is_cover = True
+        photo.album = ExperienceImage.Album.MAIN  # the cover belongs to the main gallery
         photo.save()  # model clears the previous cover
         messages.success(request, "Capa alterada.")
     elif action == "delete":
@@ -294,7 +295,7 @@ def photo_action(request, pk, photo_pk, action):
         photo.image.delete(save=False)
         photo.delete()
         if was_cover:
-            first = ExperienceImage.objects.filter(experience_id=pk).order_by("order", "id").first()
+            first = ExperienceImage.objects.filter(experience_id=pk, album="").order_by("order", "id").first()
             if first:
                 first.is_cover = True
                 first.save()
@@ -312,7 +313,12 @@ def photo_action(request, pk, photo_pk, action):
         form = PhotoAltForm(request.POST, instance=photo, prefix=f"p{photo.pk}")
         if form.is_valid():
             form.save()
-            messages.success(request, "Descrição da foto salva.")
+            if photo.album and not ExperienceImage.objects.filter(experience_id=pk, is_cover=True).exists():
+                first = ExperienceImage.objects.filter(experience_id=pk, album="").order_by("order", "id").first()
+                if first:
+                    first.is_cover = True
+                    first.save()
+            messages.success(request, "Foto salva.")
         else:
             messages.error(request, "Não foi possível salvar a descrição.")
     else:
