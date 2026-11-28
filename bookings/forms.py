@@ -26,6 +26,10 @@ class ExperienceSelect(forms.Select):
             payload = client_payload(instance)
             if payload:
                 option["attrs"]["data-quotes"] = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+        elif instance is not None and BookingRequestForm._exact_total(instance, 1, None) is not None:
+            # Fixed price: the form shows the 10% deposit for the number of people typed.
+            option["attrs"].update({"data-price": str(instance.price), "data-unit": instance.price_unit,
+                                    "data-ppv": instance.people_per_vehicle or "", "data-currency": instance.currency})
         return option
 
 

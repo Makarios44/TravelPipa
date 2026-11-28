@@ -28,7 +28,11 @@
 
           <div class="notice mb-4">
             <i class="bi bi-lightning-charge" aria-hidden="true"></i>
-            <div><strong>{% trans "Quick, with no payment now." %}</strong> {% trans "Right after the booking we contact you to confirm the meeting point and the 10% deposit that secures your date." %}</div>
+            {% if deposits_online %}
+              <div><strong>{% trans "Secure your date with a 10% deposit." %}</strong> {% trans "When you confirm the booking you pay the 10% deposit by Pix. Then we contact you as soon as possible to arrange the rest of the details." %}</div>
+            {% else %}
+              <div><strong>{% trans "Book in a few minutes." %}</strong> {% trans "Right after the booking we contact you to confirm the meeting point and the 10% deposit that secures your date." %}</div>
+            {% endif %}
           </div>
 
           {% if preselected %}
@@ -68,6 +72,13 @@
               <p class="quote-note mb-0" data-quote-note></p>
               <p class="quote-note mb-0" data-quote-extra></p>
             </div>
+            {% if deposits_online %}
+              <p class="deposit-line mb-3" data-deposit-box hidden aria-live="polite"
+                 data-t-amount="{% trans 'Deposit (10%) by Pix when you confirm: {amount}' %}"
+                 data-t-later="{% trans 'For this experience, we confirm the price and the deposit with you right after the booking.' %}">
+                <i class="bi bi-credit-card" aria-hidden="true"></i> <span data-deposit-text></span>
+              </p>
+            {% endif %}
           </fieldset>
 
           <fieldset class="mt-4">
@@ -98,7 +109,11 @@
             <ol class="timeline">
               <li>{% trans "Choose the date and the number of people." %}</li>
               <li>{% trans "Your booking is registered right away." %}</li>
-              <li>{% trans "We contact you with the meeting point, time and the 10% deposit that secures your date." %}</li>
+              {% if deposits_online %}
+                <li>{% trans "You pay the 10% deposit by Pix and we contact you as soon as possible with the meeting point, time and details." %}</li>
+              {% else %}
+                <li>{% trans "We contact you with the meeting point, time and the 10% deposit that secures your date." %}</li>
+              {% endif %}
             </ol>
           </div>
           {% if whatsapp_general_url %}

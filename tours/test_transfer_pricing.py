@@ -105,7 +105,7 @@ class BookingWithPriceTableTests(BaseTestCase):
         quotes = json.loads(option.data["attrs"]["data-quotes"])
         self.assertEqual(quotes["group"], 7)
         self.assertEqual(quotes["rows"]["3"], {"cars": [3], "ow": "R$ 240", "leg": "R$ 230",
-                                               "rt": "R$ 460", "save": "R$ 20"})
+                                               "rt": "R$ 460", "save": "R$ 20", "dep_ow": "R$ 24", "dep_rt": "R$ 46"})
         self.assertEqual(quotes["rows"]["6"]["cars"], [3, 3])
         self.assertNotIn("7", quotes["rows"])
         self.assertContains(page, "data-quote-box")

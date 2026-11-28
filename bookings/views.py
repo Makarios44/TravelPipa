@@ -49,7 +49,8 @@ def booking_request(request):
         initial = {"experience": preselected.pk} if preselected else {}
         form = BookingRequestForm(initial=initial)
 
-    return render(request, "bookings/booking_form.html", {"form": form, "preselected": preselected})
+    return render(request, "bookings/booking_form.html", {"form": form, "preselected": preselected,
+                                                          "deposits_online": mercadopago.configured()})
 
 
 @never_cache

@@ -23,9 +23,9 @@ FAQ_GROUPS = [
            "stays available to help you during the whole trip.")),
     ]),
     (_("Booking and payment"), [
-        (_("Do I have to pay to book?"),
-         _("No. Booking on the website is free and takes a few minutes. Your date is secured with a 10% "
-           "deposit, and the rest is paid on the day of the trip.")),
+        (_("Do I pay anything when I book?"),
+         _("Only the 10% deposit, by Pix, when you confirm the booking: it secures your date. Then we contact "
+           "you as soon as possible to arrange the details, and the rest is paid on the day of the trip.")),
         (_("How do I pay the deposit, and is it safe?"),
          _("The 10% deposit is paid by Pix on a secure Mercado Pago page, through the link we send you. When "
            "the payment goes through, your booking is marked as paid automatically. Visiting from abroad, or don't have "

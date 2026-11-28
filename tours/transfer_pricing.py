@@ -150,6 +150,7 @@ def quote_table(experience):
 
 def client_payload(experience):
     """quote_table() with prices already formatted for the visitor's language (read by the form's JS)."""
+    from bookings.mercadopago import deposit_for
     from core.templatetags.travelpipa import money
 
     table = quote_table(experience)
@@ -164,6 +165,8 @@ def client_payload(experience):
             "leg": money(rt.per_leg, cur),
             "rt": money(rt.total, cur),
             "save": money(rt.savings, cur),
+            "dep_ow": money(deposit_for(one.total), cur),
+            "dep_rt": money(deposit_for(rt.total), cur),
         }
     return {"group": table["group_from"], "rows": rows}
 

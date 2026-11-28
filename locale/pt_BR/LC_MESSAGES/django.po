@@ -2489,3 +2489,162 @@ msgstr ""
 "que enviamos. Quando o pagamento é aprovado, a reserva fica marcada como "
 "paga automaticamente. Vem do exterior ou não tem Pix? Fale com a gente que "
 "combinamos outra forma de pagar o sinal."
+
+#, python-format
+msgid "from %(amount)s"
+msgstr "a partir de %(amount)s"
+
+#, python-format
+msgid "%(amount)s per person"
+msgstr "%(amount)s por pessoa"
+
+#, python-format
+msgid "%(amount)s per vehicle"
+msgstr "%(amount)s por veículo"
+
+#, python-format
+msgid ""
+"When you confirm the booking you pay a 10%% deposit by Pix (%(deposit)s) to "
+"secure your date. Then we contact you as soon as possible to arrange the "
+"rest of the details."
+msgstr ""
+"Ao confirmar a reserva, você paga um sinal de 10%% por Pix (%(deposit)s) "
+"para garantir a data. Depois disso, entramos em contato o mais rápido "
+"possível para alinhar o restante dos detalhes."
+
+msgid ""
+"Book in a few minutes: right after, we contact you as soon as possible with "
+"the price, the 10% deposit and the details."
+msgstr ""
+"Reserve em poucos minutos: logo depois, entramos em contato o mais rápido "
+"possível com o valor, o sinal de 10% e os detalhes."
+
+msgid "Secure your date with a 10% deposit."
+msgstr "Garanta sua data com um sinal de 10%."
+
+msgid ""
+"When you confirm the booking you pay the 10% deposit by Pix. Then we contact"
+" you as soon as possible to arrange the rest of the details."
+msgstr ""
+"Ao confirmar a reserva, você paga o sinal de 10% por Pix. Depois disso, "
+"entramos em contato o mais rápido possível para alinhar o restante dos "
+"detalhes."
+
+msgid "Book in a few minutes."
+msgstr "Reserve em poucos minutos."
+
+msgid "Deposit (10%) by Pix when you confirm: {amount}"
+msgstr "Sinal (10%) por Pix ao confirmar: {amount}"
+
+msgid ""
+"For this experience, we confirm the price and the deposit with you right "
+"after the booking."
+msgstr ""
+"Para esta experiência, confirmamos o valor e o sinal com você logo depois da"
+" reserva."
+
+msgid ""
+"You pay the 10% deposit by Pix and we contact you as soon as possible with "
+"the meeting point, time and details."
+msgstr ""
+"Você paga o sinal de 10% por Pix e entramos em contato o mais rápido "
+"possível com o ponto de encontro, o horário e os detalhes."
+
+msgid "Your booking is registered: the deposit secures your date."
+msgstr "Sua reserva está registrada: o sinal garante a sua data."
+
+msgid ""
+"after the deposit, our team contacts you as soon as possible by WhatsApp or "
+"e-mail to arrange the meeting point, time and the rest of the details. Keep "
+"your booking code handy."
+msgstr ""
+"depois do sinal, nossa equipe entra em contato o mais rápido possível por "
+"WhatsApp ou e-mail para alinhar o ponto de encontro, o horário e o restante "
+"dos detalhes. Guarde o seu código de reserva."
+
+msgid ""
+"Book online in a few minutes and secure your date with a 10% deposit by Pix."
+" We contact you as soon as possible with all the details."
+msgstr ""
+"Reserve online em poucos minutos e garanta a data com um sinal de 10% por "
+"Pix. Entramos em contato o mais rápido possível com todos os detalhes."
+
+msgid "Do I pay anything when I book?"
+msgstr "Pago alguma coisa ao reservar?"
+
+msgid ""
+"Only the 10% deposit, by Pix, when you confirm the booking: it secures your "
+"date. Then we contact you as soon as possible to arrange the details, and "
+"the rest is paid on the day of the trip."
+msgstr ""
+"Só o sinal de 10%, por Pix, ao confirmar a reserva: ele garante a sua data. "
+"Depois entramos em contato o mais rápido possível para alinhar os detalhes, "
+"e o restante é pago no dia da viagem."
+
+#, python-format
+msgid ""
+"Answers before you book with TravelPipa in Pipa: who drives you, licensed "
+"guides, how the 10%% deposit works, cancellations, delayed flights and "
+"payment on the day."
+msgstr ""
+"Respostas antes de reservar com a TravelPipa em Pipa: quem dirige, guias "
+"credenciados, como funciona o sinal de 10%%, cancelamento, voo atrasado e "
+"pagamento no dia."
+
+#, python-format
+msgid ""
+"Book in a few minutes: right after, we contact you as soon as possible with "
+"the price, the 10%% deposit and the details."
+msgstr ""
+"Reserve em poucos minutos: logo depois, entramos em contato o mais rápido "
+"possível com o valor, o sinal de 10%% e os detalhes."
+
+#, python-format
+msgid ""
+"Book online in a few minutes and secure your date with a 10%% deposit by "
+"Pix. We contact you as soon as possible with all the details."
+msgstr ""
+"Reserve online em poucos minutos e garanta a data com um sinal de 10%% por "
+"Pix. Entramos em contato o mais rápido possível com todos os detalhes."
+
+#, python-format
+msgid "Deposit (10%%) by Pix when you confirm: {amount}"
+msgstr "Sinal (10%%) por Pix ao confirmar: {amount}"
+
+#, python-format
+msgid "Secure your date with a 10%% deposit."
+msgstr "Garanta sua data com um sinal de 10%%."
+
+#, python-format
+msgid ""
+"To secure your booking we ask for a 10%% deposit, paid after our team "
+"contacts you. If we cancel or reschedule because of heavy rain, you can move"
+" to another date or receive the deposit back in full. If you cancel at least"
+" 48 hours before the trip, the deposit is refunded in full; later "
+"cancellations are not refunded."
+msgstr ""
+"Para garantir a reserva pedimos um sinal de 10%%, pago depois que a nossa "
+"equipe entra em contato. Se cancelarmos ou remarcarmos por causa de chuva "
+"forte, você pode mudar a data ou receber o sinal de volta por inteiro. Se "
+"você cancelar com pelo menos 48 horas de antecedência, o sinal é devolvido "
+"por inteiro; cancelamentos depois disso não são reembolsados."
+
+#, python-format
+msgid ""
+"When you confirm the booking you pay the 10%% deposit by Pix. Then we "
+"contact you as soon as possible to arrange the rest of the details."
+msgstr ""
+"Ao confirmar a reserva, você paga o sinal de 10%% por Pix. Depois disso, "
+"entramos em contato o mais rápido possível para alinhar o restante dos "
+"detalhes."
+
+#, python-format
+msgid ""
+"You pay the 10%% deposit by Pix and we contact you as soon as possible with "
+"the meeting point, time and details."
+msgstr ""
+"Você paga o sinal de 10%% por Pix e entramos em contato o mais rápido "
+"possível com o ponto de encontro, o horário e os detalhes."
+
+msgid "Price per car, for each leg."
+msgstr "Valor por carro, em cada trecho."
