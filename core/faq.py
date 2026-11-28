@@ -42,9 +42,9 @@ FAQ_GROUPS = [
          _("If you cancel at least 48 hours before the trip, we refund your deposit in full. Cancellations made "
            "less than 48 hours before are not refunded, because by then the driver or guide is already booked "
            "for you. If you just need another date, talk to us: we do our best to move your booking.")),
-        (_("What if the weather or the sea is not safe?"),
-         _("Your safety comes first. If we cancel or reschedule because of weather, tides or sea conditions, "
-           "you can choose another date or receive your deposit back in full.")),
+        (_("What if it rains heavily?"),
+         _("In Pipa the sea is calm all year, so trips only change in case of heavy rain. If heavy rain makes us "
+           "cancel or reschedule, you choose another date or receive your deposit back in full.")),
     ]),
     (_("Airport transfers"), [
         (_("What if my flight is delayed?"),

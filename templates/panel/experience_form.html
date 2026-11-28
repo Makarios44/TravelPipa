@@ -111,7 +111,7 @@
         {% for photo, alt_form in photo_forms %}
           <div class="photo" data-id="{{ photo.pk }}">
             <img src="{{ photo.image.url }}" alt="{{ photo.alt_pt|default:photo.alt_en }}" loading="lazy">
-            {% if photo.is_cover %}<span class="cover-badge"><i class="bi bi-star-fill"></i> Capa</span>{% elif photo.album == "inside" %}<span class="cover-badge album-badge"><i class="bi bi-car-front"></i> Por dentro</span>{% endif %}
+            {% if photo.is_cover %}<span class="cover-badge"><i class="bi bi-star-fill"></i> Capa</span>{% elif photo.album == "inside" %}<span class="cover-badge album-badge"><i class="bi bi-eye-slash"></i> Guardada</span>{% endif %}
             <span class="num">{{ forloop.counter }}</span>
             <div class="tools">
               <form method="post" action="{% url 'panel:photo_action' experience.pk photo.pk 'up' %}">{% csrf_token %}<button class="btn btn-light" type="submit" title="Mover para trás" aria-label="Mover para trás" {% if forloop.first %}disabled{% endif %}><i class="bi bi-arrow-left"></i></button></form>

@@ -1,0 +1,32 @@
+{% extends "panel/base.html" %}
+{% block title %}Viagens confirmadas{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+  <h1 class="h3 mb-0">Viagens confirmadas</h1>
+  <div class="btn-group btn-group-sm" role="group" aria-label="Período">
+    <a class="btn {% if not past %}btn-primary{% else %}btn-outline-primary{% endif %}" href="{% url 'panel:trips' %}">Próximas</a>
+    <a class="btn {% if past %}btn-primary{% else %}btn-outline-primary{% endif %}" href="{% url 'panel:trips' %}?when=past">Passadas</a>
+  </div>
+</div>
+<p class="muted small">Só reservas com status <strong>Confirmada</strong>. Abra uma viagem para preencher horário, embarque e valores, e enviar os vouchers.</p>
+
+{% for day, trips in days %}
+  <h2 class="trip-day">{% if day == today %}Hoje · {% elif day == tomorrow %}Amanhã · {% endif %}{{ day|date:"l, d/m/Y" }}</h2>
+  <div class="card-p p-0">
+    {% for b in trips %}
+      <a class="trip-row text-reset text-decoration-none" href="{% url 'panel:booking_detail' b.pk %}">
+        <span class="trip-time">{% if b.pickup_time %}{{ b.pickup_time|time:"H:i" }}{% else %}<span class="badge text-bg-warning">sem hora</span>{% endif %}</span>
+        <span>
+          <strong>{{ b.trip_title_pt }}</strong>{% if b.round_trip %} <span class="badge text-bg-light">ida e volta</span>{% endif %}<br>
+          <span class="small">{{ b.full_name }} · {{ b.people }} pessoa{{ b.people|pluralize }}{% if b.pickup_place %} · {{ b.pickup_place }}{% endif %}</span><br>
+          <span class="small muted">{% if b.has_driver %}<i class="bi bi-person-badge"></i> {{ b.driver_name }} · {{ b.vehicle_plate }}{% else %}<span class="text-danger"><i class="bi bi-exclamation-circle"></i> sem motorista</span>{% endif %}
+            · {{ b.reference }}{% if b.payment_status == "paid" %} · <span class="text-success">sinal pago</span>{% endif %}</span>
+        </span>
+        <span class="trip-due">{% if b.amount_due is not None %}R$ {{ b.amount_due|floatformat:"2g" }}<small>a cobrar</small>{% else %}<small>sem valor total</small>{% endif %}</span>
+      </a>
+    {% endfor %}
+  </div>
+{% empty %}
+  <div class="card-p text-center muted">{% if past %}Nenhuma viagem passada.{% else %}Nenhuma viagem confirmada pela frente. Marque uma reserva como <strong>Confirmada</strong> para ela aparecer aqui.{% endif %}</div>
+{% endfor %}
+{% endblock %}

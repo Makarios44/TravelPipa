@@ -28,6 +28,8 @@ urlpatterns = [
     path("healthz/", core_views.healthz, name="healthz"),
     # Mercado Pago payment notifications (no language prefix, no CSRF: Mercado Pago calls it).
     path("pagamentos/mercadopago/", booking_views.mercadopago_webhook, name="mercadopago_webhook"),
+    path("voucher/<uuid:token>/", booking_views.voucher, name="voucher"),
+    path("voucher/motorista/<uuid:token>/", booking_views.driver_voucher, name="driver_voucher"),
 ]
 
 urlpatterns += i18n_patterns(

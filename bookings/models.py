@@ -1,5 +1,6 @@
 import secrets
 import uuid
+from decimal import Decimal
 
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -87,6 +88,20 @@ class BookingRequest(TimeStampedModel):
                                       validators=IMAGE_VALIDATORS)
     driver_sent_at = models.DateTimeField("motorista enviado ao cliente em", null=True, blank=True,
                                           editable=False)
+    # Trip details for the vouchers (customer and driver).
+    pickup_time = models.TimeField("horário de saída", null=True, blank=True)
+    pickup_place = models.CharField("local de embarque", max_length=150, blank=True,
+                                    help_text="Ex.: Aeroporto de Natal — saída do desembarque")
+    dropoff_place = models.CharField("destino", max_length=150, blank=True,
+                                     help_text="Ex.: Pousada Xyz, Rua dos Golfinhos, Pipa")
+    flight_number = models.CharField("voo", max_length=20, blank=True, help_text="Ex.: G3 1234 — chega 14:35")
+    return_time = models.TimeField("horário da volta", null=True, blank=True)
+    total_price = models.DecimalField("valor total (R$)", max_digits=10, decimal_places=2, null=True, blank=True)
+    deposit_received = models.DecimalField(
+        "sinal recebido por fora (R$)", max_digits=10, decimal_places=2, null=True, blank=True,
+        help_text="Só se o cliente pagou o sinal direto (Pix para a agência), fora do Mercado Pago.")
+    driver_token = models.UUIDField("código do voucher do motorista", null=True, blank=True, editable=False,
+                                    db_index=True)
     people = models.PositiveSmallIntegerField("quantidade de pessoas",
                                               validators=[MinValueValidator(1), MaxValueValidator(60)])
     full_name = models.CharField("nome completo", max_length=150)
@@ -129,6 +144,25 @@ class BookingRequest(TimeStampedModel):
     def status_label(self):
         """Portuguese status name only, e.g. "Nova — falta contato"."""
         return self.get_status_display().split(" (")[0]
+
+    @property
+    def deposit_paid(self):
+        """Deposit already received: Mercado Pago payment, or the amount the team typed in."""
+        if self.payment_status == self.PaymentStatus.PAID and self.paid_amount:
+            return self.paid_amount
+        return self.deposit_received or Decimal("0")
+
+    @property
+    def amount_due(self):
+        """What is still to be paid on the day (to the driver or guide)."""
+        if self.total_price is None:
+            return None
+        return max(self.total_price - self.deposit_paid, Decimal("0"))
+
+    @property
+    def trip_title_pt(self):
+        exp = self.experience
+        return (exp.title_pt or exp.title_en) if exp else self.experience_title
 
     @property
     def has_driver(self):

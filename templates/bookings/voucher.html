@@ -1,0 +1,66 @@
+{% load static %}<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ heading }} {{ booking.reference }} | TravelPipa</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/voucher.css' %}">
+</head>
+<body>
+<main class="voucher">
+  <header class="v-head">
+    <div class="v-brand">Travel<span>Pipa</span></div>
+    <div class="v-title"><h1>{{ heading }}</h1><p>{{ labels.booking }} <strong>{{ booking.reference }}</strong></p></div>
+  </header>
+  {% if is_driver %}<p class="v-badge">Voucher do motorista</p>{% endif %}
+
+  <section class="v-block">
+    <h2>{{ trip_title }}</h2>
+    <dl>
+      <div><dt>{{ labels.date }}</dt><dd>{{ date }}{% if booking.pickup_time %} · {{ booking.pickup_time|time:"H:i" }}{% endif %}{% if booking.round_trip %} ({{ labels.round }}){% endif %}</dd></div>
+      {% if return_date %}<div><dt>{{ labels.return }}</dt><dd>{{ return_date }}{% if booking.return_time %} · {{ booking.return_time|time:"H:i" }}{% endif %}</dd></div>{% endif %}
+      {% if booking.pickup_place %}<div><dt>{{ labels.from }}</dt><dd>{{ booking.pickup_place }}</dd></div>{% endif %}
+      {% if booking.dropoff_place %}<div><dt>{{ labels.to }}</dt><dd>{{ booking.dropoff_place }}</dd></div>{% endif %}
+      {% if booking.flight_number %}<div><dt>{{ labels.flight }}</dt><dd>{{ booking.flight_number }}</dd></div>{% endif %}
+      <div><dt>{{ labels.name }}</dt><dd>{{ booking.full_name }}</dd></div>
+      <div><dt>{{ labels.people }}</dt><dd>{{ booking.people }}</dd></div>
+      {% if is_driver %}
+        <div><dt>WhatsApp do cliente</dt><dd>{% if customer_whatsapp %}<a href="{{ customer_whatsapp }}">{{ booking.phone }}</a>{% else %}{{ booking.phone }}{% endif %}</dd></div>
+        {% if booking.notes %}<div class="v-wide"><dt>Observações do cliente</dt><dd>{{ booking.notes|linebreaksbr }}</dd></div>{% endif %}
+      {% endif %}
+    </dl>
+  </section>
+
+  <section class="v-block">
+    {% if booking.has_driver %}
+      <dl>
+        <div><dt>{{ labels.driver }}</dt><dd>{{ booking.driver_name }}</dd></div>
+        {% if booking.vehicle_model %}<div><dt>{{ labels.car }}</dt><dd>{{ booking.vehicle_model }}</dd></div>{% endif %}
+        <div><dt>{{ labels.plate }}</dt><dd class="v-plate">{{ booking.vehicle_plate }}</dd></div>
+      </dl>
+    {% elif not is_driver %}
+      <p class="v-note">{{ labels.driver_soon }}</p>
+    {% endif %}
+  </section>
+
+  {% if total %}
+  <section class="v-block v-money">
+    <dl>
+      <div><dt>{{ labels.total }}</dt><dd>{{ total }}</dd></div>
+      <div><dt>{{ labels.deposit }}</dt><dd>− {{ deposit }}</dd></div>
+      <div class="v-due"><dt>{{ labels.due }}</dt><dd>{{ due }}</dd></div>
+    </dl>
+    <p class="v-note">{% if paid_full %}{{ labels.paid_full }}{% else %}{{ labels.due_how }}{% endif %}</p>
+  </section>
+  {% endif %}
+
+  {% if not is_driver and help_url %}
+    <p class="v-help">{{ labels.help }}: <a href="{{ help_url }}">WhatsApp</a>{% if site.email %} · <a href="mailto:{{ site.email }}">{{ site.email }}</a>{% endif %}</p>
+  {% endif %}
+  <p class="v-actions"><button type="button" data-print>{{ labels.print }}</button></p>
+</main>
+<script src="{% static 'js/voucher.js' %}" defer></script>
+</body>
+</html>

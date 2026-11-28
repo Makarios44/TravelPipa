@@ -5,6 +5,7 @@ technical Django admin.
 
 Access: logged-in staff users only (is_staff). Every change is a POST with CSRF.
 """
+import datetime
 import hashlib
 import json
 from functools import wraps
@@ -24,13 +25,13 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from bookings import driver_message, mercadopago
+from bookings import driver_message, mercadopago, voucher as vouchers
 from bookings.models import BookingRequest
 from core.antispam import client_ip_hash
 from core.models import ContactMessage, SiteSettings, Testimonial
 from tours.models import Category, Experience, ExperienceImage
 
-from .forms import (BookingUpdateForm, DriverForm, CategoryForm, ExperienceForm, PanelLoginForm, PanelPasswordChangeForm,
+from .forms import (BookingUpdateForm, DriverForm, VoucherForm, CategoryForm, ExperienceForm, PanelLoginForm, PanelPasswordChangeForm,
                     PhotoAltForm, PhotoUploadForm, SiteSettingsForm, TestimonialForm)
 
 ACTIVE_STATUSES = [BookingRequest.Status.PENDING, BookingRequest.Status.CONTACTED, BookingRequest.Status.CONFIRMED]
@@ -478,9 +479,22 @@ def review_whatsapp_for(booking, url):
 @staff_required
 def booking_detail(request, pk):
     booking = get_object_or_404(BookingRequest.objects.select_related("experience"), pk=pk)
-    is_driver_post = request.method == "POST" and request.POST.get("form") == "driver"
-    form = BookingUpdateForm(request.POST if request.method == "POST" and not is_driver_post else None,
-                             instance=booking)
+    posted = request.POST.get("form", "") if request.method == "POST" else None
+    is_driver_post = posted == "driver"
+    is_voucher_post = posted == "voucher"
+    form = BookingUpdateForm(request.POST if posted == "" else None, instance=booking)
+    voucher_form = VoucherForm(request.POST if is_voucher_post else None, instance=booking)
+    if is_voucher_post and voucher_form.is_valid():
+        booking = voucher_form.save()
+        if request.POST.get("action") == "email":
+            error = vouchers.send_client_email(booking, request)
+            if error:
+                messages.error(request, error)
+            else:
+                messages.success(request, f"Voucher enviado para {booking.email}.")
+        else:
+            messages.success(request, "Dados do voucher salvos.")
+        return redirect(reverse("panel:booking_detail", args=[pk]) + "#voucher")
     driver_form = DriverForm(request.POST if is_driver_post else None,
                              request.FILES if is_driver_post else None, instance=booking)
     if is_driver_post and driver_form.is_valid():
@@ -494,7 +508,7 @@ def booking_detail(request, pk):
         else:
             messages.success(request, "Motorista e carro salvos.")
         return redirect(reverse("panel:booking_detail", args=[pk]) + "#motorista")
-    if request.method == "POST" and not is_driver_post and form.is_valid():
+    if posted == "" and form.is_valid():
         form.save()
         messages.success(request, f"Solicitação {booking.reference} atualizada.")
         return redirect("panel:booking_detail", pk=pk)
@@ -508,7 +522,36 @@ def booking_detail(request, pk):
         "deposit_url": pay_url, "deposit_whatsapp_url": deposit_whatsapp_for(booking, pay_url),
         "driver_form": driver_form, "driver_whatsapp_url": driver_message.whatsapp_url(booking),
         "driver_preview": driver_message.message_body(booking, "email") if booking.has_driver else "",
-        "email_ready": driver_message.email_configured()})
+        "email_ready": driver_message.email_configured(),
+        "voucher_form": voucher_form, "voucher_missing": vouchers.missing_for_voucher(booking),
+        **(_voucher_links(request, booking) if not vouchers.missing_for_voucher(booking) else {})})
+
+
+def _voucher_links(request, booking):
+    return {
+        "voucher_client_url": vouchers.client_url(booking, request),
+        "voucher_driver_url": vouchers.driver_url(booking, request),
+        "voucher_client_whatsapp": vouchers.client_whatsapp_url(booking, request),
+        "voucher_driver_whatsapp": vouchers.driver_whatsapp_url(booking, request),
+    }
+
+
+@staff_required
+def trip_list(request):
+    """Confirmed trips by date, with what the driver has to collect."""
+    past = request.GET.get("when") == "past"
+    today = timezone.localdate()
+    qs = BookingRequest.objects.select_related("experience").filter(status=BookingRequest.Status.CONFIRMED)
+    qs = (qs.filter(preferred_date__lt=today).order_by("-preferred_date", "-pickup_time") if past
+          else qs.filter(preferred_date__gte=today).order_by("preferred_date", "pickup_time"))
+    days = []
+    for booking in qs[:300]:
+        if not days or days[-1][0] != booking.preferred_date:
+            days.append((booking.preferred_date, []))
+        days[-1][1].append(booking)
+    return panel_render(request, "panel/trip_list.html", {
+        "section": "trips", "days": days, "past": past, "today": today,
+        "tomorrow": today + datetime.timedelta(days=1)})
 
 
 # --------------------------------------------------------------------------

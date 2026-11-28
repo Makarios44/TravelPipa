@@ -227,6 +227,36 @@ class BookingUpdateForm(PanelFormMixin, forms.ModelForm):
         return booking
 
 
+class VoucherForm(PanelFormMixin, forms.ModelForm):
+    """Trip details and amounts printed on the customer and driver vouchers."""
+    class Meta:
+        model = BookingRequest
+        fields = ["pickup_time", "pickup_place", "dropoff_place", "flight_number", "return_time",
+                  "total_price", "deposit_received"]
+        widgets = {"pickup_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
+                   "return_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M")}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, prefix="vch", **kwargs)
+        booking = self.instance
+        if booking.total_price is None and booking.quoted_total is not None:
+            self.initial["total_price"] = booking.quoted_total
+            self.fields["total_price"].help_text = "Sugerido pelo valor calculado na reserva; confira."
+        if not booking.round_trip:
+            del self.fields["return_time"]
+        if booking.payment_status == BookingRequest.PaymentStatus.PAID:
+            del self.fields["deposit_received"]
+
+    def clean(self):
+        data = super().clean()
+        total, deposit = data.get("total_price"), data.get("deposit_received")
+        if total is not None and total < 0:
+            self.add_error("total_price", "Valor inválido.")
+        if deposit is not None and total is not None and deposit > total:
+            self.add_error("deposit_received", "O sinal não pode ser maior que o valor total.")
+        return data
+
+
 class DriverForm(PanelFormMixin, forms.ModelForm):
     """Driver and car for one booking; sent to the customer by e-mail or WhatsApp."""
     class Meta:

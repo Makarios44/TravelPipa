@@ -68,21 +68,6 @@
         <div class="prose lead-like mb-2">{% for p in experience.description_paragraphs %}<p>{{ p|linebreaksbr }}</p>{% endfor %}</div>
       {% endif %}
 
-      {% with inside=experience.inside_gallery %}
-        {% if inside %}
-          <section class="detail-section" aria-labelledby="h-inside">
-            <h2 id="h-inside">{% trans "Inside the car" %}</h2>
-            <div class="inside-gallery">
-              {% for img in inside %}
-                <a href="{{ img.image.url }}" data-gallery data-alt="{{ img.alt_text }}">
-                  <img src="{{ img.image.url }}" alt="{{ img.alt_text }}" loading="lazy" decoding="async"{% if img.width %} width="{{ img.width }}" height="{{ img.height }}"{% endif %}>
-                </a>
-              {% endfor %}
-            </div>
-          </section>
-        {% endif %}
-      {% endwith %}
-
       {% if experience.video %}
         <section class="detail-section" aria-labelledby="h-video">
           <h2 id="h-video">{% trans "See what it's like" %}</h2>

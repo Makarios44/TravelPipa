@@ -1,0 +1,33 @@
+@font-face { font-family: "Manrope"; src: url("../vendor/fonts/manrope-latin-wght-normal.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../vendor/fonts/inter-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #F6F1E8; color: #123B50; font: 16px/1.5 "Inter", system-ui, sans-serif; }
+.voucher { max-width: 640px; margin: 2rem auto; background: #fff; border-radius: 18px; padding: 2rem; box-shadow: 0 10px 30px rgba(18, 59, 80, .08); }
+.v-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; border-bottom: 2px dashed #e3d9c8; padding-bottom: 1.25rem; }
+.v-brand { font: 800 1.5rem "Manrope", sans-serif; letter-spacing: -.02em; }
+.v-brand span { color: #E27D3E; }
+.v-title { text-align: right; }
+.v-title h1 { margin: 0; font: 700 1.15rem "Manrope", sans-serif; }
+.v-title p { margin: .1rem 0 0; color: #5a6b75; }
+.v-badge { display: inline-block; margin: 1rem 0 0; padding: .25rem .7rem; border-radius: 99px; background: #123B50; color: #fff; font-size: .8rem; font-weight: 600; }
+.v-block { padding: 1.1rem 0; border-bottom: 1px solid #eee5d6; }
+.v-block:last-of-type { border-bottom: 0; }
+.v-block h2 { margin: 0 0 .75rem; font: 700 1.2rem "Manrope", sans-serif; }
+dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .7rem 1.25rem; }
+dl > div.v-wide { grid-column: 1 / -1; }
+dt { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: #7a8a93; }
+dd { margin: .1rem 0 0; font-weight: 600; }
+.v-plate { font-family: ui-monospace, monospace; letter-spacing: .08em; }
+.v-money dl { grid-template-columns: 1fr; gap: .35rem; }
+.v-money dl > div { display: flex; justify-content: space-between; align-items: baseline; }
+.v-money dt { font-size: .9rem; text-transform: none; letter-spacing: 0; color: #123B50; }
+.v-due { border-top: 1px solid #eee5d6; padding-top: .5rem; margin-top: .25rem; }
+.v-due dt, .v-due dd { font-size: 1.15rem; font-weight: 800; color: #0d6e6e; }
+.v-note { margin: .6rem 0 0; color: #5a6b75; font-size: .9rem; }
+.v-help { margin: 1.25rem 0 0; font-size: .9rem; }
+.v-help a { color: #0d6e6e; }
+.v-actions { margin: 1.5rem 0 0; text-align: center; }
+.v-actions button { font: 600 .95rem "Inter", sans-serif; padding: .7rem 1.4rem; border: 0; border-radius: 99px; background: #E27D3E; color: #fff; cursor: pointer; }
+@media (max-width: 520px) { .voucher { margin: 0; border-radius: 0; padding: 1.25rem; } dl { grid-template-columns: 1fr; } }
+@media print { body { background: #fff; } .voucher { box-shadow: none; margin: 0; max-width: none; } .v-actions { display: none; } }
+dd a { color: #0d6e6e; }

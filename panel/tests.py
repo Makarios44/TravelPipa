@@ -367,3 +367,95 @@ class DriverDetailsTests(PanelTestCase):
         self.client.post(self.url, {"status": "confirmed", "internal_notes": "ok"})
         self.booking.refresh_from_db()
         self.assertEqual(self.booking.status, "confirmed")
+
+
+@override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend", EMAIL_ENABLED=True,
+                   SITE_URL="https://travelpipa.com.br")
+class VoucherTests(PanelTestCase):
+    def setUp(self):
+        super().setUp()
+        from decimal import Decimal
+        self.booking = BookingRequest.objects.create(
+            experience=self.tour, preferred_date=timezone.localdate() + timezone.timedelta(days=3), people=3,
+            full_name="Raphael Lima", email="r@example.com", phone="+55 84 98888-7777", service_language="pt-br",
+            status="confirmed", deposit_amount=Decimal("24"), driver_name="Rodrigo Tavares",
+            vehicle_model="Nissan Sentra", vehicle_plate="PLZ2E15", driver_phone="84 99999-0000")
+        self.url = reverse("panel:booking_detail", args=[self.booking.pk])
+
+    def fill(self, **extra):
+        data = {"form": "voucher", "action": "save", "vch-pickup_time": "14:30",
+                "vch-pickup_place": "Aeroporto de Natal", "vch-dropoff_place": "Pousada Sol, Pipa",
+                "vch-total_price": "240", "vch-deposit_received": "24", **extra}
+        return self.client.post(self.url, data)
+
+    def test_amounts_and_both_vouchers(self):
+        from decimal import Decimal
+        self.fill()
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.amount_due, Decimal("216"))
+        page = self.client.get(self.url)
+        self.assertContains(page, "Ver voucher do cliente")
+        self.assertContains(page, "Enviar ao motorista pelo WhatsApp")
+        self.assertContains(page, "wa.me/5584999990000")
+        self.client.logout()
+        client_page = self.client.get(reverse("voucher", args=[self.booking.uuid]))
+        self.assertContains(client_page, "Sinal pago")
+        self.assertContains(client_page, "R$ 216")
+        self.assertContains(client_page, "PLZ2E15")
+        self.assertNotContains(client_page, "COBRAR")
+        self.assertEqual(client_page["X-Robots-Tag"], "noindex, nofollow")
+        self.booking.refresh_from_db()
+        driver_page = self.client.get(reverse("driver_voucher", args=[self.booking.driver_token]))
+        self.assertContains(driver_page, "Cobrar do cliente no dia")
+        self.assertContains(driver_page, "R$ 216")
+        self.assertContains(driver_page, "R$ 240")
+        self.assertContains(driver_page, "+55 84 98888-7777")
+
+    def test_customer_voucher_in_english(self):
+        self.booking.service_language = "en"
+        self.booking.save()
+        self.fill()
+        page = self.client.get(reverse("voucher", args=[self.booking.uuid]))
+        self.assertContains(page, "Left to pay on the day")
+        self.assertContains(page, "Deposit paid")
+
+    def test_email_to_customer(self):
+        from django.core import mail
+        self.fill(action="email")
+        self.assertEqual(len(mail.outbox), 1)
+        body = mail.outbox[0].body
+        self.assertIn("Restante a pagar no dia: R$ 216", body)
+        self.assertIn(f"https://travelpipa.com.br/voucher/{self.booking.uuid}/", body)
+
+    def test_not_ready_until_confirmed_and_filled(self):
+        self.booking.status = "contacted"
+        self.booking.save()
+        page = self.client.get(self.url)
+        self.assertContains(page, "Para gerar os vouchers, falta")
+        self.client.logout()
+        self.assertEqual(self.client.get(reverse("voucher", args=[self.booking.uuid])).status_code, 404)
+
+    def test_mercadopago_deposit_counts(self):
+        from decimal import Decimal
+        BookingRequest.objects.filter(pk=self.booking.pk).update(payment_status="paid", paid_amount=Decimal("24"))
+        self.fill(**{"vch-deposit_received": ""})
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.amount_due, Decimal("216"))
+
+    def test_deposit_bigger_than_total(self):
+        response = self.fill(**{"vch-deposit_received": "300"})
+        self.assertContains(response, "não pode ser maior")
+
+    def test_trip_list(self):
+        self.fill()
+        page = self.client.get(reverse("panel:trips"))
+        self.assertContains(page, "14:30")
+        self.assertContains(page, "Rodrigo Tavares")
+        self.assertContains(page, "a cobrar")
+        self.assertNotContains(self.client.get(reverse("panel:trips") + "?when=past"), "Rodrigo")
+
+    def test_expired_voucher(self):
+        self.fill()
+        BookingRequest.objects.filter(pk=self.booking.pk).update(
+            preferred_date=timezone.localdate() - timezone.timedelta(days=40))
+        self.assertEqual(self.client.get(reverse("voucher", args=[self.booking.uuid])).status_code, 404)

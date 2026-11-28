@@ -1,6 +1,6 @@
 import json
 
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import translation
@@ -20,7 +20,7 @@ from core.models import SiteSettings, Testimonial
 from core.templatetags.travelpipa import money
 from tours.models import Experience
 
-from . import mercadopago
+from . import mercadopago, voucher as vouchers
 from .forms import BookingRequestForm
 from .models import BookingRequest
 from .notifications import absolute, notify_deposit_paid, notify_new_booking, notify_new_review
@@ -209,3 +209,38 @@ def mercadopago_webhook(request):
     if newly_paid:
         notify_deposit_paid(request, booking)
     return HttpResponse(status=200)
+
+
+def _voucher_response(request, booking, context):
+    response = render(request, "bookings/voucher.html", context)
+    response["X-Robots-Tag"] = "noindex, nofollow"
+    response["Cache-Control"] = "private, no-store"
+    response["Referrer-Policy"] = "no-referrer"
+    return response
+
+
+@never_cache
+def voucher(request, token):
+    """Customer voucher, in the customer's language."""
+    booking = get_object_or_404(BookingRequest.objects.select_related("experience"), uuid=token)
+    if not vouchers.is_available(booking):
+        raise Http404
+    site = SiteSettings.load()
+    ctx = vouchers.client_context(booking)
+    ctx.update({"labels": ctx["t"], "heading": ctx["t"]["title"], "is_driver": False, "site": site,
+                "help_url": whatsapp_link(site, f"{booking.reference}")})
+    return _voucher_response(request, booking, ctx)
+
+
+@never_cache
+def driver_voucher(request, token):
+    """Driver voucher (Portuguese): customer contact and the amount to collect."""
+    booking = BookingRequest.objects.select_related("experience").filter(driver_token=token).first()
+    if not booking or not vouchers.is_available(booking):
+        raise Http404
+    ctx = vouchers.driver_context(booking)
+    labels = dict(vouchers.CLIENT["pt-br"], deposit="Sinal já pago", due="Cobrar do cliente no dia",
+                  due_how="Receber por Pix ou dinheiro.", name="Cliente")
+    ctx.update({"labels": labels, "heading": "Voucher da viagem", "is_driver": True, "lang": "pt-br",
+                "paid_full": booking.amount_due == 0})
+    return _voucher_response(request, booking, ctx)

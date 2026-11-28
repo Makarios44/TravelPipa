@@ -155,3 +155,15 @@ a { text-underline-offset: .2em; }
 /* Customer review waiting for approval: highlight instead of fading */
 .row-item.pending { border-left: 4px solid #F2B135; background: #FFFBF0; }
 .photo .album-badge { background: var(--p-ocean-deep, #0b3d5c); color: #fff; }
+.voucher-sum { margin: .5rem 0 1rem; padding: .75rem 1rem; border-radius: 12px; background: #f6f1e8; }
+.voucher-sum > div { display: flex; justify-content: space-between; gap: 1rem; }
+.voucher-sum dt { font-weight: 500; }
+.voucher-sum dd { margin: 0; font-weight: 600; }
+.voucher-sum .due { border-top: 1px solid #e3d9c8; margin-top: .35rem; padding-top: .35rem; font-size: 1.05rem; color: #0d6e6e; }
+.trip-day { margin: 1.5rem 0 .6rem; font-size: 1rem; }
+.trip-row { display: grid; grid-template-columns: 4.2rem 1fr auto; gap: .9rem; align-items: center; padding: .85rem 1rem; }
+.trip-row + .trip-row { border-top: 1px solid #eee5d6; }
+.trip-time { font-weight: 700; font-size: 1.05rem; }
+.trip-due { text-align: right; font-weight: 700; color: #0d6e6e; }
+.trip-due small { display: block; font-weight: 500; color: #7a8a93; }
+@media (max-width: 575px) { .trip-row { grid-template-columns: 3.5rem 1fr; } .trip-due { grid-column: 2; text-align: left; } }

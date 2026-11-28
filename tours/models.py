@@ -293,7 +293,7 @@ class Experience(TimeStampedModel):
 
     @property
     def gallery(self):
-        # Main photos only (the "inside the vehicle" album has its own section).
+        # Main photos only: photos in the "guardada" album stay in the panel.
         # Uses the prefetched relation (ordered in ExperienceImage.Meta).
         return [img for img in self.images.all() if not img.album]
 
@@ -325,11 +325,11 @@ class ExperienceImage(TimeStampedModel):
 
     class Album(models.TextChoices):
         MAIN = "", "Galeria principal"
-        INSIDE = "inside", "Por dentro do veículo"
+        INSIDE = "inside", "Guardada (não aparece no site)"
 
     album = models.CharField(
         "álbum", max_length=20, choices=Album.choices, blank=True, default=Album.MAIN,
-        help_text="“Por dentro do veículo” aparece numa seção própria da página, abaixo da descrição.")
+        help_text="Fotos guardadas ficam no painel, mas não aparecem no site.")
 
     alt = Localized()
 
