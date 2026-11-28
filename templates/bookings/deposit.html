@@ -36,14 +36,14 @@
         {% elif status == "in_process" %}
           <div class="notice mb-3"><i class="bi bi-hourglass-split" aria-hidden="true"></i><div>{% trans "Your payment is being processed by Mercado Pago. As soon as it is approved, this page will show it as paid." %}</div></div>
         {% elif status == "rejected" or status == "failure" %}
-          <div class="notice mb-3"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><div>{% trans "The payment was not approved. You can try again with another card or with Pix." %}</div></div>
+          <div class="notice mb-3"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><div>{% trans "The payment was not approved. You can try again with Pix." %}</div></div>
         {% endif %}
 
         {% if pay_url %}
           <div class="d-grid gap-2 mt-3">
-            <a class="btn btn-accent btn-lg" href="{{ pay_url }}">{% blocktrans with amount=deposit %}Pay {{ amount }} with Pix or card{% endblocktrans %} <i class="bi bi-lock" aria-hidden="true"></i></a>
+            <a class="btn btn-accent btn-lg" href="{{ pay_url }}">{% blocktrans with amount=deposit %}Pay {{ amount }} with Pix{% endblocktrans %} <i class="bi bi-lock" aria-hidden="true"></i></a>
           </div>
-          <p class="note-small mt-3 mb-0"><i class="bi bi-shield-check" aria-hidden="true"></i><span>{% trans "You pay on Mercado Pago's secure page. We never see your card details. The rest of the amount is paid on the day." %}</span></p>
+          <p class="note-small mt-3 mb-0"><i class="bi bi-shield-check" aria-hidden="true"></i><span>{% trans "You pay by Pix on Mercado Pago's secure page. No Pix, or visiting from abroad? Write to us and we arrange another way. The rest of the amount is paid on the day." %}</span></p>
         {% elif not closed %}
           <div class="notice mb-0">
             <i class="bi bi-chat-dots" aria-hidden="true"></i>

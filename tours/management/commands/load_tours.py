@@ -210,9 +210,11 @@ TOURS = [
         "category": "transfers",
         "featured": False,
         "order": 1,
-        "price": Decimal("230.00"),
+        "price": Decimal("210.00"),
         "price_unit": "vehicle",
         "price_is_starting": True,  # up to 3 people; bigger cars cost more
+        "transfer_rates": "3: 210",
+        "group_from": 4,  # 7-seat cars and groups: price on request
         "transfer_type": "private",
         "max_passengers": 3,
         "media": {
@@ -264,7 +266,7 @@ TOURS = [
                 "Informe a quantidade de malas para indicarmos o carro certo"
             ),
             "meta_title": "Transfer Pipa para Ponta Negra (Natal)",
-            "meta_description": "Transfer com motorista entre Pipa e Ponta Negra, em Natal, a partir de R$ 230 por carro (até 3 pessoas). Negociamos desconto na ida e volta.",
+            "meta_description": "Transfer com motorista entre Pipa e Ponta Negra, em Natal, a partir de R$ 210 por carro (até 3 pessoas). Negociamos desconto na ida e volta.",
         },
         "en": {
             "title": "Pipa ↔ Ponta Negra (Natal) Transfer",
@@ -294,7 +296,7 @@ TOURS = [
                 "Tell us how many bags you have so we can suggest the right car"
             ),
             "meta_title": "Pipa to Ponta Negra (Natal) Transfer",
-            "meta_description": "Transfer with driver between Pipa and Ponta Negra, Natal, from R$ 230 per car (up to 3 people). Negotiable round-trip discount.",
+            "meta_description": "Transfer with driver between Pipa and Ponta Negra, Natal, from R$ 210 per car (up to 3 people). Negotiable round-trip discount.",
         },
         "es": {
             "title": "Traslado Pipa ↔ Ponta Negra (Natal)",
@@ -324,7 +326,7 @@ TOURS = [
                 "Indícanos cuántas maletas llevas para sugerir el coche adecuado"
             ),
             "meta_title": "Traslado de Pipa a Ponta Negra (Natal)",
-            "meta_description": "Traslado con conductor entre Pipa y Ponta Negra, en Natal, desde R$ 230 por coche (hasta 3 personas). Descuento negociable en ida y vuelta.",
+            "meta_description": "Traslado con conductor entre Pipa y Ponta Negra, en Natal, desde R$ 210 por coche (hasta 3 personas). Descuento negociable en ida y vuelta.",
         },
     },
     {
@@ -356,7 +358,7 @@ TOURS = [
         "order": 1,
         "price": Decimal("70.00"),
         "price_unit": "person",
-        "price_is_starting": True,
+        "price_is_starting": False,
         "pt": {
             "title": "Passeio de lancha à Baía dos Golfinhos",
             "summary": "Uma hora pelo mar de Pipa, passando pelas falésias até a Baía dos Golfinhos, com parada para banho.",
@@ -784,6 +786,7 @@ TOURS = [
         "order": 4,
         "price": Decimal("200.00"),
         "price_unit": "vehicle",
+        "people_per_vehicle": 2,
         "price_is_starting": False,
         "pt": {
             "title": "Quadriciclo Rota 1: falésias, mirantes e piscinas naturais",
@@ -901,6 +904,7 @@ TOURS = [
         "order": 5,
         "price": Decimal("300.00"),
         "price_unit": "vehicle",
+        "people_per_vehicle": 2,
         "price_is_starting": False,
         "pt": {
             "title": "Quadriciclo Rota 2: Rio Catu, Mata Atlântica e Barra de Cunhaú",
@@ -1176,7 +1180,7 @@ class Command(BaseCommand):
                 "tide_dependent": tour.get("tide_dependent", False),
                 "cadastur_guide": tour.get("cadastur_guide", False),
             }
-            for field in ("transfer_type", "max_passengers"):
+            for field in ("transfer_type", "max_passengers", "people_per_vehicle", "transfer_rates", "group_from"):
                 if field in tour:
                     values[field] = tour[field]
             if tour.get("price_unit"):

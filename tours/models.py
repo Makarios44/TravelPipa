@@ -138,6 +138,10 @@ class Experience(TimeStampedModel):
     price_unit = models.CharField("preço por", max_length=10, choices=PriceUnit.choices,
                                   default=PriceUnit.PERSON)
     price_is_starting = models.BooleanField("exibir como “a partir de”", default=True)
+    people_per_vehicle = models.PositiveSmallIntegerField(
+        "pessoas por veículo", null=True, blank=True,
+        help_text="Para preço por veículo (ex.: quadriciclo para 2). O site calcula quantos veículos o grupo "
+                  "precisa e cobra o sinal certo. Vazio = o sinal é definido pela equipe no painel.")
 
     # --- Transfer details (only for transfer categories) ------------------
     origin_en = char_field("Origem", "EN", 120)
@@ -290,6 +294,12 @@ class Experience(TimeStampedModel):
     @property
     def important_info_list(self):
         return lines(self.important_info)
+
+    def vehicles_for(self, people):
+        """Vehicles needed for a group, when the price is per vehicle and the capacity is known."""
+        if not self.people_per_vehicle or not people:
+            return None
+        return -(-int(people) // self.people_per_vehicle)
 
     @property
     def gallery(self):

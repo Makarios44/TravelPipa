@@ -2,11 +2,12 @@ import datetime
 import json
 
 from django import forms
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.translation import get_language, gettext_lazy as _
 
 from core.antispam import AntiSpamFormMixin
 from core.forms import ConsentField, StyledFormMixin
+from core.templatetags.travelpipa import money
 from tours.models import Experience
 from tours.transfer_pricing import client_payload, quote, summary_pt
 
@@ -37,6 +38,17 @@ class ExperienceChoiceField(forms.ModelChoiceField):
 
 TRIP_ONE_WAY = "one_way"
 TRIP_ROUND = "round_trip"
+
+
+def vehicle_summary(experience, people):
+    """E.g. "2 veículos × R$ 200 = R$ 400 (3 pessoas)" for per-vehicle tours (shown to the team)."""
+    vehicles = experience.vehicles_for(people) if experience.price_unit == Experience.PriceUnit.VEHICLE else None
+    if not vehicles or experience.price is None or experience.price_is_starting:
+        return ""
+    with translation.override("pt-br"):
+        unit = money(experience.price, experience.currency)
+        total = money(experience.price * vehicles, experience.currency)
+    return f"{vehicles} veículo{'s' if vehicles > 1 else ''} × {unit} = {total} ({people} pessoas)"
 
 
 class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
@@ -115,8 +127,13 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
             return None if q.is_group else q.total
         if experience.price is None or experience.price_is_starting or experience.is_transfer:
             return None
-        per_person = experience.price_unit == Experience.PriceUnit.PERSON
-        return experience.price * people if per_person else experience.price
+        if experience.price_unit == Experience.PriceUnit.PERSON:
+            return experience.price * people
+        if experience.price_unit == Experience.PriceUnit.VEHICLE:
+            # The total depends on how many vehicles the group needs; unknown capacity = team decides.
+            vehicles = experience.vehicles_for(people)
+            return experience.price * vehicles if vehicles else None
+        return experience.price
 
     def clean_phone(self):
         value = self.cleaned_data["phone"].strip()
@@ -135,7 +152,8 @@ class BookingRequestForm(StyledFormMixin, AntiSpamFormMixin):
             return_date=data.get("return_date"),
             quoted_total=data.get("exact_total"),
             deposit_amount=deposit_for(data.get("exact_total")),
-            quote_summary=summary_pt(data.get("quote"), data["experience"].currency),
+            quote_summary=summary_pt(data.get("quote"), data["experience"].currency) or vehicle_summary(
+                data["experience"], data["people"]),
             people=data["people"],
             full_name=data["full_name"].strip(),
             email=data["email"],

@@ -156,3 +156,26 @@ class AirportMigrationTests(TestCase):
         self.assertEqual((exp.transfer_rates, exp.group_from), (RATES, GROUP_FROM))
         self.assertIn("6 pessoas: 2 carros, mais barato que uma van", exp.important_info_pt)
         self.assertEqual(exp.description_en, "My own text written in the panel.")
+
+
+class TeamPricesMigrationTests(TestCase):
+    def test_ponta_negra_table_and_fixed_speedboat(self):
+        from importlib import import_module
+        from django.apps import apps
+        from bookings.forms import BookingRequestForm
+        from tours.transfer_pricing import quote as make_quote
+        m = import_module("tours.migrations.0016_ponta_negra_and_speedboat_prices")
+        cat = Category.objects.create(name_en="Transfers", slug="tr", is_transfer=True)
+        pn = Experience.objects.create(category=cat, slug=m.PONTA_NEGRA, title_en="PN", price=230,
+                                       price_unit="vehicle", meta_description_pt="a partir de R$ 230 por carro")
+        tours_cat = Category.objects.create(name_en="Tours", slug="tours-x")
+        boat = Experience.objects.create(category=tours_cat, slug=m.SPEEDBOAT, title_en="Boat", price=70,
+                                         price_unit="person", price_is_starting=True)
+        m.forwards(apps, None)
+        pn.refresh_from_db(); boat.refresh_from_db()
+        self.assertEqual(pn.meta_description_pt, "a partir de R$ 210 por carro")
+        q = make_quote(pn, 2)
+        self.assertEqual(q.total, 210)
+        self.assertTrue(make_quote(pn, 4).is_group)  # bigger groups: price on request
+        self.assertFalse(boat.price_is_starting)
+        self.assertEqual(BookingRequestForm._exact_total(boat, 3, None), 210)

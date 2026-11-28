@@ -89,7 +89,7 @@ class ExperienceForm(PanelFormMixin, forms.ModelForm):
         model = Experience
         fields = (
             ["category", "slug", "order"] + EXPERIENCE_STATUS
-            + ["price", "currency", "price_unit", "price_is_starting"]
+            + ["price", "currency", "price_unit", "people_per_vehicle", "price_is_starting"]
             + [f"{b}_{s}" for b in EXPERIENCE_TEXT_BASES + EXPERIENCE_SEO_BASES for s in SUFFIXES]
             + [f"{b}_{s}" for b in ("origin", "destination") for s in SUFFIXES]
             + ["transfer_type", "max_passengers", "transfer_rates", "group_from", "video", "video_poster"]
@@ -203,7 +203,7 @@ class BookingUpdateForm(PanelFormMixin, forms.ModelForm):
                                          for value, label in BookingRequest.Status.choices]
         self.fields["deposit_amount"].label = "Valor do sinal (R$)"
         self.fields["deposit_amount"].help_text = (
-            "O cliente paga este valor pelo Mercado Pago (Pix ou cartão). Vazio = sem cobrança online.")
+            "O cliente paga este valor por Pix pelo Mercado Pago. Vazio = sem cobrança online.")
         if self.instance.payment_status == BookingRequest.PaymentStatus.PAID:
             self.fields["deposit_amount"].disabled = True
             self.fields["deposit_amount"].help_text = "Sinal já pago: não pode ser alterado."

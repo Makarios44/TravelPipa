@@ -536,7 +536,9 @@ class LoadToursTests(TestCase):
         self.assertEqual(boat.price, 70)
         self.assertEqual(Experience.objects.filter(is_demo=False).count(), 8)
         self.assertContains(self.client.get("/pt-br/passeios/guarairas-lagoon-gastronomic-boat-tour/"), "R$ 325")
-        self.assertContains(self.client.get("/pt-br/passeios/pipa-dolphin-bay-speedboat-tour/"), "A partir de")
+        speedboat = self.client.get("/pt-br/passeios/pipa-dolphin-bay-speedboat-tour/")
+        self.assertContains(speedboat, "R$ 70")
+        self.assertNotContains(speedboat, "A partir de R$ 70")  # fixed price: the deposit link is automatic
         self.assertContains(self.client.get("/en/experiences/pipa-dolphin-bay-speedboat-tour/"), "Dolphin Bay")
         jeep = self.client.get("/es/experiencias/southern-coast-4x4-jeep-tour/")
         self.assertContains(jeep, "Laguna de Guaraíras")
