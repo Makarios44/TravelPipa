@@ -127,7 +127,43 @@
       }
       if (negotiable) negotiable.hidden = !!quotes;
       var people = peopleInput ? parseInt(peopleInput.value, 10) : 0;
-      showQuote(quotes, isNaN(people) ? 0 : people, round);
+      people = isNaN(people) ? 0 : people;
+      showQuote(quotes, people, round);
+      showDeposit(option, isTransfer, quotes, people, round);
+    };
+    // 10% deposit charged by Pix when the booking is confirmed (only when online payment is on).
+    var depositBox = document.querySelector("[data-deposit-box]");
+    var formatMoney = function (value, currency) {
+      var whole = Math.round(value * 100) % 100 === 0;
+      try {
+        return new Intl.NumberFormat(document.documentElement.lang || "pt-BR", {
+          style: "currency", currency: currency || "BRL",
+          minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: 2
+        }).format(value);
+      } catch (e) { return "R$ " + value.toFixed(whole ? 0 : 2); }
+    };
+    var showDeposit = function (option, isTransfer, quotes, people, round) {
+      if (!depositBox) return;
+      var text = depositBox.querySelector("[data-deposit-text]");
+      var amount = null;
+      if (option && option.value && people > 0) {
+        if (isTransfer && quotes) {
+          var row = quotes.rows[String(people)];
+          if (row && people < quotes.group) amount = round ? row.dep_rt : row.dep_ow;
+        } else if (!isTransfer && option.getAttribute("data-price")) {
+          var price = parseFloat(option.getAttribute("data-price"));
+          var unit = option.getAttribute("data-unit");
+          var ppv = parseInt(option.getAttribute("data-ppv"), 10);
+          var count = unit === "person" ? people : (unit === "vehicle" ? Math.ceil(people / ppv) : 1);
+          if (!isNaN(price) && count > 0) {
+            amount = formatMoney(Math.round(price * count * 10) / 100, option.getAttribute("data-currency"));
+          }
+        }
+      }
+      if (!option || !option.value || people < 1) { depositBox.hidden = true; return; }
+      depositBox.hidden = false;
+      depositBox.classList.toggle("is-later", !amount);
+      if (text) text.textContent = amount ? fill(depositBox.dataset.tAmount, { amount: amount }) : depositBox.dataset.tLater;
     };
     if (select) select.addEventListener("change", syncTrip);
     if (peopleInput) peopleInput.addEventListener("input", syncTrip);

@@ -11,5 +11,5 @@
     {% if t.group_from %}<tr><td>{% blocktrans with n=t.group_from %}{{ n }} or more{% endblocktrans %}</td><td class="num" colspan="2">{% trans "Price on request" %}</td></tr>{% endif %}
   </tbody>
 </table>
-<p class="price-table-note">{% trans "Price per car, for each leg. Booking the round trip makes each leg cheaper." %}{% for r in rows %}{% if r.cars == 2 and forloop.last %} {% trans "2 cars work out cheaper than renting a van." %}{% endif %}{% endfor %}</p>
+<p class="price-table-note">{% if t.has_round_trip_discount %}{% trans "Price per car, for each leg. Booking the round trip makes each leg cheaper." %}{% else %}{% trans "Price per car, for each leg." %}{% endif %}{% for r in rows %}{% if r.cars == 2 and forloop.last %} {% trans "2 cars work out cheaper than renting a van." %}{% endif %}{% endfor %}</p>
 {% endif %}{% endwith %}

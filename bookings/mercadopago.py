@@ -52,6 +52,34 @@ def deposit_for(total):
     return value if value > 0 else None
 
 
+def deposit_hint(experience):
+    """Deposit shown before booking ("from R$ 24", "R$ 7 per person"), or "" when the team sets it later."""
+    from django.utils.translation import gettext as _
+
+    from core.templatetags.travelpipa import money
+
+    if not configured() or experience is None:
+        return ""
+    cur = experience.currency
+    if experience.is_transfer:
+        rates = experience.rates
+        amount = deposit_for(rates[0].one_way) if rates else None
+        return _("from %(amount)s") % {"amount": money(amount, cur)} if amount else ""
+    if experience.price is None or experience.price_is_starting:
+        return ""
+    amount = deposit_for(experience.price)
+    if not amount:
+        return ""
+    unit = experience.price_unit
+    if unit == "person":
+        return _("%(amount)s per person") % {"amount": money(amount, cur)}
+    if unit == "vehicle":
+        if not experience.people_per_vehicle:
+            return ""
+        return _("%(amount)s per vehicle") % {"amount": money(amount, cur)}
+    return money(amount, cur)
+
+
 def _call(method, path, body=None, idempotency_key=None):
     headers = {
         "Authorization": f"Bearer {settings.MERCADOPAGO_ACCESS_TOKEN}",

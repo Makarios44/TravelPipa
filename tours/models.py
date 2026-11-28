@@ -295,6 +295,10 @@ class Experience(TimeStampedModel):
     def important_info_list(self):
         return lines(self.important_info)
 
+    @property
+    def has_round_trip_discount(self):
+        return any(rate.round_leg < rate.one_way for rate in self.rates)
+
     def vehicles_for(self, people):
         """Vehicles needed for a group, when the price is per vehicle and the capacity is known."""
         if not self.people_per_vehicle or not people:

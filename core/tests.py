@@ -278,7 +278,7 @@ class BookingFlowTests(BaseTestCase):
     def test_preselected_experience(self):
         response = self.client.get("/en/book/?experience=dolphin-bay-boat-tour")
         self.assertEqual(response.context["form"].initial["experience"], self.boat.pk)
-        self.assertContains(response, "Quick, with no payment now.")
+        self.assertContains(response, "Book in a few minutes.")
 
     def test_valid_request_is_saved_and_not_confirmed(self):
         response = self.client.post(reverse("bookings:request"), self.booking_payload())

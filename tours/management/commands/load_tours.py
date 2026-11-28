@@ -126,7 +126,7 @@ TOURS = [
                 "O valor é por carro, para até 3 pessoas. Para famílias e grupos maiores, temos carros de 7 lugares "
                 "e opções para grupos grandes: informe quantas pessoas viajam e indicamos a melhor opção.\n\n"
                 "Negociamos desconto fechando ida e volta. Reserve informando o número do voo e o horário "
-                "de chegada; depois entramos em contato com os detalhes do embarque e o sinal de 10% que garante a sua reserva."
+                "de chegada. Ao confirmar, você paga o sinal de 10% por Pix e entramos em contato o mais rápido possível com os detalhes do embarque."
             ),
             "origin": "Aeroporto Internacional de Natal (NAT)",
             "destination": "Praia da Pipa",
@@ -155,7 +155,7 @@ TOURS = [
                 "The price is per car, for up to 3 people. For families and larger groups we have 7-seat cars "
                 "and options for large groups: tell us how many people are travelling and we suggest the best option.\n\n"
                 "We negotiate a discount for round trips. Include your flight number and arrival time when you "
-                "book; we then contact you with the pickup details and the 10% deposit that secures your booking."
+                "book. When you confirm you pay the 10% deposit by Pix, and we contact you as soon as possible with the pickup details."
             ),
             "origin": "Natal International Airport (NAT)",
             "destination": "Praia da Pipa",
@@ -184,7 +184,7 @@ TOURS = [
                 "El precio es por coche, para hasta 3 personas. Para familias y grupos más grandes tenemos coches de "
                 "7 plazas y opciones para grupos grandes: cuéntanos cuántas personas viajan y te indicamos la mejor opción.\n\n"
                 "Negociamos un descuento si cierras ida y vuelta. Indica tu número de vuelo y la hora de llegada al "
-                "reservar; después te contactamos con los detalles de la recogida y la seña del 10% que garantiza tu reserva."
+                "reservar. Al confirmar pagas la seña del 10% con Pix y te contactamos lo antes posible con los detalles de la recogida."
             ),
             "origin": "Aeropuerto Internacional de Natal (NAT)",
             "destination": "Praia da Pipa",
@@ -247,8 +247,8 @@ TOURS = [
                 "caminho de volta.\n\n"
                 "O valor é por carro, para até 3 pessoas. Para famílias e grupos maiores, temos carros de 7 lugares: "
                 "informe quantas pessoas viajam e indicamos a melhor opção.\n\n"
-                "Negociamos desconto fechando ida e volta. Depois da reserva, entramos em contato com o "
-                "horário de saída e o sinal de 10% que garante a sua reserva."
+                "Ao confirmar a reserva, você paga o sinal de 10% por Pix; depois entramos em contato o mais "
+                "rápido possível para alinhar o horário de saída e os detalhes."
             ),
             "origin": "Praia da Pipa",
             "destination": "Ponta Negra, Natal",
@@ -259,14 +259,13 @@ TOURS = [
             "important_info": (
                 "Valor por carro, para até 3 pessoas\n"
                 "Carros de 7 lugares e grupos grandes: valor sob consulta\n"
-                "Negociamos desconto fechando ida e volta\n"
                 "Transporte feito pela nossa rede de motoristas parceiros credenciados no DER/RN para transporte turístico\n"
                 "Carro e motorista confirmados até 12 horas antes da viagem, com foto do carro e do motorista\n"
                 "Informe os endereços de saída e de chegada na reserva\n"
                 "Informe a quantidade de malas para indicarmos o carro certo"
             ),
             "meta_title": "Transfer Pipa para Ponta Negra (Natal)",
-            "meta_description": "Transfer com motorista entre Pipa e Ponta Negra, em Natal, a partir de R$ 210 por carro (até 3 pessoas). Negociamos desconto na ida e volta.",
+            "meta_description": "Transfer com motorista entre Pipa e Ponta Negra, em Natal, a partir de R$ 210 por carro (até 3 pessoas). Reserve com sinal de 10% por Pix.",
         },
         "en": {
             "title": "Pipa ↔ Ponta Negra (Natal) Transfer",
@@ -277,8 +276,8 @@ TOURS = [
                 "again.\n\n"
                 "The price is per car, for up to 3 people. For families and larger groups we have 7-seat cars: tell "
                 "us how many people are travelling and we suggest the best option.\n\n"
-                "We negotiate a discount for round trips. After you book, we contact you with the departure "
-                "time and the 10% deposit that secures your booking."
+                "When you confirm the booking you pay the 10% deposit by Pix; then we contact you as soon as "
+                "possible to arrange the departure time and the details."
             ),
             "origin": "Praia da Pipa",
             "destination": "Ponta Negra, Natal",
@@ -289,14 +288,13 @@ TOURS = [
             "important_info": (
                 "Price per car, for up to 3 people\n"
                 "7-seat cars and large groups: price on request\n"
-                "We negotiate a discount for round trips\n"
                 "Transport by our network of accredited partner drivers, registered with DER/RN (Rio Grande do Norte transport authority) for tourist transport\n"
                 "Car and driver confirmed up to 12 hours before the trip, with a photo of the car and the driver\n"
                 "Include the pickup and drop-off addresses when you book\n"
                 "Tell us how many bags you have so we can suggest the right car"
             ),
             "meta_title": "Pipa to Ponta Negra (Natal) Transfer",
-            "meta_description": "Transfer with driver between Pipa and Ponta Negra, Natal, from R$ 210 per car (up to 3 people). Negotiable round-trip discount.",
+            "meta_description": "Transfer with driver between Pipa and Ponta Negra, Natal, from R$ 210 per car (up to 3 people). Book with a 10% deposit by Pix.",
         },
         "es": {
             "title": "Traslado Pipa ↔ Ponta Negra (Natal)",
@@ -307,8 +305,8 @@ TOURS = [
                 "el camino de vuelta.\n\n"
                 "El precio es por coche, para hasta 3 personas. Para familias y grupos más grandes tenemos coches de "
                 "7 plazas: cuéntanos cuántas personas viajan y te indicamos la mejor opción.\n\n"
-                "Negociamos un descuento si cierras ida y vuelta. Después de la reserva, te contactamos con el "
-                "horario de salida y la seña del 10% que garantiza tu reserva."
+                "Al confirmar la reserva pagas la seña del 10% con Pix; después te contactamos lo antes posible "
+                "para acordar el horario de salida y los detalles."
             ),
             "origin": "Praia da Pipa",
             "destination": "Ponta Negra, Natal",
@@ -319,14 +317,13 @@ TOURS = [
             "important_info": (
                 "Precio por coche, para hasta 3 personas\n"
                 "Coches de 7 plazas y grupos grandes: precio a consultar\n"
-                "Negociamos un descuento si cierras ida y vuelta\n"
                 "Transporte a cargo de nuestra red de conductores asociados acreditados en el DER/RN (órgano de transporte de Rio Grande do Norte) para transporte turístico\n"
                 "Coche y conductor confirmados hasta 12 horas antes del viaje, con foto del coche y del conductor\n"
                 "Indica las direcciones de salida y de llegada al reservar\n"
                 "Indícanos cuántas maletas llevas para sugerir el coche adecuado"
             ),
             "meta_title": "Traslado de Pipa a Ponta Negra (Natal)",
-            "meta_description": "Traslado con conductor entre Pipa y Ponta Negra, en Natal, desde R$ 210 por coche (hasta 3 personas). Descuento negociable en ida y vuelta.",
+            "meta_description": "Traslado con conductor entre Pipa y Ponta Negra, en Natal, desde R$ 210 por coche (hasta 3 personas). Reserva con una seña del 10% con Pix.",
         },
     },
     {

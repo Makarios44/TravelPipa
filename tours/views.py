@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
+from bookings.mercadopago import configured as deposits_online, deposit_hint
 from core.context_processors import whatsapp_link
 from core.models import SiteSettings, Testimonial
 from core.seo import breadcrumb_schema, experience_schema, json_ld
@@ -52,6 +53,8 @@ def experience_detail(request, slug):
         "whatsapp_url": whatsapp_link(site, message),
         "cancellation_policy": experience.cancellation_policy or site.default_cancellation,
         "schema": mark_safe("".join(json_ld(s) for s in schemas)),
+        "deposit_hint": deposit_hint(experience),
+        "deposits_online": deposits_online(),
     })
 
 

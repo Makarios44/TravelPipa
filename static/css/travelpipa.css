@@ -776,3 +776,7 @@ img { max-width: 100%; height: auto; }
 .faq-item summary::after { content: "+"; position: absolute; right: 0; top: .85rem; font-size: 1.3rem; line-height: 1; color: var(--tp-ocean); transition: transform .2s; }
 .faq-item[open] summary::after { transform: rotate(45deg); }
 .faq-item p { margin: 0 0 1.1rem; color: var(--tp-ink-2, #3b4b55); }
+
+/* Deposit shown live in the booking form */
+.deposit-line { display: flex; gap: .5rem; align-items: baseline; padding: .7rem .9rem; border-radius: var(--tp-radius); background: #eef7f4; color: #0d6e6e; font-weight: 600; font-size: .95rem; }
+.deposit-line.is-later { background: #f6f1e8; color: var(--tp-ink-2, #3b4b55); font-weight: 500; }
