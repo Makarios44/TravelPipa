@@ -89,7 +89,7 @@ class ExperienceForm(PanelFormMixin, forms.ModelForm):
         model = Experience
         fields = (
             ["category", "slug", "order"] + EXPERIENCE_STATUS
-            + ["price", "currency", "price_unit", "price_is_starting"]
+            + ["price", "currency", "price_unit", "people_per_vehicle", "price_is_starting"]
             + [f"{b}_{s}" for b in EXPERIENCE_TEXT_BASES + EXPERIENCE_SEO_BASES for s in SUFFIXES]
             + [f"{b}_{s}" for b in ("origin", "destination") for s in SUFFIXES]
             + ["transfer_type", "max_passengers", "transfer_rates", "group_from", "video", "video_poster"]

@@ -72,7 +72,9 @@
           <div class="col-6">{% include "panel/_field.html" with field=form.currency %}</div>
           <div class="col-6">{% include "panel/_field.html" with field=form.price_unit %}</div>
         </div>
+        {% include "panel/_field.html" with field=form.people_per_vehicle %}
         {% include "panel/_field.html" with field=form.price_is_starting wrapper="mb-0" %}
+        <p class="small muted mt-2 mb-0"><i class="bi bi-credit-card"></i> O cliente recebe o link do sinal (Pix) na hora da reserva quando o preço é <strong>fixo</strong> (sem “a partir de”) e, se for por veículo, com “pessoas por veículo” preenchido. Nos outros casos, defina o sinal na reserva, pelo painel.</p>
       </div>
       <div class="card-p">
         <h2><i class="bi bi-camera-video"></i> Vídeo</h2>

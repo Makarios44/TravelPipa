@@ -784,6 +784,7 @@ TOURS = [
         "order": 4,
         "price": Decimal("200.00"),
         "price_unit": "vehicle",
+        "people_per_vehicle": 2,
         "price_is_starting": False,
         "pt": {
             "title": "Quadriciclo Rota 1: falésias, mirantes e piscinas naturais",
@@ -901,6 +902,7 @@ TOURS = [
         "order": 5,
         "price": Decimal("300.00"),
         "price_unit": "vehicle",
+        "people_per_vehicle": 2,
         "price_is_starting": False,
         "pt": {
             "title": "Quadriciclo Rota 2: Rio Catu, Mata Atlântica e Barra de Cunhaú",
