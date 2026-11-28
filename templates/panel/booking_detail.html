@@ -131,7 +131,7 @@
       {% elif not booking.deposit_amount %}
         <p class="small muted mb-0">Defina o <strong>valor do sinal</strong> no atendimento e salve para gerar o link de pagamento.</p>
       {% else %}
-        <p class="small muted">Sinal de <strong>R$ {{ booking.deposit_amount }}</strong>. Envie o link: o cliente paga com Pix ou cartão e a reserva fica marcada como paga sozinha.</p>
+        <p class="small muted">Sinal de <strong>R$ {{ booking.deposit_amount }}</strong>. Envie o link: o cliente paga com Pix e a reserva fica marcada como paga sozinha.</p>
         <div class="input-group mb-2">
           <input class="form-control form-control-sm" type="text" value="{{ deposit_url }}" readonly id="deposit-url" aria-label="Link do sinal">
           <button class="btn btn-outline-secondary btn-sm" type="button" data-copy="#deposit-url"><i class="bi bi-clipboard"></i> Copiar</button>

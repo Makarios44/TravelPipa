@@ -203,7 +203,7 @@ class BookingUpdateForm(PanelFormMixin, forms.ModelForm):
                                          for value, label in BookingRequest.Status.choices]
         self.fields["deposit_amount"].label = "Valor do sinal (R$)"
         self.fields["deposit_amount"].help_text = (
-            "O cliente paga este valor pelo Mercado Pago (Pix ou cartão). Vazio = sem cobrança online.")
+            "O cliente paga este valor por Pix pelo Mercado Pago. Vazio = sem cobrança online.")
         if self.instance.payment_status == BookingRequest.PaymentStatus.PAID:
             self.fields["deposit_amount"].disabled = True
             self.fields["deposit_amount"].help_text = "Sinal já pago: não pode ser alterado."

@@ -74,6 +74,9 @@ def _call(method, path, body=None, idempotency_key=None):
         raise MercadoPagoError(str(exc)) from exc
 
 
+PIX_ONLY_EXCLUDED_TYPES = ("credit_card", "debit_card", "prepaid_card", "ticket", "atm")
+
+
 def create_preference(booking, return_url, notification_url):
     """Creates the Checkout Pro preference for the deposit and stores its link on the booking."""
     title = booking.experience.title_pt if booking.experience else booking.experience_title
@@ -93,6 +96,11 @@ def create_preference(booking, return_url, notification_url):
         "notification_url": notification_url,
         "statement_descriptor": "TRAVELPIPA",
         "metadata": {"booking": booking.reference},
+        # Pix only for now: Mercado Pago asks card payers for a CPF, which foreign visitors don't have.
+        "payment_methods": {
+            "excluded_payment_types": [{"id": kind} for kind in PIX_ONLY_EXCLUDED_TYPES],
+            "installments": 1,
+        },
     }
     if return_url.startswith("https://"):
         body["auto_return"] = "approved"

@@ -440,11 +440,11 @@ def deposit_link(request, booking):
 
 DEPOSIT_MESSAGES = {
     "pt-br": "Olá, {name}! Para garantir a sua reserva {ref}, o sinal é de R$ {amount}. "
-             "Você pode pagar com Pix ou cartão por este link seguro do Mercado Pago: {url}",
+             "Você pode pagar com Pix por este link seguro do Mercado Pago: {url}",
     "es": "¡Hola, {name}! Para asegurar tu reserva {ref}, la seña es de R$ {amount}. "
-          "Puedes pagar con Pix o tarjeta en este enlace seguro de Mercado Pago: {url}",
+          "Puedes pagar con Pix en este enlace seguro de Mercado Pago: {url}",
     "en": "Hi {name}! To secure your booking {ref}, the deposit is R$ {amount}. "
-          "You can pay with Pix or card on this secure Mercado Pago link: {url}",
+          "You can pay with Pix on this secure Mercado Pago link: {url}",
 }
 
 

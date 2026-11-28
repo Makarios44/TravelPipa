@@ -27,9 +27,9 @@ FAQ_GROUPS = [
          _("No. Booking on the website is free and takes a few minutes. Your date is secured with a 10% "
            "deposit, and the rest is paid on the day of the trip.")),
         (_("How do I pay the deposit, and is it safe?"),
-         _("The 10% deposit is paid by Pix or card on a secure Mercado Pago page, through the link we send you. "
-           "Your card details are entered only on Mercado Pago: we never see them and we never ask for them by "
-           "WhatsApp or e-mail. When the payment goes through, your booking is marked as paid automatically.")),
+         _("The 10% deposit is paid by Pix on a secure Mercado Pago page, through the link we send you. When "
+           "the payment goes through, your booking is marked as paid automatically. Visiting from abroad, or don't have "
+           "Pix? Write to us and we agree another way to pay the deposit.")),
         (_("How do I pay the rest?"),
          _("The remaining 90% is paid on the day, directly to the driver or guide, by Pix or in cash.")),
         (_("How do I know my booking is confirmed?"),

@@ -17,7 +17,7 @@
       <p class="ref-code mb-4">{{ reference }}</p>
       {% if deposit_url %}
         <div class="deposit-cta mb-4">
-          <p class="mb-2"><strong>{% trans "Secure your date now" %}</strong> — {% blocktrans with amount=deposit %}the 10% deposit is {{ amount }}, with Pix or card.{% endblocktrans %}</p>
+          <p class="mb-2"><strong>{% trans "Secure your date now" %}</strong> — {% blocktrans with amount=deposit %}the 10% deposit is {{ amount }}, by Pix.{% endblocktrans %}</p>
           <a class="btn btn-accent btn-lg" href="{{ deposit_url }}"><i class="bi bi-lock" aria-hidden="true"></i> {% blocktrans with amount=deposit %}Pay the deposit ({{ amount }}){% endblocktrans %}</a>
           <p class="note-small mt-2 mb-0 justify-content-center"><span>{% trans "Optional: your booking is already registered, and you can also pay later." %}</span></p>
         </div>

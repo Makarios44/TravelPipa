@@ -83,7 +83,12 @@ class DepositTests(BaseTestCase):
         self.assertEqual(body["external_reference"], str(booking.uuid))
         self.assertTrue(body["notification_url"].endswith("/pagamentos/mercadopago/"))
         self.assertTrue(body["back_urls"]["success"].endswith(url))
+        excluded = {item["id"] for item in body["payment_methods"]["excluded_payment_types"]}
+        self.assertTrue({"credit_card", "debit_card", "ticket"} <= excluded)  # Pix only
+        self.assertNotIn("bank_transfer", excluded)
         self.assertContains(page, PREFERENCE["init_point"].replace("&", "&amp;"))
+        self.assertContains(page, "with Pix")
+        self.assertNotContains(page, "Pix or card")
         self.assertEqual(page["X-Robots-Tag"], "noindex, nofollow")
         booking.refresh_from_db()
         self.assertEqual((booking.payment_status, booking.mp_preference_id), ("waiting", "pref-123"))
