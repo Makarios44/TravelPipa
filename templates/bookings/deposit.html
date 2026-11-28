@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Booking deposit" %} {{ booking.reference }}{% endblock %}
+{% block robots %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block alternates %}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:720px">
+    <div class="form-card">
+      {% if paid %}
+        <div class="text-center">
+          <div class="success-mark"><i class="bi bi-check2" aria-hidden="true"></i></div>
+          <h1 class="h2">{% trans "Deposit paid. Your date is secured!" %}</h1>
+          <p class="lead">{% blocktrans with title=experience_title %}Thank you! We received the deposit for <strong>{{ title }}</strong>.{% endblocktrans %}</p>
+          <p class="mb-2 text-muted-tp">{% trans "Your booking code" %}</p>
+          <p class="ref-code mb-4">{{ booking.reference }}</p>
+          <div class="notice text-start mb-0">
+            <i class="bi bi-calendar-check" aria-hidden="true"></i>
+            <div>{% trans "Our team will contact you by WhatsApp or e-mail with the meeting point and time. The rest is paid on the day." %}</div>
+          </div>
+        </div>
+      {% else %}
+        <p class="eyebrow">{% trans "Booking deposit" %}</p>
+        <h1 class="h2">{% blocktrans with ref=booking.reference %}Secure your date — booking {{ ref }}{% endblocktrans %}</h1>
+        <dl class="deposit-summary">
+          <dt>{% trans "Experience" %}</dt><dd>{{ experience_title }}</dd>
+          <dt>{% trans "Date" %}</dt><dd>{{ booking.preferred_date|date:"DATE_FORMAT" }}{% if booking.round_trip and booking.return_date %} ⇄ {{ booking.return_date|date:"DATE_FORMAT" }}{% endif %}</dd>
+          <dt>{% trans "People" %}</dt><dd>{{ booking.people }}</dd>
+          {% if total %}<dt>{% trans "Total" %}</dt><dd>{{ total }}</dd>{% endif %}
+          {% if deposit %}<dt>{% blocktrans %}Deposit (10%){% endblocktrans %}</dt><dd><strong class="deposit-amount">{{ deposit }}</strong></dd>{% endif %}
+        </dl>
+
+        {% if closed %}
+          <div class="notice mb-0"><i class="bi bi-info-circle" aria-hidden="true"></i><div>{% trans "This booking is no longer active. Please contact us if you have any questions." %}</div></div>
+        {% elif status == "in_process" %}
+          <div class="notice mb-3"><i class="bi bi-hourglass-split" aria-hidden="true"></i><div>{% trans "Your payment is being processed by Mercado Pago. As soon as it is approved, this page will show it as paid." %}</div></div>
+        {% elif status == "rejected" or status == "failure" %}
+          <div class="notice mb-3"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><div>{% trans "The payment was not approved. You can try again with another card or with Pix." %}</div></div>
+        {% endif %}
+
+        {% if pay_url %}
+          <div class="d-grid gap-2 mt-3">
+            <a class="btn btn-accent btn-lg" href="{{ pay_url }}">{% blocktrans with amount=deposit %}Pay {{ amount }} with Pix or card{% endblocktrans %} <i class="bi bi-lock" aria-hidden="true"></i></a>
+          </div>
+          <p class="note-small mt-3 mb-0"><i class="bi bi-shield-check" aria-hidden="true"></i><span>{% trans "You pay on Mercado Pago's secure page. We never see your card details. The rest of the amount is paid on the day." %}</span></p>
+        {% elif not closed %}
+          <div class="notice mb-0">
+            <i class="bi bi-chat-dots" aria-hidden="true"></i>
+            <div>{% if error %}{% trans "We could not open the payment page right now. Please try again in a few minutes or talk to us on WhatsApp." %}{% else %}{% trans "Our team will send you the deposit details by WhatsApp or e-mail." %}{% endif %}</div>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      {% if whatsapp_url %}
+        <div class="text-center mt-4"><a class="btn btn-whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> {% trans "Talk to us on WhatsApp" %}</a></div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

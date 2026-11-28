@@ -77,42 +77,44 @@ TOURS = [
         "max_passengers": 3,
         "media": {
             "photos": [
-                ("photos/transfer/01-carro-eletrico-mirante.jpg",
-                 "Carro do transfer em um mirante à beira-mar, com arco-íris ao fundo",
-                 "Transfer car at a seaside viewpoint, with a rainbow behind",
-                 "Coche del traslado en un mirador junto al mar, con un arcoíris al fondo"),
-                ("photos/transfer/03-spin-7-lugares-frente.jpg",
-                 "Carro de 7 lugares (Chevrolet Spin) usado nos transfers",
-                 "7-seat car (Chevrolet Spin) used for transfers",
-                 "Coche de 7 plazas (Chevrolet Spin) usado en los traslados"),
-                ("photos/transfer/04-byd-interior-painel.jpg",
-                 "Interior do SUV BYD, com painel e bancos de couro",
-                 "Inside the BYD SUV: dashboard and leather seats",
-                 "Interior del SUV BYD, con tablero y asientos de cuero"),
-                ("photos/transfer/05-spin-terceira-fileira.jpg",
-                 "Porta-malas do carro de 7 lugares, com a terceira fileira de bancos",
-                 "Boot of the 7-seat car, with the third row of seats",
-                 "Maletero del coche de 7 plazas, con la tercera fila de asientos"),
-                ("photos/transfer/06-byd-banco-traseiro.jpg",
-                 "Banco traseiro de couro do SUV BYD",
-                 "Leather rear seat of the BYD SUV",
-                 "Asiento trasero de cuero del SUV BYD"),
-                ("photos/transfer/07-spin-lateral.jpg",
-                 "Lateral do carro de 7 lugares, com selo de transporte turístico do DER/RN",
-                 "Side of the 7-seat car, with the DER/RN tourist transport sticker",
-                 "Lateral del coche de 7 plazas, con el sello de transporte turístico del DER/RN"),
                 ("photos/transfer/08-byd-traseira.jpg",
                  "SUV BYD Song Pro usado nos transfers",
                  "BYD Song Pro SUV used for transfers",
                  "SUV BYD Song Pro usado en los traslados"),
+                ("photos/transfer/03-spin-7-lugares-frente.jpg",
+                 "Carro de 7 lugares (Chevrolet Spin) usado nos transfers",
+                 "7-seat car (Chevrolet Spin) used for transfers",
+                 "Coche de 7 plazas (Chevrolet Spin) usado en los traslados"),
+                ("photos/transfer/07-spin-lateral.jpg",
+                 "Lateral do carro de 7 lugares (Chevrolet Spin) usado nos transfers",
+                 "Side of the 7-seat car (Chevrolet Spin) used for transfers",
+                 "Lateral del coche de 7 plazas (Chevrolet Spin) usado en los traslados"),
                 ("photos/transfer/09-spin-7-lugares.jpg",
                  "Carro de 7 lugares estacionado, pronto para o transfer",
                  "7-seat car parked and ready for the transfer",
                  "Coche de 7 plazas estacionado, listo para el traslado"),
+                ("photos/transfer/05-spin-terceira-fileira.jpg",
+                 "Porta-malas do carro de 7 lugares, com a terceira fileira de bancos",
+                 "Boot of the 7-seat car, with the third row of seats",
+                 "Maletero del coche de 7 plazas, con la tercera fila de asientos"),
                 ("photos/transfer/02-sedan-transfer.jpg",
                  "Sedã branco usado nos transfers",
                  "White sedan used for transfers",
                  "Sedán blanco usado en los traslados"),
+                ("photos/transfer/01-carro-eletrico-mirante.jpg",
+                 "Carro do transfer em um mirante à beira-mar, com arco-íris ao fundo",
+                 "Transfer car at a seaside viewpoint, with a rainbow behind",
+                 "Coche del traslado en un mirador junto al mar, con un arcoíris al fondo"),
+                ("photos/transfer/04-byd-interior-painel.jpg",
+                 "Interior do SUV BYD, com painel e bancos de couro",
+                 "Inside the BYD SUV: dashboard and leather seats",
+                 "Interior del SUV BYD, con tablero y asientos de cuero",
+                 "inside"),
+                ("photos/transfer/06-byd-banco-traseiro.jpg",
+                 "Banco traseiro de couro do SUV BYD",
+                 "Leather rear seat of the BYD SUV",
+                 "Asiento trasero de cuero del SUV BYD",
+                 "inside"),
             ],
         },
         "pt": {
@@ -136,7 +138,8 @@ TOURS = [
                 "Valor por carro, para até 3 pessoas\n"
                 "Carros de 7 lugares e grupos grandes: valor sob consulta\n"
                 "Negociamos desconto fechando ida e volta\n"
-                "Veículos cadastrados para transporte turístico no DER/RN\n"
+                "Transporte feito pela nossa rede de motoristas parceiros credenciados no DER/RN para transporte turístico\n"
+                "Carro e motorista confirmados até 12 horas antes da viagem, com foto do carro e do motorista\n"
                 "Informe o número do voo e o horário de chegada na reserva\n"
                 "Informe a quantidade de malas para indicarmos o carro certo"
             ),
@@ -164,7 +167,8 @@ TOURS = [
                 "Price per car, for up to 3 people\n"
                 "7-seat cars and large groups: price on request\n"
                 "We negotiate a discount for round trips\n"
-                "Vehicles registered for tourist transport with DER/RN (Rio Grande do Norte transport authority)\n"
+                "Transport by our network of accredited partner drivers, registered with DER/RN (Rio Grande do Norte transport authority) for tourist transport\n"
+                "Car and driver confirmed up to 12 hours before the trip, with a photo of the car and the driver\n"
                 "Include your flight number and arrival time when you book\n"
                 "Tell us how many bags you have so we can suggest the right car"
             ),
@@ -192,7 +196,8 @@ TOURS = [
                 "Precio por coche, para hasta 3 personas\n"
                 "Coches de 7 plazas y grupos grandes: precio a consultar\n"
                 "Negociamos un descuento si cierras ida y vuelta\n"
-                "Vehículos registrados para transporte turístico en el DER/RN (órgano de transporte de Rio Grande do Norte)\n"
+                "Transporte a cargo de nuestra red de conductores asociados acreditados en el DER/RN (órgano de transporte de Rio Grande do Norte) para transporte turístico\n"
+                "Coche y conductor confirmados hasta 12 horas antes del viaje, con foto del coche y del conductor\n"
                 "Indica tu número de vuelo y la hora de llegada al reservar\n"
                 "Indícanos cuántas maletas llevas para sugerir el coche adecuado"
             ),
@@ -216,18 +221,19 @@ TOURS = [
                  "SUV BYD Song Pro usado nos transfers",
                  "BYD Song Pro SUV used for transfers",
                  "SUV BYD Song Pro usado en los traslados"),
-                ("photos/transfer/01-carro-eletrico-mirante.jpg",
-                 "Carro do transfer em um mirante à beira-mar, com arco-íris ao fundo",
-                 "Transfer car at a seaside viewpoint, with a rainbow behind",
-                 "Coche del traslado en un mirador junto al mar, con un arcoíris al fondo"),
                 ("photos/transfer/03-spin-7-lugares-frente.jpg",
                  "Carro de 7 lugares (Chevrolet Spin) usado nos transfers",
                  "7-seat car (Chevrolet Spin) used for transfers",
                  "Coche de 7 plazas (Chevrolet Spin) usado en los traslados"),
+                ("photos/transfer/01-carro-eletrico-mirante.jpg",
+                 "Carro do transfer em um mirante à beira-mar, com arco-íris ao fundo",
+                 "Transfer car at a seaside viewpoint, with a rainbow behind",
+                 "Coche del traslado en un mirador junto al mar, con un arcoíris al fondo"),
                 ("photos/transfer/06-byd-banco-traseiro.jpg",
                  "Banco traseiro de couro do SUV BYD",
                  "Leather rear seat of the BYD SUV",
-                 "Asiento trasero de cuero del SUV BYD"),
+                 "Asiento trasero de cuero del SUV BYD",
+                 "inside"),
             ],
         },
         "pt": {
@@ -252,7 +258,8 @@ TOURS = [
                 "Valor por carro, para até 3 pessoas\n"
                 "Carros de 7 lugares e grupos grandes: valor sob consulta\n"
                 "Negociamos desconto fechando ida e volta\n"
-                "Veículos cadastrados para transporte turístico no DER/RN\n"
+                "Transporte feito pela nossa rede de motoristas parceiros credenciados no DER/RN para transporte turístico\n"
+                "Carro e motorista confirmados até 12 horas antes da viagem, com foto do carro e do motorista\n"
                 "Informe os endereços de saída e de chegada na reserva\n"
                 "Informe a quantidade de malas para indicarmos o carro certo"
             ),
@@ -281,7 +288,8 @@ TOURS = [
                 "Price per car, for up to 3 people\n"
                 "7-seat cars and large groups: price on request\n"
                 "We negotiate a discount for round trips\n"
-                "Vehicles registered for tourist transport with DER/RN (Rio Grande do Norte transport authority)\n"
+                "Transport by our network of accredited partner drivers, registered with DER/RN (Rio Grande do Norte transport authority) for tourist transport\n"
+                "Car and driver confirmed up to 12 hours before the trip, with a photo of the car and the driver\n"
                 "Include the pickup and drop-off addresses when you book\n"
                 "Tell us how many bags you have so we can suggest the right car"
             ),
@@ -310,7 +318,8 @@ TOURS = [
                 "Precio por coche, para hasta 3 personas\n"
                 "Coches de 7 plazas y grupos grandes: precio a consultar\n"
                 "Negociamos un descuento si cierras ida y vuelta\n"
-                "Vehículos registrados para transporte turístico en el DER/RN (órgano de transporte de Rio Grande do Norte)\n"
+                "Transporte a cargo de nuestra red de conductores asociados acreditados en el DER/RN (órgano de transporte de Rio Grande do Norte) para transporte turístico\n"
+                "Coche y conductor confirmados hasta 12 horas antes del viaje, con foto del coche y del conductor\n"
                 "Indica las direcciones de salida y de llegada al reservar\n"
                 "Indícanos cuántas maletas llevas para sugerir el coche adecuado"
             ),
@@ -1233,7 +1242,8 @@ class Command(BaseCommand):
             existing = {Path(img.image.name).stem: img for img in experience.images.all()}
             had_cover = any(img.is_cover for img in existing.values())
             added = 0
-            for order, (rel_path, alt_pt, alt_en, alt_es) in enumerate(media["photos"]):
+            for order, (rel_path, alt_pt, alt_en, alt_es, *rest) in enumerate(media["photos"]):
+                album = rest[0] if rest else ExperienceImage.Album.MAIN
                 source = CONTENT_DIR / rel_path
                 if not source.exists():
                     self.stdout.write(self.style.WARNING(f"  Foto não encontrada: {rel_path}"))
@@ -1242,12 +1252,12 @@ class Command(BaseCommand):
                 match = next((img for stem, img in existing.items()
                               if stem == source.stem or stem.startswith(source.stem + "_")), None)
                 if match:
-                    if match.order != order:
-                        match.order = order
-                        match.save(update_fields=["order"])
+                    if match.order != order or match.album != album:
+                        match.order, match.album = order, album
+                        match.save()
                     continue
-                image = ExperienceImage(experience=experience, order=order,
-                                        is_cover=(order == 0 and not had_cover),
+                image = ExperienceImage(experience=experience, order=order, album=album,
+                                        is_cover=(order == 0 and not had_cover and not album),
                                         alt_pt=alt_pt, alt_en=alt_en, alt_es=alt_es)
                 with source.open("rb") as fh:
                     image.image.save(source.name, File(fh), save=False)

@@ -456,6 +456,10 @@ img { max-width: 100%; height: auto; }
 .gallery { display: grid; gap: .6rem; grid-template-columns: 1fr; border-radius: var(--tp-radius-lg); overflow: hidden; }
 .gallery a { display: block; position: relative; overflow: hidden; background: var(--tp-sand-2); }
 .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--tp-ease); }
+.inside-gallery { display: grid; gap: .6rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.inside-gallery a { display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--tp-radius); background: var(--tp-sand-2); }
+.inside-gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--tp-ease); }
+.inside-gallery a:hover img { transform: scale(1.04); }
 .gallery a:hover img { transform: scale(1.04); }
 .gallery .g-main { aspect-ratio: 16 / 10; }
 .gallery .g-more { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(12, 43, 59, .55); color: #fff; font-family: var(--tp-font-head); font-weight: 700; }
@@ -755,3 +759,20 @@ img { max-width: 100%; height: auto; }
 .on-dark .price-table th, .on-dark .price-table-note { color: rgba(255, 255, 255, .72); }
 .on-dark .price-table td { border-color: rgba(255, 255, 255, .18); }
 .on-dark .price-table .rt { color: var(--tp-sun); }
+
+/* Deposit page */
+.deposit-summary { display: grid; grid-template-columns: max-content 1fr; gap: .45rem 1.25rem; margin: 1.25rem 0 0; }
+.deposit-summary dt { font-weight: 500; color: var(--tp-muted); }
+.deposit-summary dd { margin: 0; }
+.deposit-amount { font-family: var(--tp-font-head); font-size: 1.35rem; color: var(--tp-teal-dark); }
+.deposit-cta { border: 1px solid rgba(244, 119, 69, .35); background: rgba(244, 119, 69, .07); border-radius: var(--tp-radius-sm); padding: 1rem; }
+
+/* FAQ */
+.faq-group { margin: 2.5rem 0 1rem; }
+.faq-list { display: grid; gap: .6rem; }
+.faq-item { background: #fff; border: 1px solid rgba(18, 59, 80, .1); border-radius: var(--tp-radius); padding: 0 1.15rem; }
+.faq-item summary { cursor: pointer; list-style: none; padding: 1rem 2rem 1rem 0; font-weight: 600; position: relative; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: "+"; position: absolute; right: 0; top: .85rem; font-size: 1.3rem; line-height: 1; color: var(--tp-ocean); transition: transform .2s; }
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item p { margin: 0 0 1.1rem; color: var(--tp-ink-2, #3b4b55); }

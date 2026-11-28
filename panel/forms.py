@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 
 from bookings.models import BookingRequest
 from core.i18n import SUFFIXES
-from core.images import ALLOWED_EXTENSIONS, MAX_UPLOAD_MB
+from core.images import ALLOWED_EXTENSIONS, MAX_UPLOAD_MB, optimize_image_field
 from core.models import SiteSettings, Testimonial
 from tours.models import Category, Experience, ExperienceImage
 
@@ -153,8 +153,9 @@ class PhotoUploadForm(forms.Form):
 class PhotoAltForm(PanelFormMixin, forms.ModelForm):
     class Meta:
         model = ExperienceImage
-        fields = ["alt_pt", "alt_en", "alt_es"]
-        labels = {"alt_pt": "Descrição (PT)", "alt_en": "Descrição (EN)", "alt_es": "Descrição (ES)"}
+        fields = ["album", "alt_pt", "alt_en", "alt_es"]
+        labels = {"album": "Álbum", "alt_pt": "Descrição (PT)", "alt_en": "Descrição (EN)",
+                  "alt_es": "Descrição (ES)"}
 
 
 # --------------------------------------------------------------------------
@@ -193,13 +194,95 @@ class TestimonialForm(PanelFormMixin, forms.ModelForm):
 class BookingUpdateForm(PanelFormMixin, forms.ModelForm):
     class Meta:
         model = BookingRequest
-        fields = ["status", "internal_notes"]
+        fields = ["status", "deposit_amount", "internal_notes"]
         widgets = {"internal_notes": forms.Textarea(attrs={"rows": 5})}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["status"].choices = [(value, label.split(" (")[0])
                                          for value, label in BookingRequest.Status.choices]
+        self.fields["deposit_amount"].label = "Valor do sinal (R$)"
+        self.fields["deposit_amount"].help_text = (
+            "O cliente paga este valor pelo Mercado Pago (Pix ou cartão). Vazio = sem cobrança online.")
+        if self.instance.payment_status == BookingRequest.PaymentStatus.PAID:
+            self.fields["deposit_amount"].disabled = True
+            self.fields["deposit_amount"].help_text = "Sinal já pago: não pode ser alterado."
+
+    def clean_deposit_amount(self):
+        value = self.cleaned_data.get("deposit_amount")
+        if value is not None and value < 1:
+            raise forms.ValidationError("Use pelo menos R$ 1,00 ou deixe vazio.")
+        return value
+
+    def save(self, commit=True):
+        booking = super().save(commit=False)
+        if "deposit_amount" in self.changed_data:
+            # The old Mercado Pago link carries the old amount: a new one is created on the next visit.
+            booking.mp_preference_id = ""
+            booking.mp_init_point = ""
+            if booking.payment_status == BookingRequest.PaymentStatus.WAITING:
+                booking.payment_status = BookingRequest.PaymentStatus.NONE
+        if commit:
+            booking.save()
+        return booking
+
+
+class VoucherForm(PanelFormMixin, forms.ModelForm):
+    """Trip details and amounts printed on the customer and driver vouchers."""
+    class Meta:
+        model = BookingRequest
+        fields = ["pickup_time", "pickup_place", "dropoff_place", "flight_number", "return_time",
+                  "total_price", "deposit_received"]
+        widgets = {"pickup_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M"),
+                   "return_time": forms.TimeInput(attrs={"type": "time"}, format="%H:%M")}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, prefix="vch", **kwargs)
+        booking = self.instance
+        if booking.total_price is None and booking.quoted_total is not None:
+            self.initial["total_price"] = booking.quoted_total
+            self.fields["total_price"].help_text = "Sugerido pelo valor calculado na reserva; confira."
+        if not booking.round_trip:
+            del self.fields["return_time"]
+        if booking.payment_status == BookingRequest.PaymentStatus.PAID:
+            del self.fields["deposit_received"]
+
+    def clean(self):
+        data = super().clean()
+        total, deposit = data.get("total_price"), data.get("deposit_received")
+        if total is not None and total < 0:
+            self.add_error("total_price", "Valor inválido.")
+        if deposit is not None and total is not None and deposit > total:
+            self.add_error("deposit_received", "O sinal não pode ser maior que o valor total.")
+        return data
+
+
+class DriverForm(PanelFormMixin, forms.ModelForm):
+    """Driver and car for one booking; sent to the customer by e-mail or WhatsApp."""
+    class Meta:
+        model = BookingRequest
+        fields = ["driver_name", "vehicle_model", "vehicle_plate", "driver_phone", "vehicle_der",
+                  "driver_photo", "vehicle_photo"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, prefix="drv", **kwargs)
+        for name in ("driver_photo", "vehicle_photo"):
+            self.fields[name].widget.attrs["accept"] = "image/*"
+
+    def clean_vehicle_plate(self):
+        plate = "".join(self.cleaned_data.get("vehicle_plate", "").split()).upper()
+        if plate and not (7 <= len(plate.replace("-", "")) <= 8 and plate.replace("-", "").isalnum()):
+            raise forms.ValidationError("Placa inválida. Ex.: TOV8H80 ou ABC-1234.")
+        return plate
+
+    def save(self, commit=True):
+        booking = super().save(commit=False)
+        for name in ("driver_photo", "vehicle_photo"):
+            if name in self.changed_data:
+                optimize_image_field(getattr(booking, name))
+        if commit:
+            booking.save()
+        return booking
 
 
 SETTINGS_GROUPS = [

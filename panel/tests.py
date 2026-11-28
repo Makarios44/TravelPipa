@@ -222,6 +222,27 @@ class PhotoTests(PanelTestCase):
         self.assertEqual(self.tour.images.count(), 2)
         self.assertEqual(self.tour.images.filter(is_cover=True).count(), 1)
 
+    def test_inside_album(self):
+        self.upload(image_file("byd.jpg"), image_file("painel.jpg"), image_file("banco.jpg"))
+        byd, painel, banco = self.tour.images.order_by("order")
+        url = lambda photo, action: reverse("panel:photo_action", args=[self.tour.pk, photo.pk, action])
+        for photo in (painel, banco):
+            self.client.post(url(photo, "alt"), {f"p{photo.pk}-album": "inside", f"p{photo.pk}-alt_pt": "Interior"})
+        self.tour.refresh_from_db()
+        self.assertEqual(self.tour.gallery, [byd])
+        self.assertEqual(self.tour.inside_gallery, [painel, banco])
+        self.assertEqual(self.tour.cover, byd)
+        # Moving the cover into the album hands the cover to a main-gallery photo
+        self.client.post(url(painel, "alt"), {f"p{painel.pk}-album": ""})
+        self.client.post(url(byd, "alt"), {f"p{byd.pk}-album": "inside"})
+        byd.refresh_from_db()
+        self.assertFalse(byd.is_cover)
+        self.assertEqual(self.tour.images.get(is_cover=True), painel)
+        # "Set as cover" brings a photo back to the main gallery
+        self.client.post(url(banco, "cover"))
+        banco.refresh_from_db()
+        self.assertEqual((banco.album, banco.is_cover), ("", True))
+
     def test_cannot_touch_photos_of_another_tour(self):
         other = Experience.objects.create(category=self.cat, title_en="Other")
         photo = ExperienceImage.objects.create(experience=other, image=image_file())
@@ -287,3 +308,154 @@ class OtherSectionsTests(PanelTestCase):
         self.assertContains(home, site.hero_image.url)
         bad = self.client.post(reverse("panel:settings"), {"site_name": "TravelPipa", "whatsapp": "123"})
         self.assertContains(bad, "código do país")
+
+
+@override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend", EMAIL_ENABLED=True)
+class DriverDetailsTests(PanelTestCase):
+    def setUp(self):
+        super().setUp()
+        SiteSettings.objects.update_or_create(pk=1, defaults={"email": "contato@travelpipa.com.br"})
+        self.booking = BookingRequest.objects.create(
+            experience=self.tour, preferred_date=timezone.localdate(), people=2, full_name="Ana Souza",
+            email="ana@example.com", phone="+55 84 99999-9999", service_language="pt-br")
+        self.url = reverse("panel:booking_detail", args=[self.booking.pk])
+
+    def data(self, **extra):
+        return {"form": "driver", "drv-driver_name": "Damião", "drv-vehicle_model": "BYD Song Pro branco",
+                "drv-vehicle_plate": "tov 8h80", **extra}
+
+    def test_save_shows_whatsapp_and_preview(self):
+        from django.core import mail
+        self.client.post(self.url, self.data(action="save"))
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.vehicle_plate, "TOV8H80")
+        self.assertIsNone(self.booking.driver_sent_at)
+        self.assertEqual(len(mail.outbox), 0)
+        page = self.client.get(self.url)
+        self.assertContains(page, "Enviar pelo WhatsApp")
+        self.assertContains(page, "Placa: TOV8H80")
+        self.assertNotContains(page, "Veículo cadastrado no DER/RN para")  # not ticked
+
+    def test_email_with_photos_in_customer_language(self):
+        from django.core import mail
+        self.client.post(self.url, self.data(**{"action": "email", "drv-vehicle_der": "on",
+                                                "drv-driver_photo": image_file("d.jpg"),
+                                                "drv-vehicle_photo": image_file("c.jpg")}))
+        self.booking.refresh_from_db()
+        self.assertIsNotNone(self.booking.driver_sent_at)
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertEqual(email.to, ["ana@example.com"])
+        self.assertEqual(email.reply_to, ["contato@travelpipa.com.br"])
+        self.assertIn("Seu motorista", email.subject)
+        self.assertIn("Motorista: Damião", email.body)
+        self.assertIn("Placa: TOV8H80", email.body)
+        self.assertIn("DER/RN", email.body)
+        self.assertEqual(sorted(a[0].split(".")[0] for a in email.attachments), ["carro", "motorista"])
+        self.assertContains(self.client.get(reverse("panel:bookings")), "Motorista enviado")
+
+    def test_needs_name_and_plate_to_email(self):
+        from django.core import mail
+        self.client.post(self.url, {"form": "driver", "action": "email", "drv-driver_name": "Damião"})
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_invalid_plate(self):
+        response = self.client.post(self.url, self.data(**{"drv-vehicle_plate": "12", "action": "save"}))
+        self.assertContains(response, "Placa inválida")
+
+    def test_status_form_still_works(self):
+        self.client.post(self.url, {"status": "confirmed", "internal_notes": "ok"})
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.status, "confirmed")
+
+
+@override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend", EMAIL_ENABLED=True,
+                   SITE_URL="https://travelpipa.com.br")
+class VoucherTests(PanelTestCase):
+    def setUp(self):
+        super().setUp()
+        from decimal import Decimal
+        self.booking = BookingRequest.objects.create(
+            experience=self.tour, preferred_date=timezone.localdate() + timezone.timedelta(days=3), people=3,
+            full_name="Raphael Lima", email="r@example.com", phone="+55 84 98888-7777", service_language="pt-br",
+            status="confirmed", deposit_amount=Decimal("24"), driver_name="Rodrigo Tavares",
+            vehicle_model="Nissan Sentra", vehicle_plate="PLZ2E15", driver_phone="84 99999-0000")
+        self.url = reverse("panel:booking_detail", args=[self.booking.pk])
+
+    def fill(self, **extra):
+        data = {"form": "voucher", "action": "save", "vch-pickup_time": "14:30",
+                "vch-pickup_place": "Aeroporto de Natal", "vch-dropoff_place": "Pousada Sol, Pipa",
+                "vch-total_price": "240", "vch-deposit_received": "24", **extra}
+        return self.client.post(self.url, data)
+
+    def test_amounts_and_both_vouchers(self):
+        from decimal import Decimal
+        self.fill()
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.amount_due, Decimal("216"))
+        page = self.client.get(self.url)
+        self.assertContains(page, "Ver voucher do cliente")
+        self.assertContains(page, "Enviar ao motorista pelo WhatsApp")
+        self.assertContains(page, "wa.me/5584999990000")
+        self.client.logout()
+        client_page = self.client.get(reverse("voucher", args=[self.booking.uuid]))
+        self.assertContains(client_page, "Sinal pago")
+        self.assertContains(client_page, "R$ 216")
+        self.assertContains(client_page, "PLZ2E15")
+        self.assertNotContains(client_page, "COBRAR")
+        self.assertEqual(client_page["X-Robots-Tag"], "noindex, nofollow")
+        self.booking.refresh_from_db()
+        driver_page = self.client.get(reverse("driver_voucher", args=[self.booking.driver_token]))
+        self.assertContains(driver_page, "Cobrar do cliente no dia")
+        self.assertContains(driver_page, "R$ 216")
+        self.assertContains(driver_page, "R$ 240")
+        self.assertContains(driver_page, "+55 84 98888-7777")
+
+    def test_customer_voucher_in_english(self):
+        self.booking.service_language = "en"
+        self.booking.save()
+        self.fill()
+        page = self.client.get(reverse("voucher", args=[self.booking.uuid]))
+        self.assertContains(page, "Left to pay on the day")
+        self.assertContains(page, "Deposit paid")
+
+    def test_email_to_customer(self):
+        from django.core import mail
+        self.fill(action="email")
+        self.assertEqual(len(mail.outbox), 1)
+        body = mail.outbox[0].body
+        self.assertIn("Restante a pagar no dia: R$ 216", body)
+        self.assertIn(f"https://travelpipa.com.br/voucher/{self.booking.uuid}/", body)
+
+    def test_not_ready_until_confirmed_and_filled(self):
+        self.booking.status = "contacted"
+        self.booking.save()
+        page = self.client.get(self.url)
+        self.assertContains(page, "Para gerar os vouchers, falta")
+        self.client.logout()
+        self.assertEqual(self.client.get(reverse("voucher", args=[self.booking.uuid])).status_code, 404)
+
+    def test_mercadopago_deposit_counts(self):
+        from decimal import Decimal
+        BookingRequest.objects.filter(pk=self.booking.pk).update(payment_status="paid", paid_amount=Decimal("24"))
+        self.fill(**{"vch-deposit_received": ""})
+        self.booking.refresh_from_db()
+        self.assertEqual(self.booking.amount_due, Decimal("216"))
+
+    def test_deposit_bigger_than_total(self):
+        response = self.fill(**{"vch-deposit_received": "300"})
+        self.assertContains(response, "não pode ser maior")
+
+    def test_trip_list(self):
+        self.fill()
+        page = self.client.get(reverse("panel:trips"))
+        self.assertContains(page, "14:30")
+        self.assertContains(page, "Rodrigo Tavares")
+        self.assertContains(page, "a cobrar")
+        self.assertNotContains(self.client.get(reverse("panel:trips") + "?when=past"), "Rodrigo")
+
+    def test_expired_voucher(self):
+        self.fill()
+        BookingRequest.objects.filter(pk=self.booking.pk).update(
+            preferred_date=timezone.localdate() - timezone.timedelta(days=40))
+        self.assertEqual(self.client.get(reverse("voucher", args=[self.booking.uuid])).status_code, 404)

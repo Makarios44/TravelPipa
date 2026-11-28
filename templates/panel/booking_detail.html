@@ -34,10 +34,111 @@
       {% csrf_token %}
       <h2><i class="bi bi-clipboard-check"></i> Atendimento</h2>
       {% include "panel/_field.html" with field=form.status %}
+      {% include "panel/_field.html" with field=form.deposit_amount %}
       {% include "panel/_field.html" with field=form.internal_notes %}
       <p class="small muted">Mudar o status não avisa o cliente automaticamente. Use o WhatsApp ou o e-mail.</p>
       <button class="btn btn-primary w-100" type="submit"><i class="bi bi-check-lg"></i> Salvar atendimento</button>
     </form>
+
+    <form method="post" class="card-p mt-3" id="voucher" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="form" value="voucher">
+      <h2><i class="bi bi-ticket-perforated"></i> Voucher da viagem</h2>
+      <div class="row g-2">
+        <div class="col-5">{% include "panel/_field.html" with field=voucher_form.pickup_time %}</div>
+        <div class="col-7">{% include "panel/_field.html" with field=voucher_form.flight_number %}</div>
+      </div>
+      {% include "panel/_field.html" with field=voucher_form.pickup_place %}
+      {% include "panel/_field.html" with field=voucher_form.dropoff_place %}
+      {% if voucher_form.return_time %}{% include "panel/_field.html" with field=voucher_form.return_time %}{% endif %}
+      <div class="row g-2">
+        <div class="col-6">{% include "panel/_field.html" with field=voucher_form.total_price %}</div>
+        {% if voucher_form.deposit_received %}<div class="col-6">{% include "panel/_field.html" with field=voucher_form.deposit_received %}</div>{% endif %}
+      </div>
+      {% if booking.total_price is not None %}
+        <dl class="voucher-sum">
+          <div><dt>Valor total</dt><dd>R$ {{ booking.total_price|floatformat:"2g" }}</dd></div>
+          <div><dt>Sinal pago</dt><dd>R$ {{ booking.deposit_paid|floatformat:"2g" }}{% if booking.payment_status == "paid" %} <small class="muted">(Mercado Pago)</small>{% endif %}</dd></div>
+          <div class="due"><dt>Motorista cobra no dia</dt><dd>R$ {{ booking.amount_due|floatformat:"2g" }}</dd></div>
+        </dl>
+      {% endif %}
+      <div class="d-grid gap-2">
+        <button class="btn btn-outline-secondary" type="submit" name="action" value="save"><i class="bi bi-check-lg"></i> Salvar</button>
+      </div>
+      {% if voucher_missing %}
+        <p class="small muted mt-3 mb-0"><i class="bi bi-info-circle"></i> Para gerar os vouchers, falta: {{ voucher_missing|join:", " }}.</p>
+      {% else %}
+        <h3 class="h6 mt-4">Cliente <small class="muted">(sinal pago e restante)</small></h3>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-primary" href="{{ voucher_client_url }}" target="_blank" rel="noopener"><i class="bi bi-eye"></i> Ver voucher do cliente</a>
+          {% if voucher_client_whatsapp %}<a class="btn btn-whatsapp" href="{{ voucher_client_whatsapp }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> Enviar ao cliente pelo WhatsApp</a>{% endif %}
+          <button class="btn btn-primary" type="submit" name="action" value="email"{% if not email_ready %} disabled title="E-mail não configurado no servidor"{% endif %}><i class="bi bi-envelope"></i> Salvar e enviar ao cliente por e-mail</button>
+        </div>
+        <h3 class="h6 mt-4">Motorista <small class="muted">(valor total, sinal e quanto cobrar)</small></h3>
+        <div class="d-grid gap-2">
+          <a class="btn btn-outline-primary" href="{{ voucher_driver_url }}" target="_blank" rel="noopener"><i class="bi bi-eye"></i> Ver voucher do motorista</a>
+          {% if voucher_driver_whatsapp %}<a class="btn btn-whatsapp" href="{{ voucher_driver_whatsapp }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> Enviar ao motorista pelo WhatsApp</a>
+          {% else %}<p class="small muted mb-0">Preencha o WhatsApp do motorista (quadro abaixo) para enviar a ele por aqui.</p>{% endif %}
+        </div>
+        <p class="small muted mt-2 mb-0">O voucher do motorista tem o telefone do cliente: envie só para o motorista da viagem. Os links param de funcionar 30 dias depois da viagem.</p>
+      {% endif %}
+    </form>
+
+    <form method="post" enctype="multipart/form-data" class="card-p mt-3" id="motorista" novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="form" value="driver">
+      <h2><i class="bi bi-car-front"></i> Motorista e carro</h2>
+      <p class="small muted">Confirme até <strong>12 horas antes</strong> da viagem: o site promete ao cliente o nome do motorista, a placa e as fotos.</p>
+      {% if booking.driver_sent_at %}<p class="small"><span class="badge text-bg-success"><i class="bi bi-check2"></i> Enviado por e-mail em {{ booking.driver_sent_at|date:"d/m \à\s H:i" }}</span></p>{% endif %}
+      {% include "panel/_field.html" with field=driver_form.driver_name %}
+      <div class="row g-2">
+        <div class="col-7">{% include "panel/_field.html" with field=driver_form.vehicle_model %}</div>
+        <div class="col-5">{% include "panel/_field.html" with field=driver_form.vehicle_plate %}</div>
+      </div>
+      {% include "panel/_field.html" with field=driver_form.driver_phone %}
+      {% include "panel/_field.html" with field=driver_form.vehicle_der %}
+      <div class="row g-2">
+        <div class="col-sm-6">{% include "panel/_field.html" with field=driver_form.driver_photo %}</div>
+        <div class="col-sm-6">{% include "panel/_field.html" with field=driver_form.vehicle_photo %}</div>
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-outline-secondary" type="submit" name="action" value="save"><i class="bi bi-check-lg"></i> Salvar</button>
+        <button class="btn btn-primary" type="submit" name="action" value="email"{% if not email_ready %} disabled title="E-mail não configurado no servidor"{% endif %}><i class="bi bi-envelope"></i> Salvar e enviar por e-mail ao cliente</button>
+        {% if driver_whatsapp_url %}<a class="btn btn-whatsapp" href="{{ driver_whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> Enviar pelo WhatsApp</a>{% endif %}
+      </div>
+      {% if driver_preview %}
+        <details class="mt-3"><summary class="small fw-semibold">Ver a mensagem que o cliente recebe</summary>
+          <pre class="small mt-2 mb-0" style="white-space:pre-wrap">{{ driver_preview }}</pre></details>
+        <p class="small muted mt-2 mb-0">No WhatsApp, as fotos não vão junto com o link: envie as duas fotos logo depois da mensagem.</p>
+      {% endif %}
+    </form>
+
+    <div class="card-p mt-3">
+      <h2><i class="bi bi-credit-card"></i> Sinal (Mercado Pago)</h2>
+      <p class="mb-2">
+        {% if booking.payment_status == "paid" %}<span class="badge text-bg-success">Sinal pago</span>
+        {% elif booking.payment_status == "in_process" %}<span class="badge text-bg-warning">Pagamento em análise</span>
+        {% elif booking.payment_status == "rejected" %}<span class="badge text-bg-danger">Pagamento recusado</span>
+        {% elif booking.payment_status == "refunded" %}<span class="badge text-bg-secondary">Pagamento devolvido</span>
+        {% elif booking.payment_status == "cancelled" %}<span class="badge text-bg-secondary">Pagamento cancelado</span>
+        {% elif booking.payment_status == "waiting" %}<span class="badge text-bg-info">Link aberto — aguardando pagamento</span>
+        {% else %}<span class="badge text-bg-light">Sem pagamento online</span>{% endif %}
+      </p>
+      {% if booking.payment_status == "paid" %}
+        <p class="small mb-0">Pago <strong>R$ {{ booking.paid_amount }}</strong> em {{ booking.paid_at|date:"d/m/Y H:i" }} · pagamento nº {{ booking.mp_payment_id }}.</p>
+      {% elif not mercadopago_ready %}
+        <p class="small muted mb-0">Mercado Pago ainda não configurado no servidor (variável MERCADOPAGO_ACCESS_TOKEN).</p>
+      {% elif not booking.deposit_amount %}
+        <p class="small muted mb-0">Defina o <strong>valor do sinal</strong> no atendimento e salve para gerar o link de pagamento.</p>
+      {% else %}
+        <p class="small muted">Sinal de <strong>R$ {{ booking.deposit_amount }}</strong>. Envie o link: o cliente paga com Pix ou cartão e a reserva fica marcada como paga sozinha.</p>
+        <div class="input-group mb-2">
+          <input class="form-control form-control-sm" type="text" value="{{ deposit_url }}" readonly id="deposit-url" aria-label="Link do sinal">
+          <button class="btn btn-outline-secondary btn-sm" type="button" data-copy="#deposit-url"><i class="bi bi-clipboard"></i> Copiar</button>
+        </div>
+        {% if deposit_whatsapp_url %}<a class="btn btn-whatsapp w-100" href="{{ deposit_whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> Enviar link do sinal</a>{% endif %}
+      {% endif %}
+    </div>
 
     <div class="card-p mt-3">
       <h2><i class="bi bi-star"></i> Avaliação</h2>

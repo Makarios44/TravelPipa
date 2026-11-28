@@ -6,6 +6,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path, re_path
 from django.views.generic import RedirectView
 
+from bookings import views as booking_views
 from core import views as core_views
 from core.media_views import serve_media
 from core.sitemaps import SITEMAPS
@@ -25,6 +26,10 @@ urlpatterns = [
     path("robots.txt", core_views.robots_txt, name="robots_txt"),
     path("sitemap.xml", sitemap, {"sitemaps": SITEMAPS}, name="django.contrib.sitemaps.views.sitemap"),
     path("healthz/", core_views.healthz, name="healthz"),
+    # Mercado Pago payment notifications (no language prefix, no CSRF: Mercado Pago calls it).
+    path("pagamentos/mercadopago/", booking_views.mercadopago_webhook, name="mercadopago_webhook"),
+    path("voucher/<uuid:token>/", booking_views.voucher, name="voucher"),
+    path("voucher/motorista/<uuid:token>/", booking_views.driver_voucher, name="driver_voucher"),
 ]
 
 urlpatterns += i18n_patterns(

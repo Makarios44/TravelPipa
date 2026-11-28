@@ -294,6 +294,12 @@ class BookingFlowTests(BaseTestCase):
         # No personal data on the confirmation page
         self.assertNotContains(thanks, "maria@example.com")
         self.assertNotContains(thanks, "7700")
+        self.assertNotContains(thanks, "Your driver:")  # boat tour: no car/driver note
+
+    def test_transfer_thanks_mentions_car_and_driver_photos(self):
+        self.client.post(reverse("bookings:request"), self.booking_payload(experience=self.transfer.pk))
+        thanks = self.client.get(reverse("bookings:thanks"))
+        self.assertContains(thanks, "Your driver:")
 
     def test_request_in_portuguese(self):
         url = "/pt-br/reservar/"
@@ -558,7 +564,7 @@ class LoadToursTests(TestCase):
         self.assertContains(self.client.get("/pt-br/passeios/natal-airport-pipa-transfer/"), "7 lugares")
         # Trust badges: strip on every page, DER on the transfer, Cadastur on guided tours
         pt_transfer = self.client.get("/pt-br/passeios/natal-airport-pipa-transfer/")
-        self.assertContains(pt_transfer, "Veículos cadastrados para transporte turístico no DER/RN.")
+        self.assertContains(pt_transfer, "Nossa rede de motoristas parceiros é credenciada no DER/RN para transporte turístico.")
         self.assertContains(pt_transfer, "Guias de turismo com Cadastur")  # strip
         self.assertNotContains(pt_transfer, "Guia de turismo com cadastro no Cadastur")  # no guide on transfers
         self.assertContains(self.client.get("/es/experiencias/quad-bike-tour-route-1/"),
@@ -569,7 +575,7 @@ class LoadToursTests(TestCase):
         site.trust_cadastur_guides = False
         site.save()
         self.assertNotContains(self.client.get("/en/"), "Licensed tour guides")
-        self.assertContains(self.client.get("/en/"), "Registered tourist vehicles")
+        self.assertContains(self.client.get("/en/"), "Accredited partner drivers")
         site.trust_cadastur_guides = True
         site.save()
         # Home page banner set from content/ (original file, no re-encoding)

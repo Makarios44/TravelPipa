@@ -120,3 +120,32 @@ def notify_new_review(request, review):
     except Exception:  # pragma: no cover - logged, never breaks the page
         logger.exception("Could not send review notification")
         return False
+
+
+def notify_deposit_paid(request, booking):
+    """Tells the team that the deposit was paid on Mercado Pago (checked with Mercado Pago itself)."""
+    recipients = notification_recipients()
+    if not email_configured() or not recipients:
+        logger.info("Deposit of %s paid; e-mail notification skipped.", booking.reference)
+        return False
+    panel_url = absolute(request, reverse("panel:booking_detail", args=[booking.pk]))
+    paid_at = timezone.localtime(booking.paid_at) if booking.paid_at else timezone.localtime()
+    body = "\n".join([
+        "Sinal pago pelo Mercado Pago (confirmado direto com o Mercado Pago).",
+        "",
+        f"Código: {booking.reference}",
+        f"Experiência: {booking.experience_title}",
+        f"Data do passeio / ida: {booking.preferred_date:%d/%m/%Y}",
+        f"Cliente: {booking.full_name} — {booking.phone}",
+        f"Valor pago: R$ {booking.paid_amount}",
+        f"Pagamento Mercado Pago nº {booking.mp_payment_id}",
+        f"Pago em: {paid_at:%d/%m/%Y %H:%M}",
+        "",
+        f"Abrir no painel: {panel_url}",
+    ])
+    try:
+        send(f"Sinal pago {booking.reference} — {booking.full_name}", body, recipients, reply_to=booking.email)
+        return True
+    except Exception:  # never break the payment flow because of e-mail
+        logger.exception("Could not send deposit e-mail for %s", booking.reference)
+        return False

@@ -5,6 +5,7 @@ technical Django admin.
 
 Access: logged-in staff users only (is_staff). Every change is a POST with CSRF.
 """
+import datetime
 import hashlib
 import json
 from functools import wraps
@@ -24,12 +25,13 @@ from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
+from bookings import driver_message, mercadopago, voucher as vouchers
 from bookings.models import BookingRequest
 from core.antispam import client_ip_hash
 from core.models import ContactMessage, SiteSettings, Testimonial
 from tours.models import Category, Experience, ExperienceImage
 
-from .forms import (BookingUpdateForm, CategoryForm, ExperienceForm, PanelLoginForm, PanelPasswordChangeForm,
+from .forms import (BookingUpdateForm, DriverForm, VoucherForm, CategoryForm, ExperienceForm, PanelLoginForm, PanelPasswordChangeForm,
                     PhotoAltForm, PhotoUploadForm, SiteSettingsForm, TestimonialForm)
 
 ACTIVE_STATUSES = [BookingRequest.Status.PENDING, BookingRequest.Status.CONTACTED, BookingRequest.Status.CONFIRMED]
@@ -286,6 +288,7 @@ def photo_action(request, pk, photo_pk, action):
     url = reverse("panel:experience_edit", args=[pk]) + "#fotos"
     if action == "cover":
         photo.is_cover = True
+        photo.album = ExperienceImage.Album.MAIN  # the cover belongs to the main gallery
         photo.save()  # model clears the previous cover
         messages.success(request, "Capa alterada.")
     elif action == "delete":
@@ -293,7 +296,7 @@ def photo_action(request, pk, photo_pk, action):
         photo.image.delete(save=False)
         photo.delete()
         if was_cover:
-            first = ExperienceImage.objects.filter(experience_id=pk).order_by("order", "id").first()
+            first = ExperienceImage.objects.filter(experience_id=pk, album="").order_by("order", "id").first()
             if first:
                 first.is_cover = True
                 first.save()
@@ -311,7 +314,12 @@ def photo_action(request, pk, photo_pk, action):
         form = PhotoAltForm(request.POST, instance=photo, prefix=f"p{photo.pk}")
         if form.is_valid():
             form.save()
-            messages.success(request, "Descrição da foto salva.")
+            if photo.album and not ExperienceImage.objects.filter(experience_id=pk, is_cover=True).exists():
+                first = ExperienceImage.objects.filter(experience_id=pk, album="").order_by("order", "id").first()
+                if first:
+                    first.is_cover = True
+                    first.save()
+            messages.success(request, "Foto salva.")
         else:
             messages.error(request, "Não foi possível salvar a descrição.")
     else:
@@ -420,6 +428,36 @@ def review_link(request, booking):
     return (settings.SITE_URL + path) if settings.SITE_URL else request.build_absolute_uri(path)
 
 
+def deposit_link(request, booking):
+    """Customer page to pay the deposit, in the customer's language."""
+    if not (mercadopago.configured() and booking.deposit_amount):
+        return ""
+    lang = booking.service_language if booking.service_language in dict(settings.LANGUAGES) else settings.LANGUAGE_CODE
+    with translation.override(lang):
+        path = reverse("bookings:deposit", args=[booking.uuid])
+    return (settings.SITE_URL + path) if settings.SITE_URL else request.build_absolute_uri(path)
+
+
+DEPOSIT_MESSAGES = {
+    "pt-br": "Olá, {name}! Para garantir a sua reserva {ref}, o sinal é de R$ {amount}. "
+             "Você pode pagar com Pix ou cartão por este link seguro do Mercado Pago: {url}",
+    "es": "¡Hola, {name}! Para asegurar tu reserva {ref}, la seña es de R$ {amount}. "
+          "Puedes pagar con Pix o tarjeta en este enlace seguro de Mercado Pago: {url}",
+    "en": "Hi {name}! To secure your booking {ref}, the deposit is R$ {amount}. "
+          "You can pay with Pix or card on this secure Mercado Pago link: {url}",
+}
+
+
+def deposit_whatsapp_for(booking, url):
+    if not (url and booking.phone_digits) or booking.payment_status == BookingRequest.PaymentStatus.PAID:
+        return ""
+    first_name = booking.full_name.split()[0] if booking.full_name else ""
+    amount = f"{booking.deposit_amount:.2f}".replace(".", ",")
+    template = DEPOSIT_MESSAGES.get(booking.service_language, DEPOSIT_MESSAGES["en"])
+    text = template.format(name=first_name, ref=booking.reference, amount=amount, url=url)
+    return f"https://wa.me/{booking.phone_digits}?text={quote(text)}"
+
+
 REVIEW_MESSAGES = {
     "pt-br": "Olá, {name}! Obrigado por passear com a TravelPipa. Pode nos contar como foi? "
              "Leva menos de 1 minuto: {url}",
@@ -441,16 +479,79 @@ def review_whatsapp_for(booking, url):
 @staff_required
 def booking_detail(request, pk):
     booking = get_object_or_404(BookingRequest.objects.select_related("experience"), pk=pk)
-    form = BookingUpdateForm(request.POST or None, instance=booking)
-    if request.method == "POST" and form.is_valid():
+    posted = request.POST.get("form", "") if request.method == "POST" else None
+    is_driver_post = posted == "driver"
+    is_voucher_post = posted == "voucher"
+    form = BookingUpdateForm(request.POST if posted == "" else None, instance=booking)
+    voucher_form = VoucherForm(request.POST if is_voucher_post else None, instance=booking)
+    if is_voucher_post and voucher_form.is_valid():
+        booking = voucher_form.save()
+        if request.POST.get("action") == "email":
+            error = vouchers.send_client_email(booking, request)
+            if error:
+                messages.error(request, error)
+            else:
+                messages.success(request, f"Voucher enviado para {booking.email}.")
+        else:
+            messages.success(request, "Dados do voucher salvos.")
+        return redirect(reverse("panel:booking_detail", args=[pk]) + "#voucher")
+    driver_form = DriverForm(request.POST if is_driver_post else None,
+                             request.FILES if is_driver_post else None, instance=booking)
+    if is_driver_post and driver_form.is_valid():
+        booking = driver_form.save()
+        if request.POST.get("action") == "email":
+            error = driver_message.send_email(booking)
+            if error:
+                messages.error(request, error)
+            else:
+                messages.success(request, f"Dados do motorista enviados para {booking.email}.")
+        else:
+            messages.success(request, "Motorista e carro salvos.")
+        return redirect(reverse("panel:booking_detail", args=[pk]) + "#motorista")
+    if posted == "" and form.is_valid():
         form.save()
         messages.success(request, f"Solicitação {booking.reference} atualizada.")
         return redirect("panel:booking_detail", pk=pk)
     url = review_link(request, booking)
+    pay_url = deposit_link(request, booking)
     return panel_render(request, "panel/booking_detail.html", {
         "section": "bookings", "booking": booking, "form": form, "whatsapp_url": whatsapp_for(booking),
         "review": Testimonial.objects.filter(booking=booking).first(),
-        "review_url": url, "review_whatsapp_url": review_whatsapp_for(booking, url)})
+        "review_url": url, "review_whatsapp_url": review_whatsapp_for(booking, url),
+        "mercadopago_ready": mercadopago.configured(),
+        "deposit_url": pay_url, "deposit_whatsapp_url": deposit_whatsapp_for(booking, pay_url),
+        "driver_form": driver_form, "driver_whatsapp_url": driver_message.whatsapp_url(booking),
+        "driver_preview": driver_message.message_body(booking, "email") if booking.has_driver else "",
+        "email_ready": driver_message.email_configured(),
+        "voucher_form": voucher_form, "voucher_missing": vouchers.missing_for_voucher(booking),
+        **(_voucher_links(request, booking) if not vouchers.missing_for_voucher(booking) else {})})
+
+
+def _voucher_links(request, booking):
+    return {
+        "voucher_client_url": vouchers.client_url(booking, request),
+        "voucher_driver_url": vouchers.driver_url(booking, request),
+        "voucher_client_whatsapp": vouchers.client_whatsapp_url(booking, request),
+        "voucher_driver_whatsapp": vouchers.driver_whatsapp_url(booking, request),
+    }
+
+
+@staff_required
+def trip_list(request):
+    """Confirmed trips by date, with what the driver has to collect."""
+    past = request.GET.get("when") == "past"
+    today = timezone.localdate()
+    qs = BookingRequest.objects.select_related("experience").filter(status=BookingRequest.Status.CONFIRMED)
+    qs = (qs.filter(preferred_date__lt=today).order_by("-preferred_date", "-pickup_time") if past
+          else qs.filter(preferred_date__gte=today).order_by("preferred_date", "pickup_time"))
+    days = []
+    for booking in qs[:300]:
+        if not days or days[-1][0] != booking.preferred_date:
+            days.append((booking.preferred_date, []))
+        days[-1][1].append(booking)
+    return panel_render(request, "panel/trip_list.html", {
+        "section": "trips", "days": days, "past": past, "today": today,
+        "tomorrow": today + datetime.timedelta(days=1)})
 
 
 # --------------------------------------------------------------------------

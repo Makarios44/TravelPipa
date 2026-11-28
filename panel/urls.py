@@ -25,6 +25,7 @@ urlpatterns = [
     path("categorias/<int:pk>/alternar/", views.category_toggle, name="category_toggle"),
 
     path("reservas/", views.booking_list, name="bookings"),
+    path("viagens/", views.trip_list, name="trips"),
     path("reservas/<int:pk>/", views.booking_detail, name="booking_detail"),
 
     path("mensagens/", views.message_list, name="messages"),

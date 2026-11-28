@@ -293,8 +293,13 @@ class Experience(TimeStampedModel):
 
     @property
     def gallery(self):
+        # Main photos only: photos in the "guardada" album stay in the panel.
         # Uses the prefetched relation (ordered in ExperienceImage.Meta).
-        return list(self.images.all())
+        return [img for img in self.images.all() if not img.album]
+
+    @property
+    def inside_gallery(self):
+        return [img for img in self.images.all() if img.album == ExperienceImage.Album.INSIDE]
 
     @property
     def cover(self):
@@ -318,6 +323,14 @@ class ExperienceImage(TimeStampedModel):
     is_cover = models.BooleanField("capa", default=False)
     order = models.PositiveIntegerField("ordem", default=0)
 
+    class Album(models.TextChoices):
+        MAIN = "", "Galeria principal"
+        INSIDE = "inside", "Guardada (não aparece no site)"
+
+    album = models.CharField(
+        "álbum", max_length=20, choices=Album.choices, blank=True, default=Album.MAIN,
+        help_text="Fotos guardadas ficam no painel, mas não aparecem no site.")
+
     alt = Localized()
 
     class Meta:
@@ -329,6 +342,8 @@ class ExperienceImage(TimeStampedModel):
         return self.image.name.rsplit("/", 1)[-1]
 
     def save(self, *args, **kwargs):
+        if self.album:  # the cover always comes from the main gallery
+            self.is_cover = False
         optimize_image_field(self.image)
         super().save(*args, **kwargs)
         if self.is_cover:

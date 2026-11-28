@@ -13,6 +13,7 @@ from tours.models import Category, Experience
 
 from .antispam import rate_limited
 from .conditions import get_conditions
+from .faq import FAQ_GROUPS, faq_schema
 from .forms import ContactForm
 from .i18n import current_suffix
 from .google_reviews import fetch_google_reviews, write_review_url
@@ -153,6 +154,10 @@ def reviews(request):
         "place_configured": bool(site.google_place_id),
         "google_review_url": write_review_url(site.google_place_id),
     })
+
+
+def faq(request):
+    return render(request, "core/faq.html", {"groups": FAQ_GROUPS, "schema": json_ld(faq_schema())})
 
 
 def google_reviews_widget(request):

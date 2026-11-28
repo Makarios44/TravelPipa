@@ -765,7 +765,7 @@ msgstr "Viva mais."
 
 #: templates/core/home.html:27
 msgid "Airport transfers"
-msgstr "Transfers do aeroporto"
+msgstr "Transfer do aeroporto"
 
 #: templates/core/home.html:30
 msgid "Local team in Pipa"
@@ -1985,3 +1985,463 @@ msgstr ""
 "Transfers do Aeroporto de Natal para Pipa e para Ponta Negra (Natal), com "
 "valor por carro e desconto na ida e volta. Reserve online com uma agência "
 "local."
+
+msgid "book/deposit/<uuid:token>/"
+msgstr "reservar/sinal/<uuid:token>/"
+
+msgid "Booking deposit"
+msgstr "Sinal da reserva"
+
+msgid "Deposit paid. Your date is secured!"
+msgstr "Sinal pago. Sua data está garantida!"
+
+#, python-format
+msgid "Thank you! We received the deposit for <strong>%(title)s</strong>."
+msgstr "Obrigado! Recebemos o sinal de <strong>%(title)s</strong>."
+
+msgid ""
+"Our team will contact you by WhatsApp or e-mail with the meeting point and "
+"time. The rest is paid on the day."
+msgstr ""
+"Nossa equipe vai entrar em contato pelo WhatsApp ou e-mail com o ponto de "
+"encontro e o horário. O restante é pago no dia."
+
+#, python-format
+msgid "Secure your date — booking %(ref)s"
+msgstr "Garanta sua data — reserva %(ref)s"
+
+msgid "Experience"
+msgstr "Experiência"
+
+msgid ""
+"This booking is no longer active. Please contact us if you have any "
+"questions."
+msgstr ""
+"Esta reserva não está mais ativa. Fale com a gente se tiver alguma dúvida."
+
+msgid ""
+"Your payment is being processed by Mercado Pago. As soon as it is approved, "
+"this page will show it as paid."
+msgstr ""
+"Seu pagamento está em análise no Mercado Pago. Assim que for aprovado, esta "
+"página vai mostrar como pago."
+
+msgid ""
+"The payment was not approved. You can try again with another card or with "
+"Pix."
+msgstr ""
+"O pagamento não foi aprovado. Você pode tentar de novo com outro cartão ou "
+"com Pix."
+
+#, python-format
+msgid "Pay %(amount)s with Pix or card"
+msgstr "Pagar %(amount)s com Pix ou cartão"
+
+msgid ""
+"You pay on Mercado Pago's secure page. We never see your card details. The "
+"rest of the amount is paid on the day."
+msgstr ""
+"Você paga na página segura do Mercado Pago. Nós nunca vemos os dados do seu "
+"cartão. O restante do valor é pago no dia."
+
+msgid ""
+"We could not open the payment page right now. Please try again in a few "
+"minutes or talk to us on WhatsApp."
+msgstr ""
+"Não conseguimos abrir a página de pagamento agora. Tente de novo em alguns "
+"minutos ou fale com a gente no WhatsApp."
+
+msgid "Our team will send you the deposit details by WhatsApp or e-mail."
+msgstr "Nossa equipe vai enviar os dados do sinal pelo WhatsApp ou e-mail."
+
+msgid "Talk to us on WhatsApp"
+msgstr "Fale com a gente no WhatsApp"
+
+msgid "Secure your date now"
+msgstr "Garanta sua data agora"
+
+#, python-format
+msgid "the 10%% deposit is %(amount)s, with Pix or card."
+msgstr "o sinal de 10%% é de %(amount)s, com Pix ou cartão."
+
+#, python-format
+msgid "Pay the deposit (%(amount)s)"
+msgstr "Pagar o sinal (%(amount)s)"
+
+msgid ""
+"Optional: your booking is already registered, and you can also pay later."
+msgstr ""
+"Opcional: sua reserva já está registrada, e você também pode pagar depois."
+
+#, python-format
+msgid "Hello! I have a question about the deposit of booking %(ref)s."
+msgstr "Olá! Tenho uma dúvida sobre o sinal da reserva %(ref)s."
+
+#, python-format
+msgid "Deposit (10%%)"
+msgstr "Sinal (10%%)"
+
+msgid "Registered partner vehicles"
+msgstr "Veículos parceiros cadastrados"
+
+msgid "We work with partners registered with DER/RN for tourist transport"
+msgstr ""
+"Trabalhamos com parceiros cadastrados no DER/RN para transporte turístico"
+
+msgid "Partners registered with DER/RN"
+msgstr "Parceiros cadastrados no DER/RN"
+
+msgid ""
+"We work with partner drivers registered with DER/RN for tourist transport."
+msgstr ""
+"Trabalhamos com motoristas parceiros cadastrados no DER/RN para transporte "
+"turístico."
+
+msgid "Inside the car"
+msgstr "Conheça o carro por dentro"
+
+msgid "Accredited partner drivers"
+msgstr "Motoristas parceiros credenciados"
+
+msgid ""
+"Registered with DER/RN. Car and driver confirmed up to 12 h before, with "
+"photos"
+msgstr ""
+"Cadastrados no DER/RN. Carro e motorista confirmados até 12 h antes, com "
+"fotos"
+
+msgid "Accredited drivers registered with DER/RN"
+msgstr "Motoristas credenciados no DER/RN"
+
+msgid "Car and driver confirmed 12 h before, with photos"
+msgstr "Carro e motorista confirmados 12 h antes, com fotos"
+
+msgid ""
+"Our network of accredited partner drivers is registered with DER/RN for "
+"tourist transport."
+msgstr ""
+"Nossa rede de motoristas parceiros é credenciada no DER/RN para transporte "
+"turístico."
+
+msgid ""
+"Your car and driver are confirmed up to 12 hours before the trip, and we "
+"send you a photo of both."
+msgstr ""
+"O carro e o motorista são confirmados até 12 horas antes da viagem, e "
+"enviamos para você a foto dos dois."
+
+msgid "Your driver:"
+msgstr "Seu motorista:"
+
+msgid ""
+"up to 12 hours before the trip we confirm your car and driver and send you a"
+" photo of both, with the car's plate and the driver's name."
+msgstr ""
+"até 12 horas antes da viagem confirmamos o carro e o motorista e enviamos a "
+"foto dos dois, com a placa do carro e o nome do motorista."
+
+msgid "faq/"
+msgstr "duvidas-frequentes/"
+
+msgid "FAQ"
+msgstr "Dúvidas frequentes"
+
+msgid "Frequently asked questions"
+msgstr "Dúvidas frequentes"
+
+msgid "Before you book"
+msgstr "Antes de reservar"
+
+msgid "Straight answers to what travellers usually ask us before booking."
+msgstr ""
+"Respostas diretas para o que os viajantes costumam nos perguntar antes de "
+"reservar."
+
+msgid ""
+"Answers before you book with TravelPipa in Pipa: who drives you, licensed "
+"guides, how the 10% deposit works, cancellations, delayed flights and "
+"payment on the day."
+msgstr ""
+"Respostas antes de reservar com a TravelPipa em Pipa: quem dirige, guias "
+"credenciados, como funciona o sinal de 10%, cancelamento, voo atrasado e "
+"pagamento no dia."
+
+msgid "Still have a question?"
+msgstr "Ainda tem alguma dúvida?"
+
+msgid "Write to us and a person from our team answers you."
+msgstr "Escreva para a gente: uma pessoa da nossa equipe responde."
+
+msgid "Trust and safety"
+msgstr "Confiança e segurança"
+
+msgid "Booking and payment"
+msgstr "Reserva e pagamento"
+
+msgid "Cancellations and changes"
+msgstr "Cancelamento e mudanças"
+
+msgid "Is TravelPipa a real local agency?"
+msgstr "A TravelPipa é mesmo uma agência local?"
+
+msgid ""
+"Yes. We are a small agency based in Praia da Pipa, Rio Grande do Norte. A "
+"real person from our team answers you by WhatsApp or e-mail, in English, "
+"Portuguese or Spanish, before you book and during your trip. You can read "
+"what other travellers say on our reviews page."
+msgstr ""
+"Sim. Somos uma agência pequena com base na Praia da Pipa, no Rio Grande do "
+"Norte. Uma pessoa de verdade da nossa equipe atende você por WhatsApp ou "
+"e-mail, em português, inglês ou espanhol, antes da reserva e durante a "
+"viagem. Você pode ler o que outros viajantes dizem na nossa página de "
+"avaliações."
+
+msgid "Who will drive me, and is the car registered?"
+msgstr "Quem vai dirigir e o carro é regularizado?"
+
+msgid ""
+"We work with a network of accredited partner drivers registered with DER/RN,"
+" the transport authority of Rio Grande do Norte, for tourist transport. Up "
+"to 12 hours before your trip we send you the driver's name, the car's model "
+"and plate, and a photo of the driver and of the car, so you know exactly who"
+" is picking you up."
+msgstr ""
+"Trabalhamos com uma rede de motoristas parceiros credenciados no DER/RN, o "
+"órgão de transporte do Rio Grande do Norte, para transporte turístico. Até "
+"12 horas antes da viagem enviamos o nome do motorista, o modelo e a placa do"
+" carro e uma foto do motorista e do carro, para você saber exatamente quem "
+"vai te buscar."
+
+msgid "Are the tour guides licensed?"
+msgstr "Os guias são credenciados?"
+
+msgid ""
+"Yes. Our guides are registered in Cadastur, the official register of "
+"Brazil's Ministry of Tourism."
+msgstr ""
+"Sim. Nossos guias são cadastrados no Cadastur, o cadastro oficial do "
+"Ministério do Turismo."
+
+msgid "Can I talk to the driver before the trip?"
+msgstr "Posso falar com o motorista antes da viagem?"
+
+msgid ""
+"Yes. When we send you the driver's details we can also share the driver's "
+"WhatsApp, and our team stays available to help you during the whole trip."
+msgstr ""
+"Sim. Junto com os dados do motorista podemos enviar o WhatsApp dele, e a "
+"nossa equipe continua disponível para ajudar durante toda a viagem."
+
+msgid "Do I have to pay to book?"
+msgstr "Preciso pagar para reservar?"
+
+msgid ""
+"No. Booking on the website is free and takes a few minutes. Your date is "
+"secured with a 10% deposit, and the rest is paid on the day of the trip."
+msgstr ""
+"Não. Reservar pelo site é grátis e leva poucos minutos. Sua data fica "
+"garantida com um sinal de 10%, e o restante é pago no dia da viagem."
+
+msgid "How do I pay the deposit, and is it safe?"
+msgstr "Como pago o sinal? É seguro?"
+
+msgid ""
+"The 10% deposit is paid by Pix or card on a secure Mercado Pago page, "
+"through the link we send you. Your card details are entered only on Mercado "
+"Pago: we never see them and we never ask for them by WhatsApp or e-mail. "
+"When the payment goes through, your booking is marked as paid automatically."
+msgstr ""
+"O sinal de 10% é pago por Pix ou cartão numa página segura do Mercado Pago, "
+"pelo link que enviamos. Os dados do cartão são digitados só no Mercado Pago:"
+" nós nunca vemos esses dados e nunca pedimos por WhatsApp ou e-mail. Quando "
+"o pagamento é aprovado, a reserva fica marcada como paga automaticamente."
+
+msgid "How do I pay the rest?"
+msgstr "Como pago o restante?"
+
+msgid ""
+"The remaining 90% is paid on the day, directly to the driver or guide, by "
+"Pix or in cash."
+msgstr ""
+"Os 90% restantes são pagos no dia, direto ao motorista ou guia, por Pix ou "
+"em dinheiro."
+
+msgid "How do I know my booking is confirmed?"
+msgstr "Como sei que minha reserva está confirmada?"
+
+msgid ""
+"You get a booking code as soon as you book. Our team then contacts you by "
+"WhatsApp or e-mail to confirm the details, and for transfers you receive the"
+" driver and car details up to 12 hours before the trip."
+msgstr ""
+"Você recebe um código de reserva na hora. Depois a nossa equipe entra em "
+"contato por WhatsApp ou e-mail para confirmar os detalhes e, nos transfers, "
+"você recebe os dados do motorista e do carro até 12 horas antes da viagem."
+
+msgid "What if I need to cancel?"
+msgstr "E se eu precisar cancelar?"
+
+msgid ""
+"If you cancel at least 48 hours before the trip, we refund your deposit in "
+"full. Cancellations made less than 48 hours before are not refunded, because"
+" by then the driver or guide is already booked for you. If you just need "
+"another date, talk to us: we do our best to move your booking."
+msgstr ""
+"Se você cancelar com pelo menos 48 horas de antecedência, devolvemos o sinal"
+" inteiro. Cancelamentos com menos de 48 horas não são reembolsados, porque o"
+" motorista ou guia já está reservado para você. Se precisar só mudar a data,"
+" fale com a gente: fazemos o possível para remarcar."
+
+msgid "What if the weather or the sea is not safe?"
+msgstr "E se o tempo ou o mar não estiverem seguros?"
+
+msgid ""
+"Your safety comes first. If we cancel or reschedule because of weather, "
+"tides or sea conditions, you can choose another date or receive your deposit"
+" back in full."
+msgstr ""
+"Sua segurança vem primeiro. Se cancelarmos ou remarcarmos por causa do "
+"tempo, da maré ou do mar, você escolhe outra data ou recebe o sinal de volta"
+" por inteiro."
+
+msgid "What if my flight is delayed?"
+msgstr "E se meu voo atrasar?"
+
+msgid ""
+"We follow your flight, and the driver adjusts the pick-up time to your real "
+"arrival. A delayed flight costs you nothing extra."
+msgstr ""
+"Acompanhamos o seu voo, e o motorista ajusta o horário à chegada real. "
+"Atraso de voo não tem custo extra."
+
+msgid "Where do I meet the driver at Natal airport?"
+msgstr "Onde encontro o motorista no aeroporto de Natal?"
+
+msgid ""
+"Together with the driver's details we agree the meeting point at arrivals "
+"with you, so you know where to go as soon as you land."
+msgstr ""
+"Junto com os dados do motorista combinamos com você o ponto de encontro no "
+"desembarque, para você saber aonde ir assim que pousar."
+
+msgid "We are 6 or more people. What do you recommend?"
+msgstr "Somos 6 pessoas ou mais. O que vocês recomendam?"
+
+msgid ""
+"For 6 people we usually recommend two cars, which costs less than renting a "
+"van. From 7 people, send us your group size and we prepare a quote."
+msgstr ""
+"Para 6 pessoas costumamos recomendar dois carros, que sai mais barato que "
+"alugar uma van. A partir de 7 pessoas, mande o tamanho do grupo e preparamos"
+" um orçamento."
+
+msgid "Questions about payment, cancellation or who drives you?"
+msgstr "Dúvidas sobre pagamento, cancelamento ou quem vai dirigir?"
+
+msgid "See the FAQ"
+msgstr "Veja as dúvidas frequentes"
+
+msgid "Delayed flight, payment, cancellation: see the FAQ"
+msgstr "Voo atrasado, pagamento, cancelamento: veja as dúvidas frequentes"
+
+msgid ""
+"Up to 12 hours before, you receive the meeting point, the driver's name, the"
+" car's plate and photos."
+msgstr ""
+"Até 12 horas antes, você recebe o ponto de encontro, o nome do motorista, a "
+"placa do carro e as fotos."
+
+msgid ""
+"To secure your booking we ask for a 10% deposit, paid after our team "
+"contacts you. If we cancel or reschedule for safety reasons (weather, tides "
+"or sea conditions), you can move to another date or receive the deposit back"
+" in full. If you cancel at least 48 hours before the trip, the deposit is "
+"refunded in full; later cancellations are not refunded."
+msgstr ""
+"Para garantir a reserva pedimos um sinal de 10%, pago depois que a nossa "
+"equipe entra em contato. Se cancelarmos ou remarcarmos por segurança (tempo,"
+" maré ou mar), você pode mudar a data ou receber o sinal de volta por "
+"inteiro. Se você cancelar com pelo menos 48 horas de antecedência, o sinal é"
+" devolvido por inteiro; cancelamentos depois disso não são reembolsados."
+
+msgid ""
+"Prices shown are informative and may vary with the date, group size and "
+"availability. The final price is the one confirmed by our team. The deposit "
+"is paid by Pix or card on a secure Mercado Pago page: card details are "
+"entered only there and never reach TravelPipa. The rest is paid on the day, "
+"directly to the driver or guide, by Pix or in cash."
+msgstr ""
+"Os preços mostrados são informativos e podem variar com a data, o tamanho do"
+" grupo e a disponibilidade. O preço final é o confirmado pela nossa equipe. "
+"O sinal é pago por Pix ou cartão numa página segura do Mercado Pago: os "
+"dados do cartão são digitados só lá e nunca chegam à TravelPipa. O restante "
+"é pago no dia, direto ao motorista ou guia, por Pix ou em dinheiro."
+
+msgid ""
+"Unless the experience page says otherwise: cancellations made at least 48 "
+"hours before the trip get the deposit back in full, and later cancellations "
+"are not refunded. If we cancel because of weather, tides or sea conditions, "
+"you choose another date or a full refund of the deposit. See also our FAQ."
+msgstr ""
+"Salvo indicação diferente na página da experiência: cancelamentos com pelo "
+"menos 48 horas de antecedência recebem o sinal de volta por inteiro, e "
+"cancelamentos depois disso não são reembolsados. Se cancelarmos por causa do"
+" tempo, da maré ou do mar, você escolhe outra data ou o reembolso integral "
+"do sinal. Veja também as nossas dúvidas frequentes."
+
+msgid ""
+"Bookings made on this website are registered immediately. Our team then "
+"contacts you to agree on the meeting point, time and payment. If heavy rain "
+"prevents the experience on the chosen date, we offer you another date or "
+"time."
+msgstr ""
+"As reservas feitas neste site são registradas na hora. Depois a nossa equipe"
+" entra em contato para combinar o ponto de encontro, o horário e o "
+"pagamento. Se uma chuva forte impedir a experiência na data escolhida, "
+"oferecemos outra data ou horário."
+
+msgid ""
+"To secure your booking we ask for a 10% deposit, paid after our team "
+"contacts you. If we cancel or reschedule because of heavy rain, you can move"
+" to another date or receive the deposit back in full. If you cancel at least"
+" 48 hours before the trip, the deposit is refunded in full; later "
+"cancellations are not refunded."
+msgstr ""
+"Para garantir a reserva pedimos um sinal de 10%, pago depois que a nossa "
+"equipe entra em contato. Se cancelarmos ou remarcarmos por causa de chuva "
+"forte, você pode mudar a data ou receber o sinal de volta por inteiro. Se "
+"você cancelar com pelo menos 48 horas de antecedência, o sinal é devolvido "
+"por inteiro; cancelamentos depois disso não são reembolsados."
+
+msgid ""
+"Tours and transfers may be carried out by local partner operators selected "
+"by us. Some times are adjusted to the tides, and itineraries may change in "
+"case of heavy rain."
+msgstr ""
+"Passeios e transfers podem ser realizados por parceiros locais selecionados "
+"por nós. Alguns horários são ajustados à maré, e os roteiros podem mudar em "
+"caso de chuva forte."
+
+msgid ""
+"Unless the experience page says otherwise: cancellations made at least 48 "
+"hours before the trip get the deposit back in full, and later cancellations "
+"are not refunded. If we cancel because of heavy rain, you choose another "
+"date or a full refund of the deposit. See also our FAQ."
+msgstr ""
+"Salvo indicação diferente na página da experiência: cancelamentos com pelo "
+"menos 48 horas de antecedência recebem o sinal de volta por inteiro, e "
+"cancelamentos depois disso não são reembolsados. Se cancelarmos por causa de"
+" chuva forte, você escolhe outra data ou o reembolso integral do sinal. Veja"
+" também as nossas dúvidas frequentes."
+
+msgid "What if it rains heavily?"
+msgstr "E se chover forte?"
+
+msgid ""
+"In Pipa the sea is calm all year, so trips only change in case of heavy "
+"rain. If heavy rain makes us cancel or reschedule, you choose another date "
+"or receive your deposit back in full."
+msgstr ""
+"Em Pipa o mar é tranquilo o ano todo, então as viagens só mudam em caso de "
+"chuva forte. Se uma chuva forte nos fizer cancelar ou remarcar, você escolhe"
+" outra data ou recebe o sinal de volta por inteiro."

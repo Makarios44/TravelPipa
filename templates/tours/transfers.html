@@ -38,7 +38,8 @@
             {% if t.transfer_type %}<li><i class="bi bi-{% if t.transfer_type == 'private' %}person-check{% else %}people{% endif %}" aria-hidden="true"></i>{{ t.get_transfer_type_display }}</li>{% endif %}
             {% if t.max_passengers and not t.rates %}<li><i class="bi bi-people" aria-hidden="true"></i>{% blocktrans count n=t.max_passengers %}Up to {{ n }} passenger{% plural %}Up to {{ n }} passengers{% endblocktrans %}</li>{% endif %}
             {% if t.duration %}<li><i class="bi bi-clock" aria-hidden="true"></i>{{ t.duration }}</li>{% endif %}
-            {% if site.trust_der_vehicles %}<li><i class="bi bi-patch-check" aria-hidden="true"></i>{% trans "Registered with DER/RN" %}</li>{% endif %}
+            {% if site.trust_der_vehicles %}<li><i class="bi bi-patch-check" aria-hidden="true"></i>{% trans "Accredited drivers registered with DER/RN" %}</li>{% endif %}
+            <li><i class="bi bi-camera" aria-hidden="true"></i>{% trans "Car and driver confirmed 12 h before, with photos" %}</li>
           </ul>
           {% if t.rates %}<div class="on-dark mb-3" style="max-width:460px">{% include "includes/transfer_price_table.html" %}</div>{% endif %}
           <div class="d-flex flex-wrap align-items-center gap-3">
@@ -91,9 +92,10 @@
   <div class="container">
     <div class="row g-4">
       <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-airplane" aria-hidden="true"></i></div><h3>{% trans "Send your flight" %}</h3><p>{% trans "Share your flight number and arrival time when you book so the pickup can be planned around it." %}</p></div></div>
-      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-signpost" aria-hidden="true"></i></div><h3>{% trans "Meet your driver" %}</h3><p>{% trans "After you book, you receive the meeting point and pickup details." %}</p></div></div>
+      <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-signpost" aria-hidden="true"></i></div><h3>{% trans "Meet your driver" %}</h3><p>{% trans "Up to 12 hours before, you receive the meeting point, the driver's name, the car's plate and photos." %}</p></div></div>
       <div class="col-md-4"><div class="why-item"><div class="why-icon"><i class="bi bi-house-heart" aria-hidden="true"></i></div><h3>{% trans "Arrive relaxed" %}</h3><p>{% trans "Go straight to your accommodation in Pipa, with assistance in your language." %}</p></div></div>
     </div>
+    <p class="text-center mt-4 mb-0"><a class="link-arrow" href="{% url 'core:faq' %}">{% trans "Delayed flight, payment, cancellation: see the FAQ" %} <i class="bi bi-arrow-right" aria-hidden="true"></i></a></p>
   </div>
 </section>
 {% endblock %}

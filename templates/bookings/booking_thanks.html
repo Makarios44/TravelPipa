@@ -15,10 +15,23 @@
       {% elif round_trip %}<p class="mb-3"><span class="trip-badge"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> {% trans "Round trip: we negotiate your discount when we confirm the details." %}</span></p>{% endif %}
       <p class="mb-2 text-muted-tp">{% trans "Your booking code" %}</p>
       <p class="ref-code mb-4">{{ reference }}</p>
+      {% if deposit_url %}
+        <div class="deposit-cta mb-4">
+          <p class="mb-2"><strong>{% trans "Secure your date now" %}</strong> — {% blocktrans with amount=deposit %}the 10% deposit is {{ amount }}, with Pix or card.{% endblocktrans %}</p>
+          <a class="btn btn-accent btn-lg" href="{{ deposit_url }}"><i class="bi bi-lock" aria-hidden="true"></i> {% blocktrans with amount=deposit %}Pay the deposit ({{ amount }}){% endblocktrans %}</a>
+          <p class="note-small mt-2 mb-0 justify-content-center"><span>{% trans "Optional: your booking is already registered, and you can also pay later." %}</span></p>
+        </div>
+      {% endif %}
       <div class="notice text-start mb-4">
         <i class="bi bi-calendar-check" aria-hidden="true"></i>
         <div><strong>{% trans "Next step:" %}</strong> {% trans "our team will contact you shortly by WhatsApp or e-mail with the meeting point, time and the 10% deposit that secures your booking. Keep your booking code handy." %}</div>
       </div>
+      {% if is_transfer %}
+        <div class="notice text-start mb-4">
+          <i class="bi bi-camera" aria-hidden="true"></i>
+          <div><strong>{% trans "Your driver:" %}</strong> {% trans "up to 12 hours before the trip we confirm your car and driver and send you a photo of both, with the car's plate and the driver's name." %}</div>
+        </div>
+      {% endif %}
       <div class="d-flex flex-wrap gap-2 justify-content-center">
         {% if whatsapp_url %}<a class="btn btn-whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> {% trans "Send a WhatsApp message" %}</a>{% endif %}
         <a class="btn btn-outline-ocean" href="{% url 'tours:experience_list' %}">{% trans "Back to experiences" %}</a>
